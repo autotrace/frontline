@@ -199,8 +199,6 @@ main(int argc, char ** argv)
 		      "request_to_save",
 		      GTK_SIGNAL_FUNC(open_filesel),
 		      dialog);
-  gtk_window_set_transient_for(GTK_WINDOW(preview),
-			       GTK_WINDOW(dialog));
 
   if (filename)
     if (!frontline_file_selection_load_file(FRONTLINE_FILE_SELECTION(fsel), 

@@ -1,5 +1,8 @@
 2002-10-31  Masatake YAMATO  <jet@gyve.org>
 
+	* frontline/frontline.c (main):  removed
+	gtk_window_set_transient_for invocation.
+
 	* frontline/fl_opt_priv.c (fl_opt_priv_new): Gettextized
 	labels. width_factor -> width_weight_factor.
 
