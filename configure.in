@@ -1,6 +1,6 @@
 AC_INIT(frontline/frontline.h)
 PACKAGE=frontline
-VERSION="0.5.1"
+VERSION="0.5.2"
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
 AM_MAINTAINER_MODE
 
@@ -38,7 +38,7 @@ AC_SUBST(LIBART2_LIBS)
 dnl
 dnl Autotrace
 dnl
-AM_PATH_AUTOTRACE(0.30.5,, AC_MSG_ERROR([Cannot find autotrace library]))
+AM_PATH_AUTOTRACE(0.30.6,, AC_MSG_ERROR([Cannot find autotrace library]))
 
 dnl
 dnl GIMP

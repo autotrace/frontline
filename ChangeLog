@@ -1,5 +1,8 @@
 2002-09-18  Masatake YAMATO  <jet@gyve.org>
 
+ 	* configure.in: version 0.5.2.
+	(AM_PATH_AUTOTRACE): Required 0.30.6.
+
 	* frontline.m4: used $frontline_exec_prefix or $frontline_prefix only.
 	$frontline_config_exec_prefix and $frontline_config_prefix are 
 	unnecessary variables. Suggested by Gregory Hosler 

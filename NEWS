@@ -1,3 +1,9 @@
+What's new in FrontLine 0.5.2?
+- check whether libgimp is installed or not even if gimptool is found
+  (Raymond Ostertag <raymond.linux@free.fr>).
+- fix typo in frontline.m4
+  (Gregory Hosler <gregory.hosler@eno.ericsson.se>).
+
 What's new in FrontLine 0.5.1?
 - Query dialog functions are exported. This will be used in 
   sodipodi.
