@@ -61,7 +61,7 @@ at_fitting_opts_save (at_fitting_opts_type * opts, FILE * fp)
   member_write(filter_iterations, unsigned);
   member_write(line_reversion_threshold, real);
   member_write(line_threshold, real);
-  member_write(remove_adj_corners, bool);
+  member_write(remove_adjacent_corners, bool);
   member_write(tangent_surround, unsigned);
   member_write(despeckle_tightness, real);
   member_write(centerline, bool);
@@ -211,7 +211,7 @@ at_fitting_opts_popt_table_init(struct poptOption * table, at_fitting_opts_type 
   TABLE_ADD(filter-iterations,        INT,      filter_iterations);
   TABLE_ADD(line-reversion-threshold, FLOAT,    line_reversion_threshold);
   TABLE_ADD(line-threshold,           FLOAT,    line_threshold);
-  TABLE_ADD(remove-adj-corners,       NONE,     remove_adj_corners);
+  TABLE_ADD(remove-adjacent-corners,  NONE,     remove_adjacent_corners);
   TABLE_ADD(tangent-surround,         INT,      tangent_surround);
   TABLE_ADD(despeckle-level,          INT,      despeckle_level);
   TABLE_ADD(despeckle-tightness,      FLOAT,    despeckle_tightness);

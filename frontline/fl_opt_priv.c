@@ -103,7 +103,7 @@ struct _FrontlineOptionPriv
   GtkWidget * filter_iterations;
   GtkWidget * line_reversion_threshold;
   GtkWidget * line_threshold;
-  GtkWidget * remove_adj_corners;
+  GtkWidget * remove_adjacent_corners;
   GtkWidget * tangent_surround;
   GtkWidget * despeckle_tightness;
   GtkWidget * centerline;
@@ -138,7 +138,7 @@ fl_opt_priv_##type##_new(&(priv->value->member_symbol),			\
   member_construct(filter_iterations, 1, 12, unsigned);
   member_construct(line_reversion_threshold, .01, 1, real);
   member_construct(line_threshold, 1, 10, real);
-  member_construct(remove_adj_corners, false, true, bool);
+  member_construct(remove_adjacent_corners, false, true, bool);
   member_construct(tangent_surround, 3, 12, unsigned);
   member_construct(despeckle_tightness, 0.0, 8.0, real);
   member_construct(centerline, false, true, bool);
@@ -191,7 +191,7 @@ fl_opt_priv_set_value(FrontlineOptionPriv * priv,
   member_set(filter_iterations, unsigned);
   member_set(line_reversion_threshold, real);
   member_set(line_threshold, real);
-  member_set(remove_adj_corners, bool);
+  member_set(remove_adjacent_corners, bool);
   member_set(tangent_surround, unsigned);
   member_set(despeckle_tightness, real);
   member_set(centerline, bool);

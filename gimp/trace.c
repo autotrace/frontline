@@ -118,6 +118,7 @@ run (gchar   *name,
   
   guint32       image_ID;
   gchar        *image_name ;
+  guint32       drawable_ID;
   GimpDrawable *drawable;
   GimpRunModeType run_mode;
   GimpPDBStatusType status = GIMP_PDB_SUCCESS;
@@ -127,9 +128,10 @@ run (gchar   *name,
 
   /* INIT_I18N_UI(); */
 
-  run_mode = param[0].data.d_int32;
-  image_ID = param[1].data.d_image;
-  drawable = gimp_drawable_get(param[2].data.d_drawable);
+  run_mode    = param[0].data.d_int32;
+  image_ID    = param[1].data.d_image;
+  drawable_ID = param[2].data.d_drawable;
+  drawable = gimp_drawable_get(drawable_ID);
 
   values[0].type = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
@@ -234,6 +236,7 @@ frontline (GimpDrawable *drawable,
 		      GTK_SIGNAL_FUNC(open_filesel),
 		      dialog);
   
+  
   bitmap = gimp_drawable_to_at_bitmap(drawable);
   frontline_dialog_set_bitmap(FRONTLINE_DIALOG(dialog), bitmap);
   /* FIXME: gray scale image is not supported */
@@ -261,6 +264,7 @@ reload_bitmap (GtkButton * button, gpointer user_data)
 {
   ReloadData * reload_data = user_data;
   at_bitmap_type * bitmap;
+  reload_data->drawable = gimp_drawable_get(reload_data->drawable->id);
   bitmap = gimp_drawable_to_at_bitmap(reload_data->drawable);
   frontline_dialog_set_bitmap(FRONTLINE_DIALOG(reload_data->widget), bitmap);
 }
@@ -400,6 +404,7 @@ gimp_drawable_to_at_bitmap (GimpDrawable * drawable)
   data = g_new(guchar, bytes * width);  
   for (y = 0; y < height; y++)
     {
+      /* TODO: Alpha channel */
       gimp_pixel_rgn_get_row(&pixel_rgn, data, 0, y, width);
       for (x = 0; x < width; x++)
 	for (i = 0; i < (bytes - has_alpha); i++)
@@ -477,8 +482,7 @@ save_splines             (GtkButton * button, gpointer user_data)
       return ;
     }
 
-  at_splines_write(splines, fp, filename, AT_DEFAULT_DPI, writer,
-		   msg_write, user_data);
+  at_splines_write(writer, fp, filename, NULL, splines, msg_write, user_data);
   fclose(fp);
 }
 

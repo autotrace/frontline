@@ -462,7 +462,30 @@ frontline_preview_set_image_by_bitmap (FrontlinePreview * fl_preview,
 				       at_bitmap_type * bitmap)
 {
   GdkImlibImage * im_image;
-  im_image = gdk_imlib_create_image_from_data (bitmap->bitmap, NULL, bitmap->width, bitmap->height);
+  unsigned short width, height;
+  unsigned short x, y;
+  
+  width  = at_bitmap_get_width(bitmap);
+  height = at_bitmap_get_height(bitmap);
+  
+  if (at_bitmap_get_planes(bitmap) == 1)
+    {
+      /* Make the monochrome bitmap color bitmap force */
+      at_bitmap_type * bitmap3;
+      bitmap3 = at_bitmap_new (width, height, 3);
+      for (y = 0; y < height; y++)
+	for(x = 0; x < width; x++)
+	  {
+	    bitmap3->bitmap[3*(y * width + x) + 0] = bitmap->bitmap[y * width + x];
+	    bitmap3->bitmap[3*(y * width + x) + 1] = bitmap->bitmap[y * width + x];
+	    bitmap3->bitmap[3*(y * width + x) + 2] = bitmap->bitmap[y * width + x];
+	  }
+      im_image = gdk_imlib_create_image_from_data (bitmap3->bitmap, NULL, width, height);
+      at_bitmap_free(bitmap3);
+    }
+  else
+    im_image = gdk_imlib_create_image_from_data (bitmap->bitmap, NULL, width, height);
+  
   return frontline_preview_set_image_by_gdk_imlib_image(fl_preview, im_image);
 }
 
@@ -604,8 +627,8 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
 	g_warning("Cannot do fdopen for tmp file");
       }
     writer = at_output_get_handler_by_suffix("svg");
-    at_splines_write(splines, tmp_fp, tmp_name, AT_DEFAULT_DPI, writer,
-		     NULL, NULL);
+    at_splines_write(writer, tmp_fp, tmp_name, NULL, splines, NULL, NULL);
+    /* TODO */
     fclose(tmp_fp);
     
     if (fl_preview->tmp_svg_uri)

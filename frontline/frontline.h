@@ -44,8 +44,6 @@ int at_fitting_opts_save (at_fitting_opts_type * opts, FILE * fp);
 at_fitting_opts_type * at_fitting_opts_new_from_file(FILE * fp);
 at_fitting_opts_type * at_fitting_opts_new_from_argv(int argc, const char ** argv);
 
-int at_fitting_opts_parse(int argc, char ** argv, at_fitting_opts_type * opts);
-
 /* Usage of at_fitting_opts_popt_init: 
    struct poptOption * table[at_fitting_opts_popt_table_length];
    at_fitting_opts_type * opts = at_fitting_opts_new();

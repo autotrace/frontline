@@ -378,8 +378,7 @@ save_splines             (GtkButton * button, gpointer user_data)
       return ;
     }
 
-  at_splines_write(splines, fp, filename, AT_DEFAULT_DPI, writer,
-		   msg_write, user_data);
+  at_splines_write(writer, fp, filename, NULL, splines, msg_write, user_data);
   fclose(fp);
 }
 
@@ -411,10 +410,11 @@ splash                    (const gchar * file)
   pixmap = gnome_pixmap_new_from_file (file);
   gtk_container_add(GTK_CONTAINER(vbox), pixmap);  
   
-  // label = gtk_label_new("by Masatake YAMATO<jet@gyve.org>");
-  // gtk_container_add(GTK_CONTAINER(vbox), label);  
-  // label = gtk_label_new("Use under term of GNU GPL");
-  // gtk_container_add(GTK_CONTAINER(vbox), label);  
+  /* label = gtk_label_new("by Masatake YAMATO<jet@gyve.org>");
+     gtk_container_add(GTK_CONTAINER(vbox), label);  
+     label = gtk_label_new("Use under term of GNU GPL");
+     gtk_container_add(GTK_CONTAINER(vbox), label);  */
+  
   label = gtk_label_new("Frontline" " " VERSION);
   gtk_container_add(GTK_CONTAINER(vbox), label);  
   

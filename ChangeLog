@@ -1,3 +1,29 @@
+2002-10-04  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_splines.c (spline_new): Unref curve.
+
+	* frontline/fl_preview.c (frontline_preview_set_image_by_bitmap): Added
+	code to handle monochrome bitmap.
+
+	* gimp/trace.c (reload_bitmap): reget drawable for drawable id.
+
+	* gimp/trace.c (save_splines): Change the order of 
+	args for at_splines_write.
+
+	* frontline/fl_preview.c (frontline_preview_set_splines): ditto.
+
+	* frontline/frontline.c (save_splines): ditto.
+
+	* frontline/fl_opt_priv.c (fl_opt_priv_set_value) 
+	(fl_opt_priv_new, at_fitting_opts_save)
+	(at_fitting_opts_popt_table_init): remove_adj_corners->
+	remove_adjacent_corners.
+
+2002-10-02  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/frontline.h(at_fitting_opts_parse): removed a declaration of
+	unimplemented function.
+
 2002-09-29  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/frontline.c (main): When fitting_opts is updated,

@@ -59,8 +59,9 @@ GtkType    frontline_dialog_get_type      (void);
 GtkWidget* frontline_dialog_new           (void);
 GtkWidget* frontline_dialog_new_with_opts (at_fitting_opts_type * value);
 
-/* FrontlineDialog becomes the owner of bitmap.
-   Don't free the bitmap */
+/* FrontlineDialog becomes the owner of BITMAP.
+   Don't free the BITMAP by yourself. 
+   If you need a copy of BITMAP, use at_bitmap_copy */
 void frontline_dialog_set_bitmap(FrontlineDialog  *fl_dialog,
 				 at_bitmap_type * bitmap);
 

@@ -122,6 +122,7 @@ spline_new (GnomeCanvasGroup * group,
     sp_curve_closepath(ctx.curve);
 
   spline_item = sp_canvas_bpath_new(group, ctx.curve);
+  sp_curve_unref(ctx.curve);
   
   color = AT_SPLINE_LIST_COLOR(spline)->r << 24
     | AT_SPLINE_LIST_COLOR(spline)->g     << 16
