@@ -1,3 +1,12 @@
+2002-07-09  Masatake YAMATO  <jet@gyve.org>
+
+	* configure.in: PACKAGER->PACKAGE.
+	Call AM_SANITY_CHECK, AC_PROG_INSTALL, AC_ARG_PROGRAM.
+
+	* gimp/trace.c (gimp_drawable_to_at_bitmap): y*height->y*width.
+	
+	* gimp/Makefile.am (trace_LDADD): Added $(LIBART2_LIBS).
+
 2002-05-31  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/fl_preview.c (frontline_preview_set_splines_opacity): Use

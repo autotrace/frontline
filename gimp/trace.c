@@ -354,7 +354,7 @@ gimp_drawable_to_at_bitmap (GimpDrawable * drawable)
       gimp_pixel_rgn_get_row(&pixel_rgn, data, 0, y, width);
       for (x = 0; x < width; x++)
 	for (i = 0; i < (bytes - has_alpha); i++)
-	  bitmap->bitmap[(bytes - has_alpha)*(y*height + x) + i] = data[x * bytes + i];
+	  bitmap->bitmap[(bytes - has_alpha)*(y*width + x) + i] = data[x * bytes + i];
     }
   g_free(data);
   return bitmap;

@@ -1,4 +1,5 @@
 - * Warning and Error reprots <0.2.4> 3h
+   -> cannot find handler
 - DnD Proxy<0.2.5>???
 - Commandline related (After new gnome is relased)
 - Suffix options in file dialog
@@ -9,7 +10,6 @@
 - Preview area:
 	pick a background color	
 	build preview from datum on RAM(gray scale)
-	preview zooming
 
 - configure:
 	/* popt should be checked in configure */
@@ -37,3 +37,4 @@ Done:
 - Autotrace version check <0.2.4>
 - Canvas<0.3.n> (done)
 - GIMP:Preview default status: (Static color with black and hiding image)<done>
+- preview zooming

@@ -16,6 +16,7 @@ trace_LDADD      = \
 	$(top_builddir)/frontline/libfrontline.a	\
 	$(top_builddir)/gundo/libgundo.a		\
 	-lpopt						\
+	$(LIBART2_LIBS)					\
 	$(GNOME_LIBDIR)					\
 	$(GNOMEUI_LIBS)					\
 	$(GIMP_LIBS)					\
