@@ -3,7 +3,7 @@ Known bugs in frontline: -*-text-*-
 - displaying an image and its trace result are failed 
    if the image has transparent area.
 
-- frontline menu item is not appeared on Gnome panel.
+- frontline menu item is not appeared on Gnome desktop menu.
 
-- Lines that has variable width is not rendered well
+- lines that has variable width is not rendered well
   (not implemented).

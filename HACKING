@@ -29,3 +29,7 @@ aclocal (GNU automake) 1.4-p6
 
 [jet@chuf frontline]$ automake-1.4 --version
 automake (GNU automake) 1.4-p6
+
+Distro
+------
+I(Masatake YAMATO) am using Redhat 8.0.
