@@ -1,5 +1,7 @@
 2002-11-12  Masatake YAMATO  <jet@gyve.org>
 
+	* configure.in: version 0.5.4.
+
 	* frontline/fl_fsel.c (frontline_file_selection_init): Change
 	the window title.
 
