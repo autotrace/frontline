@@ -19,7 +19,6 @@
 
 /* TODO: Error report/check */
 
-#include <autotrace/autotrace.h>
 #include "frontline.h"
 #include <popt.h>
 #include <glib.h>

@@ -20,11 +20,13 @@
 #ifndef FRONTLINE_H
 #define FRONTLINE_H
 
-#include <autotrace/autotrace.h>
 #include <gtk/gtk.h>
 #include <popt.h>
 #include <libgnomeui/gnome-canvas.h>
+#include <libgnome/gnome-i18n.h>
 #include <gdk_imlib.h>
+
+#include <autotrace/autotrace.h>
 
 #include <frontline/fl_opt.h>
 #include <frontline/fl_dialog.h>
