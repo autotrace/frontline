@@ -368,6 +368,10 @@ preview_splines          (FrontlineDialog * fl_dialog,
   g_return_if_fail (FRONTLINE_IS_DIALOG(fl_dialog));
   g_return_if_fail (user_data);
   g_return_if_fail (FRONTLINE_IS_PREVIEW(user_data));
+
+  if (!fl_dialog->splines)
+    return;
+
   if (frontline_preview_set_splines(FRONTLINE_PREVIEW(user_data),
 				    fl_dialog->splines))
     frontline_preview_show_splines(FRONTLINE_PREVIEW(user_data),

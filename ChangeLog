@@ -1,5 +1,10 @@
 2002-10-05  Masatake YAMATO  <jet@gyve.org>
 
+	* frontline/frontline.c (preview_splines): return 
+	if splines is not set.
+
+	* gimp/trace.c (preview_splines): ditto.
+	
 	* gimp/trace.c (gimp_drawable_to_at_bitmap): supported
 	gray image and image that has alpha channel.
 	(_ReloadData::dialog): renamed widget.
