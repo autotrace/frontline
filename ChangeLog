@@ -1,5 +1,7 @@
 2002-05-29  Masatake YAMATO  <jet@gyve.org>
 
+	* configure.in: Release 0.4.0.
+
 	* frontline.pc.in (Libs): Added -lpopt.
 
 	* frontline-config.af: Added -lpopt.
