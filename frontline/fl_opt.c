@@ -389,7 +389,7 @@ frontline_option_save (GtkButton * button, gpointer user_data)
   GtkWidget * ok_button = GTK_FILE_SELECTION(filesel)->ok_button; 
   GtkWidget * cancel_button = GTK_FILE_SELECTION(filesel)->cancel_button;
   
-  gtk_window_set_title(GTK_WINDOW(filesel), _("Select option file"));
+  gtk_window_set_title(GTK_WINDOW(filesel), _("Select Option File"));
   gtk_signal_connect(GTK_OBJECT(ok_button),
 		     "clicked",
 		     GTK_SIGNAL_FUNC(frontline_option_save_ok),
@@ -465,7 +465,7 @@ frontline_option_load (GtkButton * button, gpointer user_data)
   GtkWidget * ok_button = GTK_FILE_SELECTION(filesel)->ok_button; 
   GtkWidget * cancel_button = GTK_FILE_SELECTION(filesel)->cancel_button;
   
-  gtk_window_set_title(GTK_WINDOW(filesel), _("Select option file"));
+  gtk_window_set_title(GTK_WINDOW(filesel), _("Select Option File"));
   gtk_signal_connect(GTK_OBJECT(ok_button),
 		     "clicked",
 		     GTK_SIGNAL_FUNC(frontline_option_load_ok),

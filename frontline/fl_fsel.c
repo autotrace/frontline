@@ -175,7 +175,7 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
   label = gtk_label_new(_("Image"));
   gtk_box_pack_start_defaults(GTK_BOX(hbox), label);
 
-  fl_fsel->ifentry = gnome_file_entry_new("frontline::fsel::input", _("Select"));
+  fl_fsel->ifentry = gnome_file_entry_new("frontline::fsel::input", _("Select Input Image"));
   gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_fsel->ifentry);
   gtk_widget_show_all(hbox);
   gtk_box_pack_start_defaults(GTK_BOX(fl_fsel), hbox);

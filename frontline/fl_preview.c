@@ -201,6 +201,8 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   GtkWidget * menu, * menu_item;
   GSList * group;
   GtkTooltips * tooltips;
+
+  gtk_window_set_policy(GTK_WINDOW(fl_preview), TRUE, TRUE, TRUE);
   
   fl_preview->image 	   = NULL;
   fl_preview->splines 	   = NULL;

@@ -1,3 +1,18 @@
+2002-11-12  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_fsel.c (frontline_file_selection_init): Change
+	the window title.
+
+	* frontline/fl_opt.c (frontline_option_save): Capitalize
+	window title.
+	(frontline_option_load): Ditto.
+
+	* frontline/fl_preview.c (frontline_preview_init): set
+	window re-sizable.
+
+	* frontline/frontline.c (main): Change the title of
+	preview window.
+
 2002-11-11  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/fl_opt_priv.c (member_construct): added

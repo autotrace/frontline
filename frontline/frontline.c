@@ -182,7 +182,7 @@ main(int argc, char ** argv)
 
   preview = frontline_preview_new ();
   gtk_quit_add_destroy(1, GTK_OBJECT(preview));
-  gtk_window_set_title(GTK_WINDOW(preview), _("frontline preview"));
+  gtk_window_set_title(GTK_WINDOW(preview), _("Preview"));
   gtk_signal_connect(GTK_OBJECT(fsel),
 		     "loaded",
 		     GTK_SIGNAL_FUNC(preview_image),
