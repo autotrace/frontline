@@ -26,7 +26,6 @@
 static const ArtWindRule fl_splines_wind_rule 	   = ART_WIND_RULE_NONZERO;
 static const ArtPathStrokeJoinType fl_splines_join = ART_PATH_STROKE_JOIN_ROUND;
 static const ArtPathStrokeCapType  fl_splines_cap  = ART_PATH_STROKE_CAP_ROUND;
-static const gfloat fl_splines_width 		   = 1.0;
 
 static GnomeCanvasItem * spline_new  (GnomeCanvasGroup * group,
 				      at_spline_list_type * spline,
@@ -35,13 +34,15 @@ static GnomeCanvasItem * spline_new  (GnomeCanvasGroup * group,
 static void spline_set_color (GnomeCanvasItem * spline,
 			      guint32 fill_color,
 			      guint32 stroke_color);
+static void spline_set_line_width(GnomeCanvasItem * spline,
+				  gdouble line_width);
 
 /* Callbacks */
 static void splines_set_fill_opacity_cb        (gpointer item, gpointer user_data);
 static void splines_set_stroke_opacity_cb      (gpointer item, gpointer user_data);
+static void splines_set_line_width_cb          (gpointer item, gpointer user_data);
 static void splines_show_in_multiple_colors_cb (gpointer item, gpointer user_data);
 static void splines_show_in_static_color_cb    (gpointer item, gpointer user_data);
-
 
 struct list_array_ctx
 {
@@ -127,11 +128,11 @@ spline_new (GnomeCanvasGroup * group,
     | AT_SPLINE_LIST_COLOR(spline)->b     <<  8
     | 0x000000FF;
 
+  spline_set_line_width(spline_item, FL_DEFAULT_SPLINES_WIDTH);
   if (AT_SPLINE_LIST_IS_OPENED(spline) || centerline)
     {
       spline_set_color(spline_item, 0x00000000, color);
       color = (color & 0xFFFFFF00) | 0x00000001;
-
     }
   else
     {
@@ -203,12 +204,23 @@ spline_set_color (GnomeCanvasItem * spline,
 {
   sp_canvas_bpath_set_stroke (SP_CANVAS_BPATH(spline),
 			      stroke_color,
-			      fl_splines_width,
+			      SP_CANVAS_BPATH(spline)->stroke_width,
 			      fl_splines_join,
 			      fl_splines_cap);
   sp_canvas_bpath_set_fill (SP_CANVAS_BPATH(spline),
 			    fill_color,
 			    fl_splines_wind_rule);
+}
+
+static void
+spline_set_line_width(GnomeCanvasItem * spline,
+		      gdouble line_width)
+{
+  sp_canvas_bpath_set_stroke (SP_CANVAS_BPATH(spline),
+			      SP_CANVAS_BPATH(spline)->stroke_rgba,
+			      line_width,
+			      fl_splines_join,
+			      fl_splines_cap);
 }
 
 void
@@ -223,6 +235,13 @@ frontline_splines_set_stroke_opacity             (GnomeCanvasGroup  * splines,
 						  guint8 opacity)
 {
   g_list_foreach(splines->item_list, splines_set_stroke_opacity_cb, &opacity);
+}
+
+void
+frontline_splines_set_line_width          (GnomeCanvasGroup  * splines,
+					   gdouble width)
+{
+  g_list_foreach(splines->item_list, splines_set_line_width_cb, &width);
 }
 
 static void
@@ -247,6 +266,12 @@ splines_set_stroke_opacity_cb(gpointer item, gpointer user_data)
   stroke_color = ((bpath->stroke_rgba)&0xFFFFFF00)
     |                                 (0x000000FF & (guint32)opacity);  
   spline_set_color(GNOME_CANVAS_ITEM(bpath), bpath->fill_rgba, stroke_color);
+}
+
+static void
+splines_set_line_width_cb          (gpointer item, gpointer user_data)
+{
+  spline_set_line_width(GNOME_CANVAS_ITEM(item), *(gdouble *)user_data);
 }
 
 void

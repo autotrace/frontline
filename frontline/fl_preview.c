@@ -46,6 +46,8 @@ static void frontline_preview_real_set_image (FrontlinePreview * fl_preview,
 static void frontline_preview_real_set_splines (FrontlinePreview * fl_preview,
 						gboolean set);
 
+static void frontline_preview_free_tmp_svg(FrontlinePreview * fl_preview);
+
 /* 
  * Drag and Drop 
  */
@@ -115,6 +117,10 @@ static guint32 color_get (FrontlinePreview * fl_preview);
  */
 static void zoom_factor_value_changed_cb(GtkAdjustment * zoom_factor, gpointer user_data);
 
+/*
+ * Line width
+ */
+static void line_width_value_changed_cb(GtkAdjustment * line_width, gpointer user_data);
 
 GtkType
 frontline_preview_get_type (void)
@@ -202,7 +208,7 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   
   vbox = gtk_vbox_new(FALSE, 0);
   gtk_container_add(GTK_CONTAINER(fl_preview), vbox);
-  
+  gtk_container_set_border_width(GTK_CONTAINER(fl_preview), 4);
   /* ----------------------------------------------------------------
    * vbox[hbox[zoomscale|save_button[scrolled window[canvas]]]]
    * ---------------------------------------------------------------- */
@@ -343,7 +349,7 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   gtk_widget_set_sensitive (fl_preview->splines_menu, FALSE);
   
   /* ----------------------------------------------------------------
-   * vbox[hbox[subhbox[label: scale]  subhbox[label: color picker]]]
+   * vbox[hbox[subhbox[label: scale]  subhbox [label: width] subhbox[label: color picker]]]
    * ---------------------------------------------------------------- */
   hbox = gtk_hbox_new(FALSE, 2);
   gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
@@ -367,6 +373,26 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 		     fl_preview);
   gtk_box_pack_start(GTK_BOX(hbox), subhbox, TRUE, TRUE, 4);
   gtk_widget_set_sensitive (fl_preview->splines_opacity_scale, FALSE);
+
+  /*
+   * subhbox[label: width]
+   */
+  subhbox = gtk_hbox_new(FALSE, 0);
+  label = gtk_label_new ("Line width: ");
+  fl_preview->line_width = gtk_adjustment_new(FL_DEFAULT_SPLINES_WIDTH, 0.0, 10.0, 1.0, 1.0, 1.0);
+  fl_preview->line_width_scale = gtk_hscale_new(GTK_ADJUSTMENT(fl_preview->line_width));
+  gtk_scale_set_draw_value(GTK_SCALE(fl_preview->line_width_scale), FALSE);
+  gtk_range_set_update_policy(GTK_RANGE(fl_preview->line_width_scale),
+			      GTK_UPDATE_DELAYED);
+  gtk_box_pack_start(GTK_BOX(subhbox), label, FALSE, FALSE, 2);
+  gtk_box_pack_start(GTK_BOX(subhbox), fl_preview->line_width_scale, 
+		     TRUE, TRUE, 0);
+  gtk_signal_connect(GTK_OBJECT(fl_preview->line_width),
+		     "value_changed",
+		     GTK_SIGNAL_FUNC(line_width_value_changed_cb),
+		     fl_preview);
+  gtk_box_pack_start(GTK_BOX(hbox), subhbox, TRUE, TRUE, 4);
+  gtk_widget_set_sensitive (fl_preview->line_width_scale, FALSE);
   
   /* 
    * subhbox[label: color picker]
@@ -387,6 +413,9 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 		     GTK_SIGNAL_FUNC(color_set_cb),
 		     fl_preview);
   gtk_widget_set_sensitive (fl_preview->splines_static_color, FALSE);
+
+  fl_preview->appbar = gnome_appbar_new(FALSE, TRUE, GNOME_PREFERENCES_NEVER);
+  gtk_box_pack_start(GTK_BOX(vbox), fl_preview->appbar, FALSE, FALSE, 0);
   gtk_widget_show_all(vbox);
 }
 
@@ -399,23 +428,25 @@ frontline_preview_new      (void)
 static void
 frontline_preview_finalize    (GtkObject * object)
 {
-  gchar * uri = FRONTLINE_PREVIEW (object)->tmp_svg_uri;
+  if (FRONTLINE_PREVIEW(object)->tmp_svg_uri)
+    frontline_preview_free_tmp_svg(FRONTLINE_PREVIEW (object));
+  GTK_OBJECT_CLASS(parent_class)->finalize(object);
+}
+
+static void
+frontline_preview_free_tmp_svg(FrontlinePreview * fl_preview)
+{
   gchar * old_name;
   gchar * tmp;
-
-  if (uri)
-    {
-      old_name = g_strdup(uri + strlen("file://"));
-      tmp = strstr(old_name, ".svg");
-      g_assert(tmp);
-      tmp[0]   = '\0';
-      unlink(old_name);
-      g_free(old_name);
-      g_free(FRONTLINE_PREVIEW(object)->tmp_svg_uri);
-      FRONTLINE_PREVIEW(object)->tmp_svg_uri = NULL;
-    }
   
-  GTK_OBJECT_CLASS(parent_class)->finalize(object);
+  old_name = g_strdup(fl_preview->tmp_svg_uri + strlen("file://"));
+  tmp = strstr(old_name, ".svg");
+  g_assert(tmp);
+  tmp[0]   = '\0';
+  unlink(old_name);
+  g_free(old_name);
+  g_free(fl_preview->tmp_svg_uri);
+  fl_preview->tmp_svg_uri = NULL;
 }
 
 gboolean
@@ -478,7 +509,7 @@ frontline_preview_set_image_by_gdk_imlib_image (FrontlinePreview * fl_preview,
 				 (int) (im_image->rgb_width), 
 				 (int)(im_image->rgb_height));
   w = (int) (im_image->rgb_width) + 24;
-  h = (int) (im_image->rgb_height) + 78;
+  h = (int) (im_image->rgb_height) + 78 + 20;
   w = (w > 300)? w: 300;
   if (w > 600)
     w = 600;
@@ -500,7 +531,8 @@ frontline_preview_real_set_image (FrontlinePreview * fl_preview,
   gtk_widget_set_sensitive (fl_preview->splines_menu, FALSE);
   gtk_widget_set_sensitive (fl_preview->splines_opacity_scale, FALSE);
   gtk_widget_set_sensitive (fl_preview->splines_static_color, FALSE);
-
+  gtk_widget_set_sensitive (fl_preview->line_width_scale, FALSE);
+  
   if (set)
     gtk_widget_set_sensitive (fl_preview->image_toggle, TRUE);
   else
@@ -577,12 +609,14 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
     fclose(tmp_fp);
     
     if (fl_preview->tmp_svg_uri)
-      g_free(fl_preview->tmp_svg_uri);
+      frontline_preview_free_tmp_svg(fl_preview);
+
     fl_preview->tmp_svg_uri = g_strdup_printf("file://%s.svg", tmp_name);
   }
-  /* TODO: Icon set up: 
-     Copy and pasted from dia/app/interface.c */
+
 #if 0
+  /* TODO: Icon set up:  SVG file icon is needed.
+     Copy and pasted from dia/app/interface.c */
  {
    GdkPixmap * icon = NULL;
    GdkBitmap * mask;
@@ -600,8 +634,17 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
    gdk_pixmap_unref(icon);
    gdk_bitmap_unref(mask);
  }
-#endif /* 0 */  
-
+#endif /* 0 */
+ {
+   gchar * message;
+   gchar * basefmt = "Groups of splines: %d, Splines: %d, Points: %d";
+   message = g_strdup_printf(basefmt, 
+			     at_spline_list_array_count_groups_of_splines(splines),
+			     at_spline_list_array_count_splines(splines),
+			     at_spline_list_array_count_points(splines));
+   frontline_preview_show_message(fl_preview, message);
+   g_free(message);
+ }
   return TRUE;
 }
 
@@ -614,6 +657,7 @@ frontline_preview_real_set_splines (FrontlinePreview * fl_preview,
       gtk_widget_set_sensitive (fl_preview->save_button, TRUE);
       gtk_widget_set_sensitive (fl_preview->splines_menu, TRUE);
       gtk_widget_set_sensitive (fl_preview->splines_opacity_scale, TRUE);
+      gtk_widget_set_sensitive (fl_preview->line_width_scale, TRUE);
       /* TODO */
     }
   else
@@ -621,6 +665,7 @@ frontline_preview_real_set_splines (FrontlinePreview * fl_preview,
       gtk_widget_set_sensitive (fl_preview->save_button, FALSE);
       gtk_widget_set_sensitive (fl_preview->splines_menu, FALSE);
       gtk_widget_set_sensitive (fl_preview->splines_opacity_scale, FALSE);
+      gtk_widget_set_sensitive (fl_preview->line_width_scale, FALSE);
     }
 }
 
@@ -927,7 +972,46 @@ zoom_factor_value_changed_cb(GtkAdjustment * zoom_factor, gpointer user_data)
   gnome_canvas_update_now(canvas);
 }
 
+/* -----------------------------------------------------------------
+ * Line width
+ * ----------------------------------------------------------------- */
+void
+frontline_preview_set_line_width(FrontlinePreview * fl_preview,  guint width)
+{
+  g_return_if_fail (FRONTLINE_IS_PREVIEW(fl_preview));
+  gtk_adjustment_set_value(GTK_ADJUSTMENT(FRONTLINE_PREVIEW(fl_preview)->line_width), 
+			   (gfloat)width);
+}
 
+guint
+frontline_preview_get_line_width(FrontlinePreview * fl_preview)
+{
+  g_return_val_if_fail (FRONTLINE_IS_PREVIEW(fl_preview), 0);
+  return (guint)(GTK_ADJUSTMENT(fl_preview->line_width)->value);
+}
+
+static void
+line_width_value_changed_cb(GtkAdjustment * line_width, gpointer user_data)
+{
+  FrontlinePreview * fl_preview = FRONTLINE_PREVIEW(user_data);
+
+  frontline_splines_set_line_width(GNOME_CANVAS_GROUP(fl_preview->splines),
+				   line_width->value);
+  gnome_canvas_update_now(GNOME_CANVAS(fl_preview->canvas));
+}
+
+
+void
+frontline_preview_show_message(FrontlinePreview * fl_preview,
+			       const gchar * msg)
+{
+  g_return_if_fail (fl_preview);
+  g_return_if_fail (msg);
+  gnome_appbar_set_status(GNOME_APPBAR(fl_preview->appbar), msg);
+}
+/* -----------------------------------------------------------------
+ * Save splines
+ * ----------------------------------------------------------------- */
 static void
 save_button_drag_begin_cb(GtkWidget * widget,
 			  GdkDragContext * drag_context,

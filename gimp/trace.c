@@ -216,6 +216,7 @@ frontline (GimpDrawable *drawable,
   gtk_widget_show(dialog);
 
   preview = frontline_preview_new ();
+  gtk_quit_add_destroy(1, GTK_OBJECT(preview));
   gtk_window_set_title(GTK_WINDOW(preview), "Trace Preview");
   gtk_window_set_transient_for(GTK_WINDOW(preview),
 			       GTK_WINDOW(dialog));

@@ -1,6 +1,12 @@
+What's new in FrontLine 0.5.3?
+- fix more typos in frontline.m4.
+- show the numbers of splines etc. in appbar.
+- added a scale widget to the preview widget for line width  
+  control.
+
 What's new in FrontLine 0.5.2?
-- check whether libgimp is installed or not even if gimptool is found
-  (Raymond Ostertag <raymond.linux@free.fr>).
+- check whether libgimp is installed or not even if gimptool is 
+  found(Raymond Ostertag <raymond.linux@free.fr>).
 - fix typo in frontline.m4
   (Gregory Hosler <gregory.hosler@eno.ericsson.se>).
 

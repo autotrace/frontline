@@ -25,6 +25,11 @@
 #include "frontline.h"
 
 /*
+ * Constatnt
+ */
+#define FL_DEFAULT_SPLINES_WIDTH 1.0
+
+/*
  * Option private datum
  */
 FrontlineOptionPriv * fl_opt_priv_new (FrontlineOption * fl_opt);
@@ -52,6 +57,8 @@ void              frontline_splines_set_fill_opacity        (GnomeCanvasGroup  *
 							     guchar opacity);
 void              frontline_splines_set_stroke_opacity      (GnomeCanvasGroup  * splines,
 							     guchar opacity);
+void              frontline_splines_set_line_width          (GnomeCanvasGroup  * splines,
+							     gdouble width);
 void              frontline_splines_show_in_multiple_colors (GnomeCanvasGroup * splines,
 							     guchar opacity);
 void              frontline_splines_show_in_static_color    (GnomeCanvasGroup * splines,

@@ -48,7 +48,7 @@ AC_ARG_ENABLE(frontlinetest, [  --disable-frontlinetest       Do not try to comp
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
       CFLAGS="$CFLAGS $FRONTLINE_CFLAGS"
-      LIBS="$LIBS $FRONTLINE_LIBS"
+      LIBS="$FRONTLINE_LIBS $LIBS"
 dnl
 dnl Now check if the installed FRONTLINE is sufficiently new. (Also sanity
 dnl checks the results of frontline-config to some extent

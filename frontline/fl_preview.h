@@ -55,8 +55,13 @@ struct _FrontlinePreview
   GtkObject * zoom_factor;
   GtkWidget * zoom_factor_scale;
 
+  GtkObject * line_width;
+  GtkWidget * line_width_scale;
+  
   GtkWidget * save_button;
   gchar     * tmp_svg_uri;
+  
+  GtkWidget * appbar;
 };
 
 struct _FrontlinePreviewClass
@@ -117,6 +122,14 @@ void       frontline_preview_set_pixels_per_unit(FrontlinePreview * fl_preview,
 						 double n);
 double     frontline_preview_get_pixels_per_unit(FrontlinePreview * fl_preview);
 
+/* Line width */
+void       frontline_preview_set_line_width(FrontlinePreview * fl_preview,
+					    guint width);
+guint      frontline_preview_get_line_width(FrontlinePreview * fl_preview);
+
+/* Message */
+void       frontline_preview_show_message(FrontlinePreview * fl_preview,
+					  const gchar * msg);
 END_GNOME_DECLS
 
 #endif /* Not def: FL_PREVIEW_H */

@@ -1,3 +1,49 @@
+2002-09-28  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_preview.c (frontline_preview_free_tmp_svg): 
+	New function.
+	
+	(frontline_preview_finalize, frontline_preview_set_splines): used 
+	frontline_preview_free_tmp_svg.
+	
+	* frontline/frontline.c (main): destroy preview when quitting.
+
+	* gimp/trace.c (frontline): Likewise.
+
+2002-09-27  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_preview.c (line_width_value_changed_cb): New function.
+	(frontline_preview_init): Set border width of window.
+	(frontline_preview_init): Added widgets to control splines' line width.
+	(frontline_preview_init): Added appbar.
+	(frontline_preview_set_image_by_gdk_imlib_image): changed window size.
+	(frontline_preview_real_set_image): Set sensitive of line_width_scale.
+	(frontline_preview_set_splines): Show the number of splines and so on.
+	(frontline_preview_real_set_splines): Set sensitive of line_width_scale.
+	(frontline_preview_set_line_width):
+	(frontline_preview_get_line_width, line_width_value_changed_cb):
+	(save_button_drag_begin_cb): New functions.
+
+	* frontline/fl_preview.h (struct _FrontlinePreview): Added new
+	members(line*, appbar).
+	(frontline_preview_set_line_width, frontline_preview_get_line_width):
+	New functions.
+
+	* frontline/fl_splines.c (fl_splines_width): deleted.
+	(spline_set_line_width): New function.
+	(spline_new): Set line width.
+	(spline_set_color): Use line width of spline.
+	(frontline_splines_set_line_width): New function.
+	(splines_set_line_width_cb): New function.
+
+	* frontline/private.h (FL_DEFAULT_SPLINES_WIDTH): New constatnt.
+	(frontline_splines_set_line_width): New function.
+
+2002-09-26  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline.m4: ($LIBS): changed the order of appending
+	$LIBS to $FRONTLINE_LIBS.
+
 2002-09-19  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline.m4: fixed more typo.

@@ -18,7 +18,11 @@ autotrace (http://autotrace.sourceforge.net) in 4 ways.
    libfrontline.a. See below.
 
 4. Gimp plug-in, You can launch frontline from the GIMP's menu.
-   Select "<Image>/Filters/Trace/Trace..." .
+   Select "<Image>/Filters/Trace/Trace..." . 
+
+   You can open trace result on sodipodi with DnD operation: dragging 
+   from trace result window of frontline to sodipodi toolbox.
+   This is the most useful way to use, I think.
 
 Requirements
 ------------
@@ -43,27 +47,10 @@ See INSTALL.
 
 Sodipodi add-on module
 ----------------------
-- How to build:
-        0. Install autofig. Get autofig from
-	   http://autotrace.sourceforge.net/tools/
-	
-	1. Install cvs version of autotrace. Get autotrace from
-           https://sourceforge.net/cvs/?group_id=11789 
-
-	2. Get cvs version of sodipod. Get sodipodi from 
-	   http://sodipodi.sourceforge.net/index.php?section=download
-
-	3. Install frontline.
-	   $ ./configure
-	   $ gmake
-	   $ gmake install
-
-        4. Build sodipodi. 
-	   If you installed frontline.m4 other than
-	   /usr/share/aclocal, you have to set ACLOCAL_FLAGS
-           enviroment variable before running autogen.sh.
-	   e.g. 
-           export ACLOCAL_FLAGS="-I /usr/local/share/aclocal"
+- How to setup:
+        0. Build and Install frontline
+	1. Build and Install sodipodi-0.26 or higher.
+	sodipodi's configure will detect frontline.
 
 - How to use:
         0. run newly built sodipodi
