@@ -47,7 +47,7 @@ GimpPlugInInfo PLUG_IN_INFO =
 MAIN ()
 
 typedef struct _ReloadData {
-  GtkWidget * widget;
+  FrontlineDialog * dialog;
   GimpDrawable * drawable;
 } ReloadData;
 
@@ -61,7 +61,7 @@ static void             set_data                   (at_fitting_opts_type * opts)
 static GtkWidget*       header_new                 (const gchar * file_name, const gchar * drawable_name);
 static void             preview_splines            (FrontlineDialog * fl_dialog, gpointer user_data);
 static void             quit_callback              (GtkWidget * widget, gpointer no_use);
-static at_bitmap_type * gimp_drawable_to_at_bitmap (GimpDrawable * drawable);
+static at_bitmap_type * gimp_drawable_to_at_bitmap (GimpDrawable * drawable, at_fitting_opts_type * opts);
 
 static void             open_filesel                (FrontlinePreview * fl_preview,
 						     gpointer user_data);
@@ -237,7 +237,7 @@ frontline (GimpDrawable *drawable,
 		      dialog);
   
   
-  bitmap = gimp_drawable_to_at_bitmap(drawable);
+  bitmap = gimp_drawable_to_at_bitmap(drawable, opts);
   frontline_dialog_set_bitmap(FRONTLINE_DIALOG(dialog), bitmap);
   /* FIXME: gray scale image is not supported */
   frontline_preview_set_image_by_bitmap (FRONTLINE_PREVIEW(preview), 
@@ -248,7 +248,7 @@ frontline (GimpDrawable *drawable,
 				 FL_PREVIEW_SHOW_IN_STATIC_COLOR);
 
   /* Reload */
-  reload_data.widget   = dialog;
+  reload_data.dialog   = FRONTLINE_DIALOG(dialog);
   reload_data.drawable = drawable;
   gtk_signal_connect(GTK_OBJECT(header_button),
 		     "clicked", 
@@ -264,9 +264,12 @@ reload_bitmap (GtkButton * button, gpointer user_data)
 {
   ReloadData * reload_data = user_data;
   at_bitmap_type * bitmap;
+  FrontlineDialog * dialog     = reload_data->dialog;
+  at_fitting_opts_type *  opts = frontline_option_get_value(FRONTLINE_OPTION(dialog->option));
+  
   reload_data->drawable = gimp_drawable_get(reload_data->drawable->id);
-  bitmap = gimp_drawable_to_at_bitmap(reload_data->drawable);
-  frontline_dialog_set_bitmap(FRONTLINE_DIALOG(reload_data->widget), bitmap);
+  bitmap = gimp_drawable_to_at_bitmap(reload_data->drawable, opts);
+  frontline_dialog_set_bitmap(dialog, bitmap);
 }
 
 static void
@@ -372,7 +375,7 @@ preview_splines          (FrontlineDialog * fl_dialog,
 }
 
 static at_bitmap_type *
-gimp_drawable_to_at_bitmap (GimpDrawable * drawable)
+gimp_drawable_to_at_bitmap (GimpDrawable * drawable, at_fitting_opts_type * opts)
 {
   gint width, height;
   gint bytes;
@@ -381,7 +384,8 @@ gimp_drawable_to_at_bitmap (GimpDrawable * drawable)
   guchar * data;
   gint x, y, i;
   at_bitmap_type * bitmap;
-
+  at_color_type * bg;
+  
   width = drawable->width;
   height = drawable->height;
   bytes = drawable->bpp;
@@ -404,11 +408,42 @@ gimp_drawable_to_at_bitmap (GimpDrawable * drawable)
   data = g_new(guchar, bytes * width);  
   for (y = 0; y < height; y++)
     {
-      /* TODO: Alpha channel */
       gimp_pixel_rgn_get_row(&pixel_rgn, data, 0, y, width);
       for (x = 0; x < width; x++)
-	for (i = 0; i < (bytes - has_alpha); i++)
-	  bitmap->bitmap[(bytes - has_alpha)*(y*width + x) + i] = data[x * bytes + i];
+	{
+	  gint alpha_value = 0;
+
+	  if (has_alpha == TRUE)
+	    alpha_value = data[x * bytes + (bytes - 1)];
+
+	  if (has_alpha == FALSE || alpha_value != 0)
+	    for (i = 0; i < (bytes - has_alpha); i++)
+	      bitmap->bitmap[(bytes - has_alpha) * (y * width + x) + i] = data[x * bytes + i];
+	  else
+	    {
+	      if (opts->background_color)
+		{
+		  gint tmp_gray;
+
+		  bg = opts->background_color;
+		  if (bytes - has_alpha == 1)
+		    {
+		      tmp_gray = (bg->r + bg->g + bg->g)/3;
+		      bitmap->bitmap[(bytes - has_alpha) * (y * width + x)] = tmp_gray;
+		    }
+		  else
+		    {
+		      bitmap->bitmap[(bytes - has_alpha) * (y * width + x) + 0] = bg->r;
+		      bitmap->bitmap[(bytes - has_alpha) * (y * width + x) + 1] = bg->g;
+		      bitmap->bitmap[(bytes - has_alpha) * (y * width + x) + 2] = bg->b;
+		    }
+		      
+		}
+	      else
+		for (i = 0; i < (bytes - has_alpha); i++)
+		  bitmap->bitmap[(bytes - has_alpha) * (y * width + x) + i] = 255;
+	    }
+	}
     }
   g_free(data);
   return bitmap;

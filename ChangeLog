@@ -1,3 +1,12 @@
+2002-10-05  Masatake YAMATO  <jet@gyve.org>
+
+	* gimp/trace.c (gimp_drawable_to_at_bitmap): supported
+	gray image and image that has alpha channel.
+	(_ReloadData::dialog): renamed widget.
+	(gimp_drawable_to_at_bitmap): added an argument.
+	(frontline): ditto.
+	(reload_bitmap): ditto.
+
 2002-10-04  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/fl_splines.c (spline_new): Unref curve.
