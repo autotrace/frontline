@@ -1,7 +1,9 @@
 2002-07-09  Masatake YAMATO  <jet@gyve.org>
 
+	* configure.in: Version 0.4.1.
+
 	* configure.in: PACKAGER->PACKAGE.
-	Call AM_SANITY_CHECK, AC_PROG_INSTALL, AC_ARG_PROGRAM.
+	Call AM_SANITY_CHECK, AC_PROG_INSTALL.
 
 	* gimp/trace.c (gimp_drawable_to_at_bitmap): y*height->y*width.
 	
