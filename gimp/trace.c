@@ -239,13 +239,11 @@ frontline (GimpDrawable *drawable,
   
   bitmap = gimp_drawable_to_at_bitmap(drawable, opts);
   frontline_dialog_set_bitmap(FRONTLINE_DIALOG(dialog), bitmap);
-  /* FIXME: gray scale image is not supported */
   frontline_preview_set_image_by_bitmap (FRONTLINE_PREVIEW(preview), 
 					 bitmap);
-  frontline_preview_show_image(FRONTLINE_PREVIEW(preview), 
-			       FALSE);
   frontline_preview_show_splines(FRONTLINE_PREVIEW(preview),
 				 FL_PREVIEW_SHOW_IN_STATIC_COLOR);
+  gtk_widget_show(preview);
 
   /* Reload */
   reload_data.dialog   = FRONTLINE_DIALOG(dialog);
@@ -276,8 +274,11 @@ static void
 reset_bitmap (FrontlineDialog * dialog, gpointer user_data)
 {
   GtkWidget * preview = GTK_WIDGET(user_data);
+  
   frontline_preview_set_image_by_bitmap (FRONTLINE_PREVIEW(preview), 
 					 dialog->bitmap);
+  frontline_preview_show_image(FRONTLINE_PREVIEW(preview), 
+			       TRUE);
 }
 
 static void

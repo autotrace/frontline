@@ -6,6 +6,8 @@
 	(gimp_drawable_to_at_bitmap): added an argument.
 	(frontline): ditto.
 	(reload_bitmap): ditto.
+	(frontline): show preview window.
+	(reset_bitmap): force show image.
 
 2002-10-04  Masatake YAMATO  <jet@gyve.org>
 

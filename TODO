@@ -7,8 +7,9 @@
 - Preview area:
 	progress bar for rendering
 	pick a background color	
-	build preview from datum on RAM(gray scale)
+	build preview from datum on RAM(done)
 	variable width line that is supported from autotrace 0.31
+	cleanup cancel
 
 - configure:
 	/* popt should be checked in configure */
@@ -24,7 +25,8 @@
 - Gimp:
 	check memory leak
 	parameter and scriptable
-	fill transparent region with specified background color
+	broken status (done)
+	fill transparent region with specified background color(done)
 	avoit to crash when the image size is changed(done)
 
 Done:
