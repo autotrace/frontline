@@ -26,7 +26,7 @@ autotrace (http://autotrace.sourceforge.net) in 4 ways.
 
 Requirements
 ------------
-- Autotrace 0.30.8(http://autotrace.sourceforge.net) or higher
+- Autotrace 0.31.1(http://autotrace.sourceforge.net) or higher
 - Gnome 1.4 enviroment
   Gnome 1.4 might include popt and Imlib.
 - libart_lgpl-2.3.8 or higher(ftp://ftp.gnome.org/pub/gnome/pre-gnome2/sources/libart_lgpl/)

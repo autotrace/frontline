@@ -1,4 +1,4 @@
-- * Warning and Error reprots <0.2.4> 3h
+- * Warning and Error reprots
    -> cannot find handler
 - Commandline related (After new gnome is relased)
 - Options:
@@ -10,9 +10,10 @@
 	build preview from datum on RAM(done)
 	variable width line that is supported from autotrace 0.31
 	cleanup cancel
+	DnD without temp file
 
 - configure:
-	
+
 - Nautilus:
 	Mime type for nautilus<0.2.5>	
 	DnD Proxy<0.2.5>???

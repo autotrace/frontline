@@ -42,7 +42,7 @@ AC_SUBST(LIBART2_LIBS)
 dnl
 dnl Autotrace
 dnl
-AM_PATH_AUTOTRACE(0.30.8,, AC_MSG_ERROR([Cannot find autotrace library or the library is too old.]))
+AM_PATH_AUTOTRACE(0.31.1,, AC_MSG_ERROR([Cannot find autotrace library or the library is too old.]))
 
 dnl
 dnl GIMP
