@@ -1,6 +1,13 @@
 For FrontLine developers
 
 Requirements to develop
+-----------------------
+- gnome-common (ftp://ftp.gnome.org/pub/gnome/stable/sources/gnome-common/)
+- autofig      (http://autotrace.sourceforge.net/tools)
 
-- gnome-commonautofig()
-- autofig()
+Compile from CVS sources
+------------------------
+- cd frontline
+- ./autogen.sh
+- ./gmake
+
