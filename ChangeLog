@@ -1,3 +1,12 @@
+2002-09-17  Masatake YAMATO  <jet@gyve.org>
+
+	* README: wrote about libgimp.
+
+	* configure.in: Checked libgimp.* is existed or not.
+	In some distribution, gimp-devel package is not installed in 
+	default. The problem is reported by Raymond Ostertag 
+	<raymond.linux@free.fr>.
+
 2002-09-09  Masatake YAMATO  <jet@gyve.org>
 
 	* configure.in: version 0.5.1.

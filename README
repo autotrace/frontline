@@ -30,8 +30,11 @@ Requirements
   libart_lgpl in Gnome 1.4 has a bug that hungs up frontline.
 
 - Gimp 1.2(optional) to use gimp plug-in. Even if you have gimp, 
-  check whether gimptool command is also installed. Some of linux
-  distributions include gimp only.
+  check whether gimptool command and libgimp.{so|a} are also installed. 
+  In Some of linux distributions, gimp package includes gimp command only;
+  and only gimp package is installed by default. gimptool and/or libgimp 
+  might be in gimp-devel package in such case. You have to install gimp-devel
+  package by your hands.
 
 Install
 -------

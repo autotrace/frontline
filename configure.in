@@ -44,7 +44,19 @@ dnl
 dnl GIMP
 dnl
 HAVE_GIMP=no
-AM_PATH_GIMP(1.2.1, HAVE_GIMP=yes, AC_MSG_WARN(*** GIMP plug-in will not be built (Cannot find gimp)))
+gimp_libdir=
+AM_PATH_GIMP(1.2.1, HAVE_GIMP=yes, AC_MSG_WARN([*** GIMP plug-in will not be built (Cannot find gimp)]))
+if test $HAVE_GIMP = yes; then
+   AC_MSG_CHECKING([libgimp.*])
+   gimp_libdir=`$GIMPTOOL --libdir`
+   if test ! -f "${gimp_libdir}/libgimp.so" && test ! -f "${gimp_libdir}/libgimp.a"; then
+      AC_MSG_RESULT(no)
+      AC_MSG_WARN([*** GIMP plug-in will not be built(found gimptool but cannot find libgimp)])
+      HAVE_GIMP=no
+   else
+      AC_MSG_RESULT(yes)
+   fi
+fi
 AM_CONDITIONAL(HAVE_GIMP, test x$HAVE_GIMP = xyes)
 
 dnl 
