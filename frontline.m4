@@ -16,14 +16,14 @@ AC_ARG_ENABLE(frontlinetest, [  --disable-frontlinetest       Do not try to comp
 		    , enable_frontlinetest=yes)
 
   if test x$frontline_exec_prefix != x ; then
-     frontline_args="$frontline_args --exec-prefix=$frontline_exec_prefix"
-     if test x${FRONTLINE_CONFIG+set} = xset ; then
-        FRONTLINE_CONFIG=$frontline_exec_prefix/frontline-config
+     frontline_args="$frontline_args --exec_prefix=$frontline_exec_prefix"
+     if test x${FRONTLINE_CONFIG+set} != xset ; then
+        FRONTLINE_CONFIG=$frontline_exec_prefix/bin/frontline-config
      fi
   fi
   if test x$frontline_prefix != x ; then
      frontline_args="$frontline_args --prefix=$frontline_prefix"
-     if test x${FRONTLINE_CONFIG+set} = xset ; then
+     if test x${FRONTLINE_CONFIG+set} != xset ; then
         FRONTLINE_CONFIG=$frontline_prefix/bin/frontline-config
      fi
   fi
