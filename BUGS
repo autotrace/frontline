@@ -10,5 +10,5 @@ Known bugs in frontline: -*-text-*-
 - Lines that has variable width is not rendered well
   (not implemented).
 
-- Errors occured in autotrace is not messaged to the user.
+- Errors occurred in autotrace is not messaged to the user.
 

@@ -1,7 +1,7 @@
 ---------------------------------------------------------------
-- Warning and Error reprots
+- Warning and Error reports
    -> cannot find handler
-- Commandline related (After new gnome is relased)
+- Command line related (After new gnome is released)
 - keyboard acceleration
 ---------------------------------------------------------------
 - Options:
@@ -35,7 +35,7 @@
 	parameter and scriptable
 	broken status (done)
 	fill transparent region with specified background color(done)
-	avoit to crash when the image size is changed(done)
+	avoid to crash when the image size is changed(done)
 
 Done:
 - Image DnD
