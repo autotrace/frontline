@@ -14,3 +14,18 @@ Compile from CVS sources
 - ./autogen.sh
 - ./gmake
 
+Gettext version
+---------------
+[jet@chuf frontline]$ gettextize --version
+/usr/bin/gettextize (GNU gettext) 0.10.40
+
+Autotools version
+-----------------
+[jet@chuf jet]$ autoconf --version
+autoconf (GNU Autoconf) 2.53
+
+[jet@chuf frontline]$ aclocal-1.4 --version
+aclocal (GNU automake) 1.4-p6
+
+[jet@chuf frontline]$ automake-1.4 --version
+automake (GNU automake) 1.4-p6

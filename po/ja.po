@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: frontline 0.6.0\n"
-"POT-Creation-Date: 2002-11-09 07:57+0900\n"
-"PO-Revision-Date: 2002-11-09 07:57+0900\n"
+"POT-Creation-Date: 2002-11-10 10:19+0900\n"
+"PO-Revision-Date: 2002-11-10 10:23+0900\n"
 "Last-Translator: Masatake YAMATO<jet@gyve.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgid ""
 "- the total number splines: %d\n"
 "- the total number points: %d"
 msgstr ""
-"結果を描画しますか？ 長い時間と多量のメモリ領域を消費する場合があります。\n"
+"結果を描画しますか? 長い時間と多量のメモリ領域を消費する場合があります.\n"
 "- スプライングループの合計: %d\n"
 "- スプラインの合計: %d\n"
 "- 座標の合計: %d"
@@ -75,8 +75,8 @@ msgid "Image"
 msgstr "画像"
 
 #: frontline/fl_fsel.c:178
-msgid "Select"
-msgstr "選択"
+msgid "Select Input Image"
+msgstr "入力画像の選択"
 
 #: frontline/fl_fsel.c:194
 msgid "Result Figure"
@@ -137,15 +137,15 @@ msgid ""
 "Software Foundation; either version 2 of the License, \n"
 "or (at your option) any later version.\n"
 msgstr ""
-"このプログラムはフリーソフトウェアです。あなたは\n"
+"このプログラムはフリーソフトウェアです. あなたは\n"
 "これをフリーソフトウェア財団によって発行された\n"
-"GNU一般公衆利用承諾書(バージョン2か、希望によっ\n"
+"GNU一般公衆利用承諾書(バージョン2か, 希望によっ\n"
 "てはそれ以降のバージョンのうちのどれか)の定める\n"
-"条件の下で再領布または改変することができます。\n"
+"条件の下で再領布または改変することができます.\n"
 
 #: frontline/fl_opt.c:392 frontline/fl_opt.c:468
-msgid "Select option file"
-msgstr "オプションファイルを選ぶ"
+msgid "Select Option File"
+msgstr "オプションファイルの選択"
 
 #: frontline/fl_opt.c:430
 msgid "Cannot open file to write"
@@ -160,7 +160,7 @@ msgstr "読み出しファイルを開くことができません: "
 msgid "Cannot load autotrace option file: %s"
 msgstr "Autotraceオプションファイルを読むことができません: %s"
 
-#: frontline/fl_opt_priv.c:140
+#: frontline/fl_opt_priv.c:140 frontline/fl_opt_priv.c:268
 msgid "Background Color"
 msgstr "背景色"
 
@@ -192,6 +192,7 @@ msgstr "平滑化フィルター適用回数"
 msgid "Line Reversion Threshold"
 msgstr "直線見直しの閾値"
 
+#. ???
 #: frontline/fl_opt_priv.c:148
 msgid "Line Threshold"
 msgstr "直線の閾値"
@@ -216,72 +217,72 @@ msgstr "非斑化の半径"
 msgid "Centerline"
 msgstr "中心線のトレース"
 
-#: frontline/fl_opt_priv.c:154
+#: frontline/fl_opt_priv.c:158 frontline/fl_opt_priv.c:162
+msgid "(This option has not been supported in preview window yet.)"
+msgstr "(プレビューウィンドウは、まだこのオプションをサポートしていません.)"
+
+#: frontline/fl_opt_priv.c:159
 msgid "Preserve Width"
 msgstr "線の太さの保存"
 
-#: frontline/fl_opt_priv.c:155
+#: frontline/fl_opt_priv.c:163
 msgid "Width Weight Factor"
 msgstr "線の太さの係数"
 
-#: frontline/fl_opt_priv.c:251
-msgid "Background color"
-msgstr "背景色"
-
-#: frontline/fl_preview.c:234 frontline/fl_preview.c:236
+#: frontline/fl_preview.c:236 frontline/fl_preview.c:238
 msgid ""
 "Click here to save the tracing result. Drag out from here to export SVG file."
 msgstr ""
-"ここをクリックするとトレース結果を保存します。ここからドラッグを開始するとSVG"
-"ファイルをエクスポートできます。"
+"ここをクリックするとトレース結果を保存します. ここからドラッグを開始するとSVG"
+"ファイルをエクスポートできます. "
 
-#: frontline/fl_preview.c:289
+#: frontline/fl_preview.c:291
 msgid "Image: "
 msgstr "画像: "
 
-#: frontline/fl_preview.c:290
+#: frontline/fl_preview.c:292
 msgid "Show"
 msgstr "表示"
 
-#: frontline/fl_preview.c:307
+#: frontline/fl_preview.c:309
 msgid "Splines: "
 msgstr "スプライン: "
 
-#: frontline/fl_preview.c:310
+#: frontline/fl_preview.c:312
 msgid "Multiple Colors"
 msgstr "多色表示"
 
-#: frontline/fl_preview.c:322 frontline/fl_preview.c:408
+#: frontline/fl_preview.c:324 frontline/fl_preview.c:410
 msgid "Static Color"
 msgstr "単一色表示"
 
-#: frontline/fl_preview.c:334
+#: frontline/fl_preview.c:336
 msgid "Hide"
 msgstr "隠す"
 
-#: frontline/fl_preview.c:364
+#: frontline/fl_preview.c:366
 msgid "Opacity: "
 msgstr "透明度"
 
-#: frontline/fl_preview.c:384
+#: frontline/fl_preview.c:386
 msgid "Line width: "
 msgstr "線の太さ"
 
-#: frontline/fl_preview.c:404
+#: frontline/fl_preview.c:406
 msgid "Color: "
 msgstr "色: "
 
 #. TODO
-#: frontline/fl_preview.c:624
+#: frontline/fl_preview.c:626
 msgid "Cannot create temporary file"
 msgstr "一時ファイルを作ることができません"
 
 #. TODO
-#: frontline/fl_preview.c:630
+#: frontline/fl_preview.c:632
 msgid "Cannot do fdopen for temporary file"
 msgstr "一時ファイルを再度開くことができません"
 
-#: frontline/fl_preview.c:666
+#: frontline/fl_preview.c:668
 #, c-format
 msgid "Groups of splines: %d, Splines: %d, Points: %d"
 msgstr "スプライングループの数: %d スプラインの数: %d 座標の数: %d"
@@ -312,8 +313,8 @@ msgid "Only one file could be loaded at once"
 msgstr "一度に一つのファイルしか読みません"
 
 #: frontline/frontline.c:185
-msgid "frontline preview"
-msgstr "frontline プレビュー"
+msgid "Preview"
+msgstr "プレビュー"
 
 #: frontline/frontline.c:207
 #, c-format
@@ -361,6 +362,15 @@ msgstr "ドローアブルの名前: "
 #, c-format
 msgid "bpp: %d has_alpha: %d"
 msgstr "ピクセルあたりのビット数: %d アルファチャネル: %d"
+
+#~ msgid "Background color"
+#~ msgstr "背景色"
+
+#~ msgid "frontline preview"
+#~ msgstr "frontline プレビュー"
+
+#~ msgid "Select"
+#~ msgstr "選択"
 
 #~ msgid "Cannot load %s: %s"
 #~ msgstr "%sを読むことができません: %s"

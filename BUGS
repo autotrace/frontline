@@ -1,6 +1,9 @@
-Known bugs in frontline:-*-text-*-
+Known bugs in frontline: -*-text-*-
 
- - displaying an image and its trace result are failed 
-   if the image has itransparent area.
+- displaying an image and its trace result are failed 
+   if the image has transparent area.
 
-- Error Threshold を 0にすると落ちた．
+- frontline menu item is not appeared on Gnome panel.
+
+- Lines that has variable width is not rendered well
+  (not implemented).
