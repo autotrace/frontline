@@ -526,7 +526,7 @@ save_splines             (GtkButton * button, gpointer user_data)
   fp = fopen(filename, "w");
   if (!fp)
     {
-      gchar * msg = g_strconcat(_("Cannot open: "), 
+      gchar * msg = g_strconcat(_("Cannot open file to write splines: "), 
 				filename, 
 				"\n",
 				g_strerror(errno));

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: frontline 0.6.0\n"
-"POT-Creation-Date: 2002-10-28 22:42+0900\n"
-"PO-Revision-Date: 2002-10-26 02:33+0900\n"
+"POT-Creation-Date: 2002-10-30 00:32+0900\n"
+"PO-Revision-Date: 2002-10-30 00:33+0900\n"
 "Last-Translator: Masatake YAMATO<jet@gyve.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -54,13 +54,13 @@ msgstr "拡張子による"
 
 #: frontline/fl_ext.c:136
 msgid "Save splines to"
-msgstr ""
+msgstr "スプラインを保存する"
 
 #: frontline/fl_ext.c:137
 msgid "Output file format"
 msgstr "出力ファイルフォーマット"
 
-#: frontline/fl_fsel.c:132
+#: frontline/fl_fsel.c:131
 #, c-format
 msgid "Fail to load image: %s"
 msgstr "ファイルを読むことができません: %s"
@@ -126,6 +126,10 @@ msgid "Project web page: %s"
 msgstr "プロジェクトのウェブページ: %s"
 
 #: frontline/fl_opt.c:239
+msgid "Copyright (C) 2002 Masatake YAMATO"
+msgstr "Copyright (C) 2002 大和 正武"
+
+#: frontline/fl_opt.c:241
 msgid ""
 "This program is free software; you can redistribute\n"
 "it and/or modify it under the terms of the GNU\n"
@@ -133,20 +137,25 @@ msgid ""
 "Software Foundation; either version 2 of the License, \n"
 "or (at your option) any later version.\n"
 msgstr ""
+"このプログラムはフリーソフトウェアです。あなたは\n"
+"これをフリーソフトウェア財団によって発行された\n"
+"GNU一般公衆利用承諾書(バージョン2か、希望によっ\n"
+"てはそれ以降のバージョンのうちのどれか)の定める\n"
+"条件の下で再領布または改変することができます。\n"
 
-#: frontline/fl_opt.c:390 frontline/fl_opt.c:466
+#: frontline/fl_opt.c:392 frontline/fl_opt.c:468
 msgid "Select option file"
 msgstr "オプションファイルを選ぶ"
 
-#: frontline/fl_opt.c:428
+#: frontline/fl_opt.c:430
 msgid "Cannot open file to write"
 msgstr "書き出しファイルを開くことができません"
 
-#: frontline/fl_opt.c:503
+#: frontline/fl_opt.c:505
 msgid "Cannot open file to load"
 msgstr "読み出しファイルを開くことができません: "
 
-#: frontline/fl_opt.c:545
+#: frontline/fl_opt.c:547
 #, c-format
 msgid "Cannot load autotrace option file: %s"
 msgstr "Autotraceオプションファイルを読むことができません: %s"
@@ -240,17 +249,21 @@ msgstr "frontline プレビュー"
 
 #: frontline/frontline.c:209
 #, c-format
-msgid "Cannot load file: %s"
-msgstr "ファイルを読むことができません: %s"
+msgid "Cannot load image file: %s"
+msgstr "画像ファイルを読むことができません: %s"
 
 #: frontline/frontline.c:296
 #, c-format
-msgid "Cannot load %s: %s"
-msgstr "%sを読むことができません: %s"
+msgid ""
+"Cannot load image file: %s \n"
+"reason: %s"
+msgstr ""
+"画像ファイルを読むことができません: %s\n"
+"理由: %s"
 
-#: frontline/frontline.c:395
-msgid "Cannot open file: "
-msgstr "ファイルを開くことができません: "
+#: frontline/frontline.c:395 gimp/trace.c:529
+msgid "Cannot open file to write splines: "
+msgstr "スプラインを書き出すためのファイルを開くことができません"
 
 #: gimp/trace.c:111
 msgid "<Image>/Filters/Trace/Trace..."
@@ -279,8 +292,13 @@ msgstr "ドローアブルの名前: "
 #: gimp/trace.c:421 gimp/trace.c:423
 #, c-format
 msgid "bpp: %d has_alpha: %d"
-msgstr ""
+msgstr "ピクセルあたりのビット数: %d アルファチャネル: %d"
 
-#: gimp/trace.c:529
-msgid "Cannot open: "
-msgstr "開くことができません: "
+#~ msgid "Cannot load %s: %s"
+#~ msgstr "%sを読むことができません: %s"
+
+#~ msgid "Cannot open file: "
+#~ msgstr "ファイルを開くことができません: "
+
+#~ msgid "Cannot open: "
+#~ msgstr "開くことができません: "

@@ -206,7 +206,7 @@ main(int argc, char ** argv)
     if (!frontline_file_selection_load_file(FRONTLINE_FILE_SELECTION(fsel), 
 					    filename))
       {
-	g_warning(_("Cannot load file: %s"), filename);
+	g_warning(_("Cannot load image file: %s"), filename);
       }
 
   gtk_main();
@@ -293,7 +293,7 @@ load_options_file(poptContext con,
 	}
       else
 	{
-	  gchar * msg = g_strdup_printf(_("Cannot load %s: %s"), 
+	  gchar * msg = g_strdup_printf(_("Cannot load image file: %s \nreason: %s"), 
 					options_file_name, 
 					g_strerror(errno));
 	  gnome_error_dialog(msg);
@@ -392,7 +392,7 @@ save_splines             (GtkButton * button, gpointer user_data)
   fp = fopen(filename, "w");
   if (!fp)
     {
-      gchar * msg = g_strconcat(_("Cannot open file: "), 
+      gchar * msg = g_strconcat(_("Cannot open file to write splines: "), 
 				filename, 
 				"\n",
 				g_strerror(errno));

@@ -1,3 +1,7 @@
+What's new in FrontLine 0.5.4?
+- gettextiz'ed
+- fixed a memory leaking
+
 What's new in FrontLine 0.5.3?
 - fix more typos in frontline.m4.
 - show the numbers of splines etc. in appbar.

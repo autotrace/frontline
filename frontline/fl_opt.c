@@ -236,6 +236,8 @@ frontline_option_init (FrontlineOption * fl_opt)
     g_free(msg);
     gtk_container_add(GTK_CONTAINER(vbox), label);  
   }
+  label = gtk_label_new(_("Copyright (C) 2002 Masatake YAMATO"));
+  gtk_container_add(GTK_CONTAINER(vbox), label);
   label = gtk_label_new(_("This program is free software; you can redistribute\n"
 			"it and/or modify it under the terms of the GNU\n"
 			"General Public License as published by the Free\n"

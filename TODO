@@ -1,5 +1,3 @@
-- Gettextize(http://larse-gtk.hp.infoseek.co.jp/gettext.html)
--- make output message simpler
 - * Warning and Error reprots <0.2.4> 3h
    -> cannot find handler
 - Commandline related (After new gnome is relased)
@@ -14,8 +12,6 @@
 	cleanup cancel
 
 - configure:
-	/* popt should be checked in configure */
-	/* imlib should be checked in configure */
 	
 - Nautilus:
 	Mime type for nautilus<0.2.5>	
@@ -46,5 +42,6 @@ Done:
 - drop to sodipodi as svg file<0.5.0>
 - DnD porting as svg file
 - Suffix options in file dialog
-
-Error Threshold を 0にすると落ちた．
+- Gettextize(http://larse-gtk.hp.infoseek.co.jp/gettext.html) (done)
+- popt should be checked in configure
+- imlib should be checked in configure

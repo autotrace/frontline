@@ -34,6 +34,7 @@
 
 BEGIN_GNOME_DECLS  
 
+#define FRONTLINE_INIT 1
 void frontline_init (void);
 
 /*

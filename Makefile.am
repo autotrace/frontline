@@ -1,4 +1,4 @@
-SUBDIRS = intl gundo frontline gimp po m4
+SUBDIRS = intl gundo frontline gimp po
 EXTRA_DIST=frontline-config.af frontline.m4 \
 frontline.png frontline.desktop frontline.keys.in frontline.mime \
 frontline.spec.in fl-splash.png BUGS

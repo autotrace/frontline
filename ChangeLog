@@ -1,4 +1,21 @@
+2002-10-30  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/frontline.h: changed message strings.
+
+	* frontline/frontline.c: Ditto.
+
+	* frontline/fl_opt.c: Ditto.
+
+	* gimp/trace.c (gimp_drawable_to_at_bitmap): Ditto.
+	
+	* frontline/frontline.h (FRONTLINE_INIT, frontline_init): 
+	New macro and function.
+
 2002-10-29  Masatake YAMATO  <jet@gyve.org>
+
+	* configure.in (AC_OUTPUT): removed m4/Makefile.
+
+	* Makefile.am (SUBDIRS): removed m4.
 
 	* */*: Gettextized.
 

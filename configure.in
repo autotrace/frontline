@@ -73,7 +73,7 @@ dnl Imlib
 dnl
 AM_PATH_IMLIB
 
-AC_OUTPUT([intl/Makefile po/Makefile.in m4/Makefile
+AC_OUTPUT([intl/Makefile po/Makefile.in
 Makefile
 frontline-config
 frontline.pc
