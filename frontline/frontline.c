@@ -59,9 +59,12 @@ static void save_splines             (GtkButton * button,
 static void msg_write                (at_string msg, 
 				      at_msg_type msg_type, 
 				      at_address client_data);
+static void splash                   (const gchar * file);
+
 static void frontline_popt_table_init(struct poptOption * fl_popt_table,
 				      struct poptOption * at_popt_table,
 				      at_fitting_opts_type * at_opts);
+
 
 static struct poptOption frontline_popt_table [] = {
   { NULL, '\0', POPT_ARG_CALLBACK, (void *)load_options_file, '\0', NULL, NULL },
@@ -110,7 +113,9 @@ main(int argc, char ** argv)
     filename = argv[1];
 #endif /* INCLUDE_AT_POPT_TABLE */
 
-
+  
+  splash(GNOME_ICONDIR "/fl-splash.png");
+  
   /*
    * Set up dialog
    */
@@ -361,4 +366,33 @@ msg_write                (at_string msg,
     gnome_error_dialog_parented  (msg, window);
   else
     gnome_warning_dialog_parented(msg, window);
+}
+
+static void
+splash                    (const gchar * file)
+{
+  GtkWidget * window;
+  GtkWidget * pixmap;
+  GtkWidget * vbox;
+  GtkWidget * label;
+  window = gtk_window_new(GTK_WINDOW_POPUP);
+  gtk_window_set_position(GTK_WINDOW(window), 
+			  GTK_WIN_POS_CENTER_ALWAYS);
+  vbox = gtk_vbox_new(FALSE, 0);
+  gtk_container_add(GTK_CONTAINER(window), vbox);  
+
+  pixmap = gnome_pixmap_new_from_file (file);
+  gtk_container_add(GTK_CONTAINER(vbox), pixmap);  
+  
+  // label = gtk_label_new("by Masatake YAMATO<jet@gyve.org>");
+  // gtk_container_add(GTK_CONTAINER(vbox), label);  
+  // label = gtk_label_new("Use under term of GNU GPL");
+  // gtk_container_add(GTK_CONTAINER(vbox), label);  
+  
+  gtk_widget_show_all(GTK_WIDGET(window));
+  gtk_main_iteration_do(FALSE);
+
+  gtk_timeout_add(2000, gtk_widget_destroy, window);
+
+  return;
 }

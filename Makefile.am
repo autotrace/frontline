@@ -1,6 +1,7 @@
 SUBDIRS = gundo frontline gimp
 EXTRA_DIST=frontline-config.af frontline.m4 \
-frontline.png frontline.desktop frontline.keys.in frontline.mime
+frontline.png frontline.desktop frontline.keys.in frontline.mime \
+frontline.spec.in fl-splash.png
 
 # -config
 bin_SCRIPTS=frontline-config
@@ -18,7 +19,7 @@ pkgconfig_DATA= frontline.pc
 
 # png
 appicondir = $(datadir)/pixmaps
-appicon_DATA = frontline.png
+appicon_DATA = frontline.png fl-splash.png
 
 # desktop
 Graphicsdir = $(datadir)/gnome/apps/Graphics
@@ -31,3 +32,9 @@ Mime_DATA = frontline.keys frontline.mime
 frontline.keys: frontline.keys.in Makefile
 	sed -e 's^\@icondir\@^$(appicondir)^g' < $(srcdir)/frontline.keys.in > frontline.keys.tmp \
 	&& mv frontline.keys.tmp frontline.keys 
+
+dist-hook: frontline.spec
+	cp frontline.spec $(distdir)
+
+rpm: dist frontline.spec
+	rpm -bb frontline.spec

@@ -1,0 +1,53 @@
+Summary: GUI frontend for autotrace
+Name: @PACKAGE@
+Version: @VERSION@
+Release: 1
+URL: http://autotrace.sourceforge.net/frontline
+Source0: %{name}-%{version}.tar.gz
+License: GPL
+Group: Applications/Graphics
+BuildRoot: %{_tmppath}/%{name}-root
+
+%description
+Frontline provides a gtk+/gnome based GUI frontend for 
+autotrace (http://autotrace.sourceforge.net). 
+
+%prep
+%setup -q
+
+%build
+%configure
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make prefix=$RPM_BUILD_ROOT/usr/ install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS COPYING ChangeLog NEWS README 
+/usr/bin/frontline
+/usr/include/frontline/frontline.h
+/usr/include/frontline/fl_opt.h
+/usr/include/frontline/fl_dialog.h
+/usr/include/frontline/fl_prog.h
+/usr/include/frontline/fl_preview.h
+/usr/include/frontline/fl_ext.h
+/usr/include/frontline/fl_fsel.h
+/usr/lib/libfrontline.a
+/usr/share/gnome/apps/Graphics/frontline.desktop
+/usr/share/mime-info/frontline.keys
+/usr/share/mime-info/frontline.mime
+/usr/share/pixmaps/frontline.png
+/usr/share/pixmaps/fl-splash.png
+/usr/bin/frontline-config
+/usr/share/aclocal/frontline.m4
+/usr/lib/pkgconfig/frontline.pc
+/usr/lib/gimp/1.2/plug-ins/trace
+
+%changelog
+* Sun Sep  8 2002 Masatake YAMATO <jet@gyve.org>
+- Initial build.

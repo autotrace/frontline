@@ -1,5 +1,15 @@
 2002-09-28  Masatake YAMATO  <jet@gyve.org>
 
+	* configure.in (AC_OUTPUT): Generated frontline.spec.
+
+	* frontline.spec.in: New file.
+
+	* Makefile.am (EXTRA_DIST): Added splash.
+
+	* frontline/frontline.c (splash): New function.
+
+	* fl-splash.png: splash image.
+
 	* frontline/fl_preview.c (frontline_preview_free_tmp_svg): 
 	New function.
 	

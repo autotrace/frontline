@@ -73,6 +73,7 @@ AC_OUTPUT([
 Makefile
 frontline-config
 frontline.pc
+frontline.spec
 frontline/Makefile
 gundo/Makefile
 gimp/Makefile],[chmod a+x frontline-config])
