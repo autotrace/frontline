@@ -1,5 +1,8 @@
 2002-09-28  Masatake YAMATO  <jet@gyve.org>
 
+	* frontline/fl_dialog.c (frontline_dialog_trace): Dump
+	trace parameters.
+
 	* configure.in (AC_OUTPUT): Generated frontline.spec.
 
 	* frontline.spec.in: New file.

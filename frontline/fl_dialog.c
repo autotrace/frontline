@@ -278,6 +278,7 @@ frontline_dialog_trace (GtkButton * button, gpointer * user_data)
   bitmap = at_bitmap_copy(bitmap);
 
   profile = g_timer_new ();
+  at_fitting_opts_save(opts, stdout);
   g_timer_start(profile);
   splines   = at_splines_new_full(bitmap, opts,
 				  frontline_dialog_show_error, fl_dialog,
