@@ -107,6 +107,8 @@ struct _FrontlineOptionPriv
   GtkWidget * tangent_surround;
   GtkWidget * despeckle_tightness;
   GtkWidget * centerline;
+  GtkWidget * preserve_width;
+  GtkWidget * width_factor;
   gint propagate_lock;
 };
 
@@ -142,7 +144,8 @@ fl_opt_priv_##type##_new(&(priv->value->member_symbol),			\
   member_construct(tangent_surround, 3, 12, unsigned);
   member_construct(despeckle_tightness, 0.0, 8.0, real);
   member_construct(centerline, false, true, bool);
-
+  member_construct(preserve_width, false, true, bool);
+  member_construct(width_factor, 0.1, 10.0, real);
 #undef member_construct
 
   gtk_widget_show(vbox);
@@ -195,6 +198,8 @@ fl_opt_priv_set_value(FrontlineOptionPriv * priv,
   member_set(tangent_surround, unsigned);
   member_set(despeckle_tightness, real);
   member_set(centerline, bool);
+  member_set(preserve_width, bool);
+  member_set(width_factor, real);
 #undef member_value_set
 }
 
