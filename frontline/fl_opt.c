@@ -26,6 +26,7 @@
 
 #include <gtk/gtksignal.h>
 #include <libgnomeui/gnome-dialog-util.h>
+#include <libgnomeui/gnome-stock.h>
 #include <libgnome/gnome-mime.h>
 
 #include <sys/types.h>
@@ -64,7 +65,7 @@ enum {
   VALUE_CHANGED,
   LAST_SIGNAL
 };
-static GtkVBoxClass *  parent_class;
+static GtkNotebookClass *  parent_class;
 static guint fl_option_signals[LAST_SIGNAL] = { 0 };
 
 GtkType
@@ -86,7 +87,7 @@ frontline_option_get_type (void)
         (GtkClassInitFunc) NULL,
       };
       
-      fl_option_type = gtk_type_unique (GTK_TYPE_VBOX, &fl_option_info);
+      fl_option_type = gtk_type_unique (GTK_TYPE_NOTEBOOK, &fl_option_info);
     }
   
   return fl_option_type;
@@ -96,7 +97,7 @@ static void
 frontline_option_class_init  (FrontlineOptionClass * klass)
 {
   GtkObjectClass * object_class;
-  parent_class = gtk_type_class (gtk_vbox_get_type ());
+  parent_class = gtk_type_class (gtk_notebook_get_type ());
   
   object_class 			   = (GtkObjectClass*)klass;
   object_class->finalize = frontline_option_finalize;  
@@ -117,13 +118,19 @@ frontline_option_class_init  (FrontlineOptionClass * klass)
 static void
 frontline_option_init (FrontlineOption * fl_opt)
 {
+  GtkWidget * vbox;
   GtkWidget * hbox;
   GundoSequence * tmp;
-  /* GtkWidget * sep; */
+
+  GtkWidget * pixmap;
+  GtkWidget * label;
+
+  vbox = gtk_vbox_new(TRUE, 0);
+  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new("Options"));
   
-  gtk_box_set_homogeneous(GTK_BOX(fl_opt), FALSE);
-  gtk_box_set_spacing(GTK_BOX(fl_opt), 8);
-  gtk_container_set_border_width(GTK_CONTAINER(fl_opt), 10);
+  gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
+  gtk_box_set_spacing(GTK_BOX(vbox), 8);
+  gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
   fl_opt->block_count 	= 0;
   fl_opt->value_changed = FALSE;
   fl_opt->filesel       = gtk_file_selection_new("");
@@ -131,22 +138,19 @@ frontline_option_init (FrontlineOption * fl_opt)
   gtk_object_sink(GTK_OBJECT(fl_opt->filesel));
 
   /* Dirty */
-  fl_opt->priv  = fl_opt_priv_new (fl_opt);
+  fl_opt->priv  = fl_opt_priv_new (fl_opt, GTK_BOX(vbox));
   fl_opt->opts  = fl_opt_priv_get_value (fl_opt->priv);
   fl_opt->opts  = at_fitting_opts_copy(fl_opt->opts);
 
   hbox 	      = gtk_hbox_new(TRUE, 0);
-  gtk_box_pack_start_defaults(GTK_BOX(fl_opt), hbox);
+  gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
   
-  fl_opt->undo_button = gtk_button_new_with_label("Undo");
-  fl_opt->redo_button = gtk_button_new_with_label("Redo");
-  fl_opt->load_button = gtk_button_new_with_label("Load Option");
-  fl_opt->save_button = gtk_button_new_with_label("Save Option");
+
+  fl_opt->undo_button 	 = gnome_stock_button(GNOME_STOCK_PIXMAP_UNDO);
+  fl_opt->redo_button 	 = gnome_stock_button(GNOME_STOCK_PIXMAP_REDO);
 
   gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_opt->undo_button);
   gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_opt->redo_button);
-  gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_opt->load_button);
-  gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_opt->save_button);
 
   tmp = gundo_sequence_new();
   fl_opt->undo_seq = GTK_OBJECT(tmp);
@@ -160,10 +164,6 @@ frontline_option_init (FrontlineOption * fl_opt)
   gtk_signal_connect(GTK_OBJECT(fl_opt->redo_button), 
 		     "clicked", GTK_SIGNAL_FUNC(frontline_option_redo), fl_opt);
   gundo_make_redo_sensitive(fl_opt->redo_button, GUNDO_SEQUENCE(fl_opt->undo_seq));
-  gtk_signal_connect(GTK_OBJECT(fl_opt->load_button), 
-		     "clicked", GTK_SIGNAL_FUNC(frontline_option_load), fl_opt);
-  gtk_signal_connect(GTK_OBJECT(fl_opt->save_button), 
-		     "clicked", GTK_SIGNAL_FUNC(frontline_option_save), fl_opt);
 
   gtk_drag_dest_set(GTK_WIDGET(fl_opt), 
 		    GTK_DEST_DEFAULT_ALL,
@@ -175,7 +175,69 @@ frontline_option_init (FrontlineOption * fl_opt)
 		     GTK_SIGNAL_FUNC(fl_opt_drag_data_received),
 		     NULL);
 
-  gtk_widget_show_all(hbox);
+  fl_opt->load_button = gnome_stock_button(GNOME_STOCK_PIXMAP_OPEN);
+  fl_opt->save_button = gnome_stock_button(GNOME_STOCK_PIXMAP_SAVE);
+  gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_opt->load_button);
+  gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_opt->save_button);
+  gtk_signal_connect(GTK_OBJECT(fl_opt->load_button), 
+		     "clicked", GTK_SIGNAL_FUNC(frontline_option_load), fl_opt);
+  gtk_signal_connect(GTK_OBJECT(fl_opt->save_button), 
+		     "clicked", GTK_SIGNAL_FUNC(frontline_option_save), fl_opt);
+
+  gtk_widget_show_all(vbox);
+
+  /* Predefined */
+#if 0
+  vbox = gtk_vbox_new(TRUE, 0);
+  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new("Predefined"));
+
+  hbox 	      = gtk_hbox_new(TRUE, 0);
+  gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
+
+  load_button = gnome_stock_button(GNOME_STOCK_PIXMAP_OPEN);
+  gtk_box_pack_start_defaults(GTK_BOX(hbox), load_button);
+  gtk_signal_connect(GTK_OBJECT(load_button), 
+		     "clicked", GTK_SIGNAL_FUNC(frontline_option_load), fl_opt);
+  gtk_widget_show_all(vbox);
+#endif /* 0 */
+
+  /* About */
+  vbox = gtk_vbox_new(FALSE, 0);
+  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new("About"));
+
+  pixmap = gnome_pixmap_new_from_file (GNOME_ICONDIR "/fl-splash.png");
+  gtk_container_add(GTK_CONTAINER(vbox), pixmap);  
+
+  label = gtk_label_new("Frontline Vesion: " VERSION);
+  gtk_container_add(GTK_CONTAINER(vbox), label);  
+  label = gtk_label_new("Frontline Author: Masatake YAMATO<jet@gyve.org>");
+  gtk_container_add(GTK_CONTAINER(vbox), label);  
+  
+  {
+    gchar * msg;
+    msg = g_strdup_printf("Autotrace Vesion: %s", at_version(false));
+    label = gtk_label_new(msg);
+    g_free(msg);
+    gtk_container_add(GTK_CONTAINER(vbox), label);  
+  }
+  label = gtk_label_new("Autotrace Author: Martin Weber<martweb@gmx.net>");
+  gtk_container_add(GTK_CONTAINER(vbox), label);  
+
+  {
+    gchar * msg;
+    msg = g_strdup_printf("Project web page: %s", at_home_site());
+    label = gtk_label_new(msg);
+    g_free(msg);
+    gtk_container_add(GTK_CONTAINER(vbox), label);  
+  }
+
+  label = gtk_label_new("This program is free software; you can redistribute it and/or modify\n"
+			"it under the terms of the GNU General Public License as published by\n"
+			"the Free Software Foundation; either version 2 of the License, or\n"
+			"(at your option) any later version.\n");
+  gtk_container_add(GTK_CONTAINER(vbox), label);
+  
+  gtk_widget_show_all(vbox);
 }
 
 GtkWidget*

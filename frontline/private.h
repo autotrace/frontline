@@ -32,7 +32,7 @@
 /*
  * Option private datum
  */
-FrontlineOptionPriv * fl_opt_priv_new (FrontlineOption * fl_opt);
+FrontlineOptionPriv * fl_opt_priv_new (FrontlineOption * fl_opt, GtkBox * box);
 void fl_opt_priv_free (FrontlineOptionPriv * priv);
 at_fitting_opts_type * fl_opt_priv_get_value (FrontlineOptionPriv * priv);
 void fl_opt_priv_set_value(FrontlineOptionPriv * priv, 

@@ -113,7 +113,7 @@ struct _FrontlineOptionPriv
 };
 
 FrontlineOptionPriv *
-fl_opt_priv_new (FrontlineOption * fl_opt)
+fl_opt_priv_new (FrontlineOption * fl_opt, GtkBox * box)
 {
   GtkWidget * vbox;
 #define member_construct(member_symbol, min, max, type)			\
@@ -149,7 +149,7 @@ fl_opt_priv_##type##_new(&(priv->value->member_symbol),			\
 #undef member_construct
 
   gtk_widget_show(vbox);
-  gtk_container_add(GTK_CONTAINER(fl_opt), vbox);
+  gtk_container_add(GTK_CONTAINER(box), vbox);
   return priv;
 }
 

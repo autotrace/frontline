@@ -123,7 +123,7 @@ main(int argc, char ** argv)
 			     0,
 			     &popt_ctx);
 #endif /* INCLUDE_AT_POPT_TABLE */
-  splash(PACKAGE, VERSION, "Masatake YAMATO", "jet@gyve.org", GNOME_ICONDIR "/fl-splash.png");
+  // splash(PACKAGE, VERSION, "Masatake YAMATO", "jet@gyve.org", GNOME_ICONDIR "/fl-splash.png");
   
   filenames = poptGetArgs(popt_ctx);
   if (filenames && filenames[0])

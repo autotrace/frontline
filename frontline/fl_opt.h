@@ -34,10 +34,10 @@ typedef struct _FrontlineOptionClass FrontlineOptionClass;
 typedef struct _FrontlineOptionPriv FrontlineOptionPriv;
 struct _FrontlineOption 
 {
-  GtkVBox vbox;
+  GtkNotebook notebook;
   gint block_count;
   gboolean value_changed;
-    
+
   GtkWidget * undo_button;
   GtkWidget * redo_button;
   GtkWidget * load_button;
@@ -58,7 +58,7 @@ struct _FrontlineOption
 
 struct _FrontlineOptionClass
 {
-  GtkVBoxClass parent_class;
+  GtkNotebookClass parent_class;
   void (* value_changed)	 (FrontlineOption * fl_opt);
 };
 

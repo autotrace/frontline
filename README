@@ -26,7 +26,7 @@ autotrace (http://autotrace.sourceforge.net) in 4 ways.
 
 Requirements
 ------------
-- Autotrace 0.30.5(http://autotrace.sourceforge.net) or higher
+- Autotrace 0.30.8(http://autotrace.sourceforge.net) or higher
 - Gnome 1.4 enviroment
   Gnome 1.4 might include popt and Imlib.
 - libart_lgpl-2.3.8 or higher(ftp://ftp.gnome.org/pub/gnome/pre-gnome2/sources/libart_lgpl/)
@@ -49,7 +49,7 @@ Sodipodi add-on module
 ----------------------
 - How to setup:
         0. Build and Install frontline
-	1. Build and Install sodipodi-0.26 or higher.
+	1. Build and Install sodipodi-0.27 or higher.
 	sodipodi's configure will detect frontline.
 
 - How to use:

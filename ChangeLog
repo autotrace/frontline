@@ -1,3 +1,22 @@
+2002-10-09  Masatake YAMATO  <jet@gyve.org>
+
+	* configure.in: required autotrace 0.30.8.
+	version 0.5.3.
+
+	* frontline/fl_opt.c (frontline_option_init): Added about panel.
+
+	* frontline/fl_opt.h (struct _FrontlineOption): made
+	the superclass gtk notebook.
+
+	* frontline/fl_opt_priv.c (member_construct): Added a argument
+	box.
+	(fl_opt_priv_new): Added vbox to box.
+
+	* frontline/private.h (fl_opt_priv_new): Added a argument
+	box.
+	
+	* frontline/frontline.c (main): Disable splash.
+
 2002-10-08  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/at_opts_io.c (at_fitting_opts_save) 
