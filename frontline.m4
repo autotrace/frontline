@@ -35,8 +35,8 @@ AC_ARG_ENABLE(frontlinetest, [  --disable-frontlinetest       Do not try to comp
   if test "$FRONTLINE_CONFIG" = "no" ; then
     no_frontline=yes
   else
-    FRONTLINE_CFLAGS=`$FRONTLINE_CONFIG $frontlineconf_args --cflags`
-    FRONTLINE_LIBS=`$FRONTLINE_CONFIG $frontlineconf_args --libs`
+    FRONTLINE_CFLAGS=`$FRONTLINE_CONFIG $frontline_args --cflags`
+    FRONTLINE_LIBS=`$FRONTLINE_CONFIG $frontline_args --libs`
 
     frontline_major_version=`$FRONTLINE_CONFIG $frontline_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
