@@ -1,6 +1,9 @@
-- * Warning and Error reprots
+---------------------------------------------------------------
+- Warning and Error reprots
    -> cannot find handler
 - Commandline related (After new gnome is relased)
+- keyboard acceleration
+---------------------------------------------------------------
 - Options:
 	predefined aop parameters set
 
@@ -14,6 +17,11 @@
 
 - configure:
 
+- Gnome
+	desktop related files
+	intltool
+	porting to Gnome-2.0
+
 - Nautilus:
 	Mime type for nautilus<0.2.5>	
 	DnD Proxy<0.2.5>???
@@ -21,6 +29,7 @@
 
 - Sodipodi:
 	SVG Icon
+
 - Gimp:
 	check memory leak
 	parameter and scriptable

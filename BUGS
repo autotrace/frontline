@@ -1,9 +1,14 @@
 Known bugs in frontline: -*-text-*-
 
-- displaying an image and its trace result are failed 
+- Options given through command line cause errors.
+
+- Displaying an image and its trace result are failed 
    if the image has transparent area.
 
-- frontline menu item is not appeared on Gnome desktop menu.
+- Frontline menu item is not appeared on Gnome desktop menu.
 
-- lines that has variable width is not rendered well
+- Lines that has variable width is not rendered well
   (not implemented).
+
+- Errors occured in autotrace is not messaged to the user.
+

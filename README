@@ -1,9 +1,10 @@
-	FrontLine: autotrace gui FRONTend like streamLINE(TM).
-
+			     -*- text -*-
+			      FrontLine
+    GUI FRONT end for autotrace that extracts outLINE from images
 
 What is frontline?
 ------------------
-Frontline provides a gtk+/gnome based GUI frontend for 
+Frontline provides a gtk+/gnome based GUI front end for 
 autotrace (http://autotrace.sourceforge.net) in 4 ways.
 
 1. Stand alone program. A command `frontline' runs as a stand alone
@@ -17,33 +18,38 @@ autotrace (http://autotrace.sourceforge.net) in 4 ways.
 3. Sodipodi, a drawing editor add-on module. add-on module uses the 
    libfrontline.a. See below.
 
-4. Gimp plug-in, You can launch frontline from the GIMP's menu.
-   Select "<Image>/Filters/Trace/Trace..." . 
+4. The Gimp plug-in, You can launch frontline from the Gimp's menu.
+   Select "<Image>/Filters/Trace/Trace..." . See "the Gimp plug-in".
 
    You can open trace result on sodipodi with DnD operation: dragging 
-   from trace result window of frontline to sodipodi toolbox.
-   This is the most useful way to use, I think.
+   from the trace result window of frontline to sodipodi toolbox.
 
 Requirements
 ------------
 - Autotrace 0.31.1(http://autotrace.sourceforge.net) or higher
-- Gnome 1.4 enviroment
+- Gnome 1.4 environment
   Gnome 1.4 might include popt and Imlib.
 - libart_lgpl-2.3.8 or higher(ftp://ftp.gnome.org/pub/gnome/pre-gnome2/sources/libart_lgpl/)
 
-  libart_lgpl in Gnome 1.4 has a bug that hungs up frontline.
+  libart_lgpl in Gnome 1.4 has a bug that hangs up frontline.
 
-- Gimp 1.2(optional) to use gimp plug-in. Even if you have gimp, 
+- The Gimp 1.2(optional) to use as gimp plug-in. Even if you have the Gimp, 
   check whether gimptool command and libgimp.{so|a} are also installed. 
-  In Some of linux distributions, gimp package includes gimp command only;
+  In Some of GNU/Linux distributions, gimp package includes gimp command only;
   and only gimp package is installed by default. gimptool and/or libgimp 
   might be in gimp-devel package in such case. You have to install gimp-devel
-  package by your hands.
+  package.
 
 Install
 -------
-
 See INSTALL.
+
+The Gimp plug-in
+----------------
+To get better tracing result in frontline, you might want to apply a
+filter to original image as prepossess. The Gimp much helps you to do
+so. Most useful filter is Filter->Enhance->Sharpen. This filter
+improves the trace results for anti-aliased images.
 
 Sodipodi add-on module
 ----------------------
@@ -51,6 +57,17 @@ Sodipodi add-on module
         0. Build and Install frontline
 	1. Build and Install sodipodi-0.27 or higher.
 	sodipodi's configure will detect frontline.
+
+	Sometimes two versions of libxml will conflict when 
+        building sodipodi with frontline; sodipodi uses libxml
+        and Imagemagick linked to autotrace uses libxml2. In
+        such case, you should disable libxml function in Imagemagick
+	with passing --without-xml to configure of Imagemagick.
+        
+	Here is the dependency:
+	sodipodi -> frontline -> autotrace -> Imagemagick
+            V                                      V
+          libxml                                libxml2
 
 - How to use:
         0. run newly built sodipodi
@@ -79,10 +96,7 @@ http://autotrace.sourceforge.net/frontline/
 
 Known Bugs and TODO
 -------------------
-- Bugs:
--- Errors occured in autotrace is not messaged to the user.
--- Command line arguments cause errors.
-
+- Bugs: See BUGS file.
 - TODO: See TODO file.
 
 Contact

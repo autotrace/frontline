@@ -33,3 +33,8 @@ automake (GNU automake) 1.4-p6
 Distro
 ------
 I(Masatake YAMATO) am using Redhat 8.0.
+
+ACLOCAL_FLAGS
+-------------
+ACLOCAL_FLAGS, an environment variable is passed to
+aclocal when autogen.sh is run.
