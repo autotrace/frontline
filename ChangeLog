@@ -1,4 +1,20 @@
+2002-09-08  Masatake YAMATO  <jet@gyve.org>
+
+	* configure.in: version 0.5.0.
+	(AM_PATH_AUTOTRACE): Required 0.30.4.
+
+	* frontline/fl_preview.c (frontline_preview_init): Added tooltips.
+
+	* frontline/fl_fsel.c (frontline_file_selection_init): Added tooltips.
+
+	* frontline/fl_ext.c (fl_save_file_selection_new): 
+	gtk_widget_show frame and extmenu.
+
 2002-09-07  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_fsel.c (frontline_file_selection_init): Added tooltips.
+
+	* frontline/fl_preview.c (frontline_preview_init): Added tooltips.
 
 	* gimp/trace.c (frontline): Added reload-drawable-button.
 	Use gnome_error_dialog. Use at_output_get_handler_by_suffix if 

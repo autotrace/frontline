@@ -161,6 +161,7 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
   GtkWidget * hbox;
   GtkWidget * label;
   GtkWidget * fentry;
+  GtkTooltips * tooltips;
 
   gtk_box_set_homogeneous(GTK_BOX(fl_fsel), FALSE);
   gtk_box_set_spacing(GTK_BOX(fl_fsel), 4);
@@ -194,6 +195,11 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
   gtk_widget_show_all(hbox);
   gtk_box_pack_start_defaults(GTK_BOX(fl_fsel), hbox);
 #endif /* 0 */
+  tooltips = gtk_tooltips_new();
+  gtk_tooltips_set_tip (tooltips, 
+			GTK_WIDGET(fentry), 
+			"Drop an image file here to load it",
+			"Drop an image file here to load it");
 }
 
 GtkWidget*

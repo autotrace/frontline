@@ -5,7 +5,6 @@
 	predefined aop parameters set
 
 - Preview area:
-	tooltips
 	progress bar for rendering
 	pick a background color	
 	build preview from datum on RAM(gray scale)

@@ -143,6 +143,8 @@ fl_save_file_selection_new (void)
   gtk_object_set_data(GTK_OBJECT(file_selector),
 		      MENU_WIDGET_KEY,
 		      extmenu);
+  gtk_widget_show(frame);
+  gtk_widget_show(extmenu);
   return file_selector;
 }
 

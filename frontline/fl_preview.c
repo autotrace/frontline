@@ -195,7 +195,8 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   GtkWidget * label;
   GtkWidget * menu, * menu_item;
   GSList * group;
-
+  GtkTooltips * tooltips;
+  
   fl_preview->image 	   = NULL;
   fl_preview->splines 	   = NULL;
   fl_preview->tmp_svg_uri = NULL;
@@ -222,6 +223,13 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 
   fl_preview->save_button = gtk_button_new();
   gtk_box_pack_start(GTK_BOX(hbox), fl_preview->save_button, TRUE, TRUE, 0);
+  tooltips = gtk_tooltips_new();
+  gtk_tooltips_set_tip (tooltips, 
+			fl_preview->save_button, 
+			"Click here to save the tracing result."
+			"\nDrag from here to export SVG file.",
+			"Click here to save the tracing result."
+			"\nDrag from here to export SVG file.");
   
   fl_preview->scrolled_window = gtk_scrolled_window_new(NULL, NULL);
   gtk_container_add(GTK_CONTAINER(fl_preview->save_button),

@@ -1,3 +1,17 @@
+What's new in FrontLine 0.5.0?
+- Aop script. Saved aop file is now done chmod a+x.
+  This function is suggested by 
+  Gerhard Gaussling <ggrubbish@web.de>.
+- Query dialog. If the trace result contains so many splines, 
+  ask the user drawing it or not.
+- Working as a DnD source. Frontline could export svg file 
+  with DnD operation.
+- Reloading Gimp drawable. Added a GUI button to reload Gimp 
+  drawable. You don't have to the trace plugin again and again
+  after editing the drawable.
+- Error and warning dialogs. Use GUI dialog instead of stderr
+  to report errors or warnings.
+
 What's new in FrontLine 0.4.1?
 - Gimp plugin
 - Preview with zooming
