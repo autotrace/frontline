@@ -28,7 +28,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog NEWS README 
+%doc AUTHORS COPYING ChangeLog NEWS README BUGS
+/usr/lib/libgundo.a
+/usr/include/gundo/gundo.h 
+/usr/include/gundo/gundo_ui.h
 /usr/bin/frontline
 /usr/include/frontline/frontline.h
 /usr/include/frontline/fl_opt.h

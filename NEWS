@@ -3,6 +3,9 @@ What's new in FrontLine 0.5.3?
 - show the numbers of splines etc. in appbar.
 - added a scale widget to the preview widget for line width  
   control.
+- splash window:)
+- delete temporary file if frontline exits normally.
+- catch up newer autotrace API.
 
 What's new in FrontLine 0.5.2?
 - check whether libgimp is installed or not even if gimptool is 

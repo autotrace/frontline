@@ -34,6 +34,7 @@ struct _FrontlineFileSelection
 {
   GtkVBox hbox;
   GtkWidget * ifentry;
+  at_input_opts_type * opts;
 };
 
 struct _FrontlineFileSelectionClass
@@ -48,6 +49,10 @@ GtkType    frontline_file_selection_get_type (void);
 GtkWidget* frontline_file_selection_new      (void);
 gboolean   frontline_file_selection_load_file (FrontlineFileSelection * fsel,
 					       const gchar * filename);
+
+/* After setting, OPTS should be freed by the client. */
+void       frontline_file_selection_set_input_option(FrontlineFileSelection * fsel,
+						     at_input_opts_type * opts);
 
 END_GNOME_DECLS
 

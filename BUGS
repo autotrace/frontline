@@ -1,0 +1,4 @@
+Known bugs:-*-text-*-
+
+ - displaying an image and its trace result are failed 
+   if the image has itransparent area.

@@ -1,7 +1,7 @@
 SUBDIRS = gundo frontline gimp
 EXTRA_DIST=frontline-config.af frontline.m4 \
 frontline.png frontline.desktop frontline.keys.in frontline.mime \
-frontline.spec.in fl-splash.png
+frontline.spec.in fl-splash.png BUGS
 
 # -config
 bin_SCRIPTS=frontline-config

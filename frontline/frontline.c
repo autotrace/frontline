@@ -42,6 +42,8 @@ static void set_bitmap               (FrontlineFileSelection * fsel,
 				      gchar * filename,
 				      at_bitmap_type * bitmap,
 				      gpointer user_data);
+static void set_input_opts           (FrontlineOption * opt, 
+				      FrontlineFileSelection *fsel);
 static void preview_image            (FrontlineFileSelection * fsel,
 				      gchar * filename,
 				      at_bitmap_type * bitmap,
@@ -64,6 +66,7 @@ static void splash                   (const gchar * file);
 static void frontline_popt_table_init(struct poptOption * fl_popt_table,
 				      struct poptOption * at_popt_table,
 				      at_fitting_opts_type * at_opts);
+
 
 
 static struct poptOption frontline_popt_table [] = {
@@ -145,6 +148,12 @@ main(int argc, char ** argv)
 		     "loaded",
 		     set_bitmap,
 		     dialog);
+
+  gtk_signal_connect(GTK_OBJECT(FRONTLINE_DIALOG(dialog)->option),
+		     "value_changed",
+		     GTK_SIGNAL_FUNC(set_input_opts),
+		     fsel);
+  
   gtk_widget_show(dialog);
 
   /*
@@ -201,6 +210,24 @@ set_bitmap(FrontlineFileSelection * fsel,
 
   bitmap = at_bitmap_copy(bitmap);
   frontline_dialog_set_bitmap(dialog, bitmap);
+}
+
+static void
+set_input_opts (FrontlineOption * opt, FrontlineFileSelection *fsel)
+{
+  at_fitting_opts_type * fitting_opts;
+  at_input_opts_type   * input_opts;
+
+  g_return_if_fail (opt);
+  g_return_if_fail (fsel);
+  fitting_opts = frontline_option_get_value(opt);
+  g_return_if_fail (fitting_opts);
+  
+  input_opts = at_input_opts_new();
+  if (fitting_opts->background_color)
+    input_opts->background_color = at_color_copy(fitting_opts->background_color);
+  frontline_file_selection_set_input_option(fsel, input_opts);
+  at_input_opts_free(input_opts);
 }
 
 static void
@@ -388,11 +415,13 @@ splash                    (const gchar * file)
   // gtk_container_add(GTK_CONTAINER(vbox), label);  
   // label = gtk_label_new("Use under term of GNU GPL");
   // gtk_container_add(GTK_CONTAINER(vbox), label);  
+  label = gtk_label_new("Frontline" " " VERSION);
+  gtk_container_add(GTK_CONTAINER(vbox), label);  
   
   gtk_widget_show_all(GTK_WIDGET(window));
   gtk_main_iteration_do(FALSE);
 
-  gtk_timeout_add(2000, gtk_widget_destroy, window);
+  gtk_timeout_add(2000, (GtkFunction)gtk_widget_destroy, window);
 
   return;
 }

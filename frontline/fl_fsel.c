@@ -116,7 +116,7 @@ frontline_file_selection_load(GtkEditable * entry,
   reader      = at_input_get_handler(filename);
   if (reader)
     {
-      bitmap = at_bitmap_read(reader, filename, fl_load_msg_handler, &errorp);
+      bitmap = at_bitmap_read(reader, filename, fl_fsel->opts, fl_load_msg_handler, &errorp);
       if (errorp == 0 && bitmap)
 	{
 	  gtk_signal_emit(GTK_OBJECT(fl_fsel),
@@ -163,6 +163,8 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
   GtkWidget * fentry;
   GtkTooltips * tooltips;
 
+  fl_fsel->opts = NULL;
+  
   gtk_box_set_homogeneous(GTK_BOX(fl_fsel), FALSE);
   gtk_box_set_spacing(GTK_BOX(fl_fsel), 4);
   gtk_container_set_border_width(GTK_CONTAINER(fl_fsel), 10);
@@ -170,7 +172,7 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
   hbox 	= gtk_hbox_new(FALSE, 4);
   label = gtk_label_new("Image");
   gtk_box_pack_start_defaults(GTK_BOX(hbox), label);
-  
+
   fl_fsel->ifentry = gnome_file_entry_new("frontline::fsel::input", "Select");
   gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_fsel->ifentry);
   gtk_widget_show_all(hbox);
@@ -224,5 +226,21 @@ frontline_file_selection_load_file (FrontlineFileSelection * fsel,
 static void
 frontline_file_selection_finalize    (GtkObject * object)
 {
+  FrontlineFileSelection * fl_sel;
+  fl_sel = FRONTLINE_FILE_SELECTION(object);
+
+  if (fl_sel->opts)
+    at_input_opts_free(fl_sel->opts);
   GTK_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+void
+frontline_file_selection_set_input_option(FrontlineFileSelection * fsel,
+					  at_input_opts_type * opts)
+{
+  g_return_if_fail (fsel);
+  if (fsel->opts)
+    at_input_opts_free(fsel->opts);
+  fsel->opts = at_input_opts_copy(opts);
+  /* TODO: When option is updated, the image must be reloaded again. */
 }
