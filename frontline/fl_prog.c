@@ -94,7 +94,7 @@ frontline_progress_init (FrontlineProgress * fl_prog)
   gtk_widget_show(fl_prog ->progress_bar);
   gtk_box_pack_start(GTK_BOX(fl_prog), fl_prog ->progress_bar, TRUE, TRUE, 4);
 
-  fl_prog->stop_button = gtk_button_new_with_label("Stop");
+  fl_prog->stop_button = gtk_button_new_with_label(_("Stop"));
   gtk_widget_show(fl_prog ->stop_button);
   gtk_box_pack_start(GTK_BOX(fl_prog), fl_prog ->stop_button, TRUE, TRUE, 4);
   gtk_signal_connect_object(GTK_OBJECT(fl_prog->stop_button),

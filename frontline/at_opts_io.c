@@ -63,6 +63,7 @@ at_fitting_opts_save (at_fitting_opts_type * opts, FILE * fp)
   member_write(line_threshold, real);
   member_write(remove_adjacent_corners, bool);
   member_write(tangent_surround, unsigned);
+  member_write(despeckle_level, unsigned);
   member_write(despeckle_tightness, real);
   member_write(centerline, bool);
   member_write(preserve_width, bool);

@@ -1,3 +1,14 @@
+2002-11-09  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_prog.c (frontline_progress_init): gettextized.
+
+	* frontline/at_opts_io.c (at_fitting_opts_save, 
+	at_fitting_opts_popt_table_init): add despeckle_level as 
+	a option.
+
+	* frontline/fl_opt_priv.c (struct _FrontlineOptionPriv,
+	fl_opt_priv_new, fl_opt_priv_set_value): Ditto.
+	
 2002-10-31  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/frontline.c (main):  removed

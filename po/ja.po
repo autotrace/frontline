@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: frontline 0.6.0\n"
-"POT-Creation-Date: 2002-10-31 02:05+0900\n"
-"PO-Revision-Date: 2002-11-01 01:14+0900\n"
+"POT-Creation-Date: 2002-11-09 07:57+0900\n"
+"PO-Revision-Date: 2002-11-09 07:57+0900\n"
 "Last-Translator: Masatake YAMATO<jet@gyve.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -160,67 +160,71 @@ msgstr "読み出しファイルを開くことができません: "
 msgid "Cannot load autotrace option file: %s"
 msgstr "Autotraceオプションファイルを読むことができません: %s"
 
-#: frontline/fl_opt_priv.c:139
+#: frontline/fl_opt_priv.c:140
 msgid "Background Color"
 msgstr "背景色"
 
-#: frontline/fl_opt_priv.c:140
+#: frontline/fl_opt_priv.c:141
 msgid "Color Count"
 msgstr "色数"
 
-#: frontline/fl_opt_priv.c:141
-msgid "Corner Always Threshold"
-msgstr ""
-
 #: frontline/fl_opt_priv.c:142
-msgid "Corner Surround"
-msgstr ""
+msgid "Corner Always Threshold"
+msgstr "常に使う角の閾値"
 
 #: frontline/fl_opt_priv.c:143
+msgid "Corner Surround"
+msgstr "角の周囲域"
+
+#: frontline/fl_opt_priv.c:144
 msgid "Corner Threshold"
 msgstr "角の閾値"
 
-#: frontline/fl_opt_priv.c:144
+#: frontline/fl_opt_priv.c:145
 msgid "Error Threshold"
 msgstr "エラーの閾値"
 
-#: frontline/fl_opt_priv.c:145
+#: frontline/fl_opt_priv.c:146
 msgid "Filter Iterations"
 msgstr "平滑化フィルター適用回数"
 
-#: frontline/fl_opt_priv.c:146
-msgid "Line Reversion Threshold"
-msgstr ""
-
 #: frontline/fl_opt_priv.c:147
+msgid "Line Reversion Threshold"
+msgstr "直線見直しの閾値"
+
+#: frontline/fl_opt_priv.c:148
 msgid "Line Threshold"
 msgstr "直線の閾値"
 
-#: frontline/fl_opt_priv.c:148
+#: frontline/fl_opt_priv.c:149
 msgid "Remove Adjacent Corners"
 msgstr "隣接する角の除去"
 
-#: frontline/fl_opt_priv.c:149
-msgid "Tangent Surround"
-msgstr ""
-
 #: frontline/fl_opt_priv.c:150
-msgid "Despeckle Tightness"
-msgstr ""
+msgid "Tangent Surround"
+msgstr "接線の周囲域"
 
 #: frontline/fl_opt_priv.c:151
+msgid "Despeckle Level"
+msgstr "非斑化のレベル"
+
+#: frontline/fl_opt_priv.c:152
+msgid "Despeckle Tightness"
+msgstr "非斑化の半径"
+
+#: frontline/fl_opt_priv.c:153
 msgid "Centerline"
 msgstr "中心線のトレース"
 
-#: frontline/fl_opt_priv.c:152
+#: frontline/fl_opt_priv.c:154
 msgid "Preserve Width"
 msgstr "線の太さの保存"
 
-#: frontline/fl_opt_priv.c:153
+#: frontline/fl_opt_priv.c:155
 msgid "Width Weight Factor"
 msgstr "線の太さの係数"
 
-#: frontline/fl_opt_priv.c:248
+#: frontline/fl_opt_priv.c:251
 msgid "Background color"
 msgstr "背景色"
 
@@ -282,6 +286,10 @@ msgstr "一時ファイルを再度開くことができません"
 msgid "Groups of splines: %d, Splines: %d, Points: %d"
 msgstr "スプライングループの数: %d スプラインの数: %d 座標の数: %d"
 
+#: frontline/fl_prog.c:97
+msgid "Stop"
+msgstr "停止"
+
 #: frontline/fl_utils.c:29
 #, c-format
 msgid "%s: is not implemented."
@@ -307,12 +315,12 @@ msgstr "一度に一つのファイルしか読みません"
 msgid "frontline preview"
 msgstr "frontline プレビュー"
 
-#: frontline/frontline.c:209
+#: frontline/frontline.c:207
 #, c-format
 msgid "Cannot load image file: %s"
 msgstr "画像ファイルを読むことができません: %s"
 
-#: frontline/frontline.c:296
+#: frontline/frontline.c:294
 #, c-format
 msgid ""
 "Cannot load image file: %s \n"
@@ -321,7 +329,7 @@ msgstr ""
 "画像ファイルを読むことができません: %s\n"
 "理由: %s"
 
-#: frontline/frontline.c:395 gimp/trace.c:529
+#: frontline/frontline.c:393 gimp/trace.c:529
 msgid "Cannot open file to write splines: "
 msgstr "スプラインを書き出すためのファイルを開くことができません"
 
