@@ -51,6 +51,9 @@ struct _FrontlinePreview
   GtkObject * splines_opacity;
   GtkWidget * splines_opacity_scale;
   GtkWidget * splines_static_color;
+  
+  GtkObject * zoom_factor;
+  GtkWidget * zoom_factor_scale;
 
   GtkWidget * save_button;
 };
@@ -107,6 +110,11 @@ void       frontline_preview_set_splines_opacity(FrontlinePreview * fl_preview,
 
 gfloat     frontline_preview_get_splines_opacity(FrontlinePreview * fl_preview);
 
+
+/* Zooming */
+void       frontline_preview_set_pixels_per_unit(FrontlinePreview * fl_preview,
+						 double n);
+double     frontline_preview_get_pixels_per_unit(FrontlinePreview * fl_preview);
 
 END_GNOME_DECLS
 

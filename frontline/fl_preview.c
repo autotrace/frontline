@@ -84,6 +84,12 @@ static void color_set_cb (GnomeColorPicker *cp,
 static void color_set    (FrontlinePreview * fl_preview, guint32 color);
 static guint32 color_get (FrontlinePreview * fl_preview);
 
+/*
+ * Zoom
+ */
+static void zoom_factor_value_changed_cb(GtkAdjustment * zoom_factor, gpointer user_data);
+
+
 GtkType
 frontline_preview_get_type (void)
 {
@@ -170,10 +176,22 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   gtk_container_add(GTK_CONTAINER(fl_preview), vbox);
   
   /* ----------------------------------------------------------------
-   * vbox[scrolled window[canvas]]
+   * vbox[hbox[zoomscale|save_button[scrolled window[canvas]]]]
    * ---------------------------------------------------------------- */
+  hbox = gtk_hbox_new(FALSE, 0);
+  gtk_container_set_border_width(GTK_CONTAINER(hbox), 2);
+  gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 4);
+  
+  fl_preview->zoom_factor 	= gtk_adjustment_new(1.0, 0.05, 10.0, 0.1, 1, 1);
+  fl_preview->zoom_factor_scale = gtk_vscale_new(GTK_ADJUSTMENT(fl_preview->zoom_factor));
+  gtk_scale_set_draw_value(GTK_SCALE(fl_preview->zoom_factor_scale), FALSE);
+  gtk_range_set_update_policy(GTK_RANGE(fl_preview->zoom_factor_scale),
+			      GTK_UPDATE_DELAYED);
+  gtk_box_pack_start(GTK_BOX(hbox), fl_preview->zoom_factor_scale, FALSE, FALSE, 0);
+
+
   fl_preview->save_button = gtk_button_new();
-  gtk_box_pack_start(GTK_BOX(vbox), fl_preview->save_button, TRUE, TRUE, 4);
+  gtk_box_pack_start(GTK_BOX(hbox), fl_preview->save_button, TRUE, TRUE, 0);
   
   fl_preview->scrolled_window = gtk_scrolled_window_new(NULL, NULL);
   gtk_container_add(GTK_CONTAINER(fl_preview->save_button),
@@ -193,14 +211,17 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 		     "clicked",
 		     GTK_SIGNAL_FUNC(save_button_clicked_cb),
 		     fl_preview);
-
+  gtk_signal_connect(GTK_OBJECT(fl_preview->zoom_factor),
+		     "value_changed",
+		     GTK_SIGNAL_FUNC(zoom_factor_value_changed_cb),
+		     fl_preview);
   gtk_widget_set_sensitive (fl_preview->save_button, FALSE);
   
   /* ----------------------------------------------------------------
    * vbox[hbox[subhbox[[label: toggle]] subhbox[[label: opts menu]]]]
    * ---------------------------------------------------------------- */
   hbox = gtk_hbox_new(FALSE, 2);
-  gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 4);
   
   /* 
    * subhbox[[label: toggle]] 
@@ -390,8 +411,8 @@ frontline_preview_set_image_by_gdk_imlib_image (FrontlinePreview * fl_preview,
 				 0, 
 				 (int) (im_image->rgb_width), 
 				 (int)(im_image->rgb_height));
-  w = (int) (im_image->rgb_width) + 20;
-  h = (int) (im_image->rgb_height) + 64;
+  w = (int) (im_image->rgb_width) + 24;
+  h = (int) (im_image->rgb_height) + 78;
   w = (w > 300)? w: 300;
   if (w > 600)
     w = 600;
@@ -635,8 +656,8 @@ frontline_preview_set_splines_opacity(FrontlinePreview * fl_preview,
   g_return_if_fail (0.0 <= opacity && opacity <= 1.0);
   g_return_if_fail (fl_preview->splines_opacity);
 
-  GTK_ADJUSTMENT(fl_preview->splines_opacity)->value = opacity;
-  gtk_adjustment_value_changed(GTK_ADJUSTMENT(fl_preview->splines_opacity));
+  gtk_adjustment_set_value(GTK_ADJUSTMENT(FRONTLINE_PREVIEW(fl_preview)->splines_opacity), 
+			   opacity);
 }
 
 static void
@@ -738,4 +759,32 @@ color_get (FrontlinePreview * fl_preview)
   gnome_color_picker_get_i8(GNOME_COLOR_PICKER(fl_preview->splines_static_color), 
 			    &r, &g, &b, &a);
   return r << 24 | g << 16 | b << 8 | 0;
+}
+
+
+/* -----------------------------------------------------------------
+ * Zooming
+ * ----------------------------------------------------------------- */
+void
+frontline_preview_set_pixels_per_unit(FrontlinePreview * fl_preview,
+				      double n)
+{
+  g_return_if_fail (FRONTLINE_IS_PREVIEW(fl_preview));
+  gtk_adjustment_set_value(GTK_ADJUSTMENT(FRONTLINE_PREVIEW(fl_preview)->zoom_factor), 
+			   (gfloat)n);
+}
+
+double
+frontline_preview_get_pixels_per_unit(FrontlinePreview * fl_preview)
+{
+  g_return_val_if_fail (FRONTLINE_IS_PREVIEW(fl_preview), 0.0);
+  return GTK_ADJUSTMENT(fl_preview->zoom_factor)->value;
+}
+
+static void
+zoom_factor_value_changed_cb(GtkAdjustment * zoom_factor, gpointer user_data)
+{
+  GnomeCanvas * canvas = GNOME_CANVAS(FRONTLINE_PREVIEW(user_data)->canvas);
+  gnome_canvas_set_pixels_per_unit(canvas, zoom_factor->value);
+  gnome_canvas_update_now(canvas);
 }

@@ -1,3 +1,10 @@
+2002-05-31  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_preview.c (frontline_preview_set_splines_opacity): Use
+	gtk_adjustment_set_value.
+
+	* frontline/fl_preview.[ch]: Added functions for zooming.
+
 2002-05-29  Masatake YAMATO  <jet@gyve.org>
 
 	* gimp/trace.c (frontline): Don't show the preview
