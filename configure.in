@@ -31,10 +31,18 @@ dnl
 dnl GIMP
 dnl
 HAVE_GIMP=no
-AM_PATH_GIMP(1.2.1, HAVE_GIMP=yes, AC_MSG_WARN(*** GIMP plug-in will not be built (Cannot find gimp)); )
+AM_PATH_GIMP(1.2.1, HAVE_GIMP=yes, AC_MSG_WARN(*** GIMP plug-in will not be built (Cannot find gimp)))
 AM_CONDITIONAL(HAVE_GIMP, test x$HAVE_GIMP = xyes)
 
-dnl TODO: popt
+dnl 
+dnl popt
+dnl
+AC_CHECK_LIB(popt,,AC_MSG_WARN(*** Cannot find popt))
+
+dnl
+dnl Imlib
+dnl
+AM_PATH_IMLIB
 
 AC_OUTPUT([
 Makefile

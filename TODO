@@ -1,4 +1,4 @@
-- Warning and Error reprots <0.2.4> 3h
+- * Warning and Error reprots <0.2.4> 3h
 - DnD Proxy<0.2.5>???
 - Commandline related (After new gnome is relased)
 
@@ -11,8 +11,8 @@
 	preview zooming
 
 - configure:
-	popt should be checked in configure
-	imlib should be checked in configure
+	/* popt should be checked in configure */
+	/* imlib should be checked in configure */
 	
 - Nautilus:
 	Mime type for nautilus<0.2.5>	
@@ -24,9 +24,9 @@
 
 - Gimp:
 	Memory leak
-	Parameter and scrip table
+	Parameter and scriptable
 	File and/or Sodipodi
-	Preview default status: (Static color with bloack and hiding image)
+	* Preview default status: (Static color with black and hiding image)
 
 Done:
 - Image DnD

@@ -1,5 +1,11 @@
 2002-05-29  Masatake YAMATO  <jet@gyve.org>
 
+	* frontline.pc.in (Libs): Added -lpopt.
+
+	* frontline-config.af: Added -lpopt.
+
+	* configure.in: Check popt and imlib.
+
 	* frontline/fl_preview.[ch] (frontline_preview_set_image_by_{bitmap|gdk_imlib_image}): 
 	New functions.
 
