@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include <popt.h>
 #include <libgnomeui/gnome-canvas.h>
+#include <gdk_imlib.h>
 
 #include <frontline/fl_opt.h>
 #include <frontline/fl_dialog.h>

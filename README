@@ -4,7 +4,7 @@
 What is frontline?
 ------------------
 Frontline provides a gtk+/gnome based GUI frontend for 
-autotrace (http://autotrace.sourceforge.net) in 3 ways.
+autotrace (http://autotrace.sourceforge.net) in 4 ways.
 
 1. Stand alone program. A command `frontline' runs as a stand alone
    program. It will work well with Gnome desktop and nautilus.
@@ -16,6 +16,9 @@ autotrace (http://autotrace.sourceforge.net) in 3 ways.
 
 3. Sodipodi, a drawing editor add-on module. add-on module uses the 
    libfrontline.a. See below.
+
+4. Gimp plug-in, You can launch frontline from the GIMP's menu.
+   Select "<Image>/Filters/Trace/Trace..." .
 
 Requirements
 ------------
@@ -82,7 +85,6 @@ http://autotrace.sourceforge.net/frontline/
 Known Bugs and TODO
 -------------------
 - Bugs:
--- Horizontal line noise are appeared on preview window.
 -- Errors occured in autotrace is not messaged to the user.
 -- Command line arguments cause errors.
 

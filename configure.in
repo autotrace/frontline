@@ -1,24 +1,45 @@
-dnl TODO: popt
-
 AC_INIT(frontline/frontline.h)
 PACKAGER=frontline
 VERSION="0.3.1"
 AM_INIT_AUTOMAKE($PACKAGER, $VERSION)
 AM_MAINTAINER_MODE
 
-dnl Pick up the Gnome macros.
-GNOME_INIT
-
-AM_PATH_AUTOTRACE(0.30.1,, AC_MSG_ERROR([Cannot find autotrace library]))
-
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_RANLIB
 AC_PROG_MAKE_SET
+
+dnl
+dnl GNOME
+dnl
+GNOME_INIT
+
+dnl
+dnl libart2
+dnl
+PKG_CHECK_MODULES(LIBART2, [libart-2.0] >= 2.3.8,, 
+			   AC_MSG_ERROR([Cannot find libart2]))
+AC_SUBST(LIBART2_CFLAGS)
+AC_SUBST(LIBART2_LIBS)
+
+dnl
+dnl Autotrace
+dnl
+AM_PATH_AUTOTRACE(0.30.1,, AC_MSG_ERROR([Cannot find autotrace library]))
+
+dnl
+dnl GIMP
+dnl
+HAVE_GIMP=no
+AM_PATH_GIMP(1.2.1, HAVE_GIMP=yes, AC_MSG_WARN(*** GIMP plug-in will not be built (Cannot find gimp)); )
+AM_CONDITIONAL(HAVE_GIMP, test x$HAVE_GIMP = xyes)
+
+dnl TODO: popt
 
 AC_OUTPUT([
 Makefile
 frontline-config
 frontline.pc
 frontline/Makefile
-gundo/Makefile])
+gundo/Makefile
+gimp/Makefile])

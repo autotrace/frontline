@@ -15,5 +15,5 @@ AF_ARG_VERSION(@VERSION@)
 ##
 #dummy because this should always be selected
 AF_LIBRARY(frontline)
-AF_DEF_CFLAGS([-I@includedir@ @GNOME_INCLUDEDIR@ @AUTOTRACE_CFLAGS@])
-AF_DEF_LIBS([-L@libdir@ -lfrontline -lgundo @GNOME_LIBDIR@ @GNOMEUI_LIBS@ @AUTOTRACE_LIBS@])
+AF_DEF_CFLAGS([-I@includedir@ @LIBART2_CFLAGS@ @GNOME_INCLUDEDIR@ @AUTOTRACE_CFLAGS@])
+AF_DEF_LIBS([-L@libdir@ -lfrontline -lgundo @LIBART2_LIBS@ @GNOME_LIBDIR@ @GNOMEUI_LIBS@ @AUTOTRACE_LIBS@])

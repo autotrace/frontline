@@ -25,6 +25,7 @@
 #include <libgnomeui/gnome-window-icon.h>
 #include <gnome.h>
 #include <gtk/gtk.h>
+#include <gdk_imlib.h>
 
 enum {
   REQUEST_TO_SAVE,
@@ -331,10 +332,26 @@ frontline_preview_finalize    (GtkObject * object)
 }
 
 gboolean
-frontline_preview_set_image(FrontlinePreview * fl_preview,
-			    gchar * img_filename)
+frontline_preview_set_image_by_file(FrontlinePreview * fl_preview,
+				    gchar * img_filename)
 {
   GdkImlibImage * im_image = gdk_imlib_load_image (img_filename);
+  return frontline_preview_set_image_by_gdk_imlib_image(fl_preview, im_image);
+}
+
+gboolean
+frontline_preview_set_image_by_bitmap (FrontlinePreview * fl_preview,
+				       at_bitmap_type * bitmap)
+{
+  GdkImlibImage * im_image;
+  im_image = gdk_imlib_create_image_from_data (bitmap->bitmap, NULL, bitmap->width, bitmap->height);
+  return frontline_preview_set_image_by_gdk_imlib_image(fl_preview, im_image);
+}
+
+gboolean
+frontline_preview_set_image_by_gdk_imlib_image (FrontlinePreview * fl_preview,
+						GdkImlibImage * im_image)
+{
   GnomeCanvasGroup * group = gnome_canvas_root(GNOME_CANVAS(fl_preview->canvas));
   gint w, h;
   
@@ -385,7 +402,7 @@ frontline_preview_set_image(FrontlinePreview * fl_preview,
   gtk_signal_emit(GTK_OBJECT (fl_preview),
 		  fl_preview_signals[SET_IMAGE],
 		  TRUE);    
-  return fl_preview->image? TRUE: FALSE;
+  return fl_preview->image? TRUE: FALSE;  
 }
 
 static void

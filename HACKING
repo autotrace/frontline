@@ -7,6 +7,9 @@ Requirements to develop
 
 Compile from CVS sources
 ------------------------
+- getting source
+  see http://sourceforge.net/cvs/?group_id=11789, the module name is frontline.
+
 - cd frontline
 - ./autogen.sh
 - ./gmake

@@ -1,3 +1,37 @@
+2002-05-29  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_preview.[ch] (frontline_preview_set_image_by_{bitmap|gdk_imlib_image}): 
+	New functions.
+
+	* frontline/Makefile.am (INCLUDES, frontline_LDADD): Added
+	libart2 flags.
+
+	* frontline-config.af (AF_DEF_CFLAGS, AF_DEF_LIBS): 
+	Added libart2 flags.
+
+	* frontline.pc.in (prefix): Likewise.
+	
+	* configure.in: Check gimp and libart2.
+
+	* Makefile.am (SUBDIRS): Added new gimp dir.
+
+	* gimp/*: Gimp plug-in.
+
+2002-05-27  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_preview.h (frontline_preview_set_image_by_file): 
+	Renamed from frontline_preview_set_image.
+
+	* frontline/frontline.c (main): Don't
+	call gtk_window_set_transient_for twice.
+	Use frontline_preview_set_image_by_file.
+
+2002-05-26  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/Makefile.am (frontline_LDADD): Use
+	$(top_builddir) instead of `..'.
+	(AM_CPPFLAGS): Move -D* here from INCLUDES.
+
 2002-04-12  Masatake YAMATO  <jet@gyve.org>
 
 	* So many changes...

@@ -153,8 +153,6 @@ main(int argc, char ** argv)
 			    "delete_event",
 			    GTK_SIGNAL_FUNC(gtk_widget_hide),
 			    GTK_OBJECT(preview));
-  gtk_window_set_transient_for(GTK_WINDOW(preview),
-			       GTK_WINDOW(dialog));
   gtk_signal_connect (GTK_OBJECT(preview),
 		      "request_to_save",
 		      GTK_SIGNAL_FUNC(open_filesel),
@@ -238,8 +236,8 @@ preview_image(FrontlineFileSelection * fsel,
 	      at_bitmap_type * bitmap,
 	      gpointer user_data)
 {
-  frontline_preview_set_image(FRONTLINE_PREVIEW(user_data),
-			      filename);
+  frontline_preview_set_image_by_file(FRONTLINE_PREVIEW(user_data),
+				      filename);
   frontline_preview_show_image(FRONTLINE_PREVIEW(user_data),
 			       TRUE);
   gtk_widget_show(GTK_WIDGET(user_data));

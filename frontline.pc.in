@@ -6,6 +6,6 @@ includedir=@includedir@
 Name: Frontline
 Description: a GUI frontend program and library for autotrace
 Version: @VERSION@
-Requires: autotrace
-Libs: -L@libdir@ -lfrontline -lgundo @GNOME_LIBDIR@ @GNOMEUI_LIBS@ @AUTOTRACE_LIBS@
-Cflags: -I@includedir@ @GNOME_INCLUDEDIR@ @AUTOTRACE_CFLAGS@
+Requires: autotrace libart-2.0
+Libs: -L@libdir@ -lfrontline -lgundo @LIBART2_LIBS@ @GNOME_LIBDIR@ @GNOMEUI_LIBS@ @AUTOTRACE_LIBS@
+Cflags: -I@includedir@ @LIBART2_CFLAGS@ @GNOME_INCLUDEDIR@ @AUTOTRACE_CFLAGS@

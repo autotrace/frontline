@@ -74,8 +74,15 @@ GtkType    frontline_preview_get_type (void);
 GtkWidget* frontline_preview_new      (void);
 
 /* Image */
-gboolean   frontline_preview_set_image (FrontlinePreview * fl_preview,
-					gchar * img_filename);
+gboolean   frontline_preview_set_image_by_file   (FrontlinePreview * fl_preview,
+						  gchar * img_filename);
+/* bitmap should be freed by clients */
+gboolean   frontline_preview_set_image_by_bitmap (FrontlinePreview * fl_preview,
+						  at_bitmap_type * bitmap);
+/* im_image should NOT be freed by clients */
+gboolean   frontline_preview_set_image_by_gdk_imlib_image (FrontlinePreview * fl_preview,
+							   GdkImlibImage * im_image);
+
 void       frontline_preview_show_image (FrontlinePreview * fl_preview,
 					 gboolean show);
 

@@ -1,24 +1,38 @@
-- gundo<0.2.4> (done)
-- Dummy command line<0.2.4> (done)
-- Save format<0.2.4> (done)
-- Autotrace version check <0.2.4> (done)
-- Icon and DnD accepting and rejecting <0.2.4> (undone)
-- Image DnD (done)
-- frontline.m4(done)
-
 - Warning and Error reprots <0.2.4> 3h
+- DnD Proxy<0.2.5>???
+- Commandline related (After new gnome is relased)
+
+- Options:
+	predefined aop parameters set
+
+- Preview area:
+	pick a background color	
+	build preview from datum on RAM(gray scale)
+	preview zooming
+
+- configure:
+	popt should be checked in configure
+	imlib should be checked in configure
+	
+- Nautilus:
+	Mime type for nautilus<0.2.5>	
+	DnD porting as svg file, 
+	Icon and DnD accepting and rejecting <0.2.4> (undone)
+
+- Sodipodi:
+	Remote lauch
+
+- Gimp:
+	Memory leak
+	Parameter and scrip table
+	File and/or Sodipodi
+	Preview default status: (Static color with bloack and hiding image)
+
+Done:
+- Image DnD
+- frontline.m4
+- gundo<0.2.4> 
+- Dummy command line<0.2.4>
+- Save format<0.2.4>
+- Autotrace version check <0.2.4>
 - Canvas<0.3.n> (done)
-- Zoom
-
-- Attaching to Gimp<0.4.n>
-- Mime type for nautilus<0.2.5>
-- DnD Proxy<0.2.5>
-
-* After new gnome is relased:
-- Commandline related 
-
-/* DnD porting as svg file, 
-   pick a background color
-   sample aop' */
-
-- predefined parameters

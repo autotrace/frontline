@@ -1,4 +1,4 @@
-SUBDIRS = gundo frontline 
+SUBDIRS = gundo frontline gimp
 EXTRA_DIST=frontline-config.af frontline.m4 \
 frontline.png frontline.desktop frontline.keys.in frontline.mime
 
