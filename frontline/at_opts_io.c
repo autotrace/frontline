@@ -66,7 +66,7 @@ at_fitting_opts_save (at_fitting_opts_type * opts, FILE * fp)
   member_write(despeckle_tightness, real);
   member_write(centerline, bool);
   member_write(preserve_width, bool);
-  member_write(width_factor, real);
+  member_write(width_weight_factor, real);
 #undef member_write
   
   fprintf(fp, "%s\n", LAST_VAR);
@@ -219,7 +219,7 @@ at_fitting_opts_popt_table_init(struct poptOption * table, at_fitting_opts_type 
   TABLE_ADD(despeckle-tightness,      FLOAT,    despeckle_tightness);
   TABLE_ADD(centerline,               NONE,     centerline);
   TABLE_ADD(preserve_width,           NONE,     preserve_width);
-  TABLE_ADD(width_factor,             FLOAT,    width_factor);
+  TABLE_ADD(width-weight-factor,      FLOAT,    width_weight_factor);
 #undef TABLE_ADD
   at_opts_table_end(table++);
 }

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: frontline 0.6.0\n"
-"POT-Creation-Date: 2002-10-30 00:32+0900\n"
-"PO-Revision-Date: 2002-10-30 00:33+0900\n"
+"POT-Creation-Date: 2002-10-31 02:05+0900\n"
+"PO-Revision-Date: 2002-10-31 02:05+0900\n"
 "Last-Translator: Masatake YAMATO<jet@gyve.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -160,7 +160,67 @@ msgstr "読み出しファイルを開くことができません: "
 msgid "Cannot load autotrace option file: %s"
 msgstr "Autotraceオプションファイルを読むことができません: %s"
 
-#: frontline/fl_opt_priv.c:249
+#: frontline/fl_opt_priv.c:139
+msgid "Background Color"
+msgstr "背景色"
+
+#: frontline/fl_opt_priv.c:140
+msgid "Color Count"
+msgstr "色数"
+
+#: frontline/fl_opt_priv.c:141
+msgid "Corner Always Threshold"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:142
+msgid "Corner Surround"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:143
+msgid "Corner Threshold"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:144
+msgid "Error Threshold"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:145
+msgid "Filter Iterations"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:146
+msgid "Line Reversion Threshold"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:147
+msgid "Line Threshold"
+msgstr "直線の敷居"
+
+#: frontline/fl_opt_priv.c:148
+msgid "Remove Adjacent Corners"
+msgstr "隣接する角の除去"
+
+#: frontline/fl_opt_priv.c:149
+msgid "Tangent Surround"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:150
+msgid "Despeckle Tightness"
+msgstr ""
+
+#: frontline/fl_opt_priv.c:151
+msgid "Centerline"
+msgstr "中心線のトレース"
+
+#: frontline/fl_opt_priv.c:152
+msgid "Preserve Width"
+msgstr "線の太さを保存する"
+
+#: frontline/fl_opt_priv.c:153
+msgid "Width Weight Factor"
+msgstr "線の太さの係数"
+
+#: frontline/fl_opt_priv.c:248
 msgid "Background color"
 msgstr "背景色"
 
@@ -222,7 +282,7 @@ msgstr "一時ファイルを再度開くことができません"
 msgid "Groups of splines: %d, Splines: %d, Points: %d"
 msgstr "スプライングループの数: %d スプラインの数: %d 座標の数: %d"
 
-#: frontline/fl_utils.c:28
+#: frontline/fl_utils.c:29
 #, c-format
 msgid "%s: is not implemented."
 msgstr "%s: まだ実装されていません"

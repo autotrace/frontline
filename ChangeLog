@@ -1,3 +1,15 @@
+2002-10-31  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_opt_priv.c (fl_opt_priv_new): Gettextized
+	labels. width_factor -> width_weight_factor.
+
+	* frontline/at_opts_io.c (at_fitting_opts_popt_table_init) 
+	(at_fitting_opts_save): width_factor -> width_weight_factor.
+
+	* frontline/fl_utils.c (frontline_init): 
+	invoked autotrace_init if AUTOTRACE_INIT is
+	defined.
+
 2002-10-30  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/frontline.h: changed message strings.

@@ -87,7 +87,9 @@ static void fl_opt_priv_propagate_via_color (GnomeColorPicker *cp,
 					     guint r, guint g, guint b, guint a,
 					     FrontlineOption * fl_opt);
 
+#if 0
 static gchar * strdup_format_label_string(const gchar * base);
+#endif /* 0 */
 
 #define VALUE_HOLDER_KEY "value_holder"
 #define VALUE_HOLDER_COLOR_KEY "value_holder_color"
@@ -110,7 +112,7 @@ struct _FrontlineOptionPriv
   GtkWidget * despeckle_tightness;
   GtkWidget * centerline;
   GtkWidget * preserve_width;
-  GtkWidget * width_factor;
+  GtkWidget * width_weight_factor;
   gint propagate_lock;
 };
 
@@ -118,14 +120,15 @@ FrontlineOptionPriv *
 fl_opt_priv_new (FrontlineOption * fl_opt, GtkBox * box)
 {
   GtkWidget * vbox;
-#define member_construct(member_symbol, min, max, type)			\
-priv->member_symbol =							\
-fl_opt_priv_##type##_new(&(priv->value->member_symbol),			\
-			 min,						\
-			 max,						\
-                         g_string(member_symbol),			\
-			 at_fitting_opts_doc(member_symbol),		\
-			 fl_opt);					\
+
+#define member_construct(label, member_symbol, min, max, type)	\
+priv->member_symbol =						\
+  fl_opt_priv_##type##_new(&(priv->value->member_symbol),	\
+			 min,					\
+			 max,					\
+                         label,					\
+			 at_fitting_opts_doc(member_symbol),	\
+			 fl_opt);                               \
   gtk_container_add(GTK_CONTAINER(vbox), priv->member_symbol);
 
   FrontlineOptionPriv * priv 	 = g_new(FrontlineOptionPriv, 1);
@@ -133,21 +136,21 @@ fl_opt_priv_##type##_new(&(priv->value->member_symbol),			\
   priv->propagate_lock           = 0;
   vbox = gtk_vbox_new(TRUE, 1);
   
-  member_construct(background_color, 0, 256, color);
-  member_construct(color_count, 0, 256, unsigned);
-  member_construct(corner_always_threshold, 0, 180, real);
-  member_construct(corner_surround, 0, 16, unsigned);
-  member_construct(corner_threshold, 30, 120, real);
-  member_construct(error_threshold, 0.0, 16.0, real);
-  member_construct(filter_iterations, 1, 12, unsigned);
-  member_construct(line_reversion_threshold, .01, 1, real);
-  member_construct(line_threshold, 1, 10, real);
-  member_construct(remove_adjacent_corners, false, true, bool);
-  member_construct(tangent_surround, 3, 12, unsigned);
-  member_construct(despeckle_tightness, 0.0, 8.0, real);
-  member_construct(centerline, false, true, bool);
-  member_construct(preserve_width, false, true, bool);
-  member_construct(width_factor, 0.1, 10.0, real);
+  member_construct(_("Background Color"), background_color, 0, 256, color);
+  member_construct(_("Color Count"), color_count, 0, 256, unsigned);
+  member_construct(_("Corner Always Threshold"), corner_always_threshold, 0, 180, real);
+  member_construct(_("Corner Surround"), corner_surround, 0, 16, unsigned);
+  member_construct(_("Corner Threshold"), corner_threshold, 30, 120, real);
+  member_construct(_("Error Threshold"), error_threshold, 0.0, 16.0, real);
+  member_construct(_("Filter Iterations"), filter_iterations, 1, 12, unsigned);
+  member_construct(_("Line Reversion Threshold"), line_reversion_threshold, .01, 1, real);
+  member_construct(_("Line Threshold"), line_threshold, 1, 10, real);
+  member_construct(_("Remove Adjacent Corners"), remove_adjacent_corners, false, true, bool);
+  member_construct(_("Tangent Surround"), tangent_surround, 3, 12, unsigned);
+  member_construct(_("Despeckle Tightness"), despeckle_tightness, 0.0, 8.0, real);
+  member_construct(_("Centerline"), centerline, false, true, bool);
+  member_construct(_("Preserve Width"), preserve_width, false, true, bool);
+  member_construct(_("Width Weight Factor"), width_weight_factor, 0.1, 10.0, real);
 #undef member_construct
 
   gtk_widget_show(vbox);
@@ -201,7 +204,7 @@ fl_opt_priv_set_value(FrontlineOptionPriv * priv,
   member_set(despeckle_tightness, real);
   member_set(centerline, bool);
   member_set(preserve_width, bool);
-  member_set(width_factor, real);
+  member_set(width_weight_factor, real);
 #undef member_value_set
 }
 
@@ -223,18 +226,14 @@ fl_opt_priv_color_new (at_color_type ** value,
   GtkWidget* ebox;
   GtkTooltips * tooltips;
   GtkWidget * check;
-  
-  gchar * formatted_label;
 
   hbox = gtk_hbox_new(TRUE, 4);
 
   /* Label */
-  formatted_label = strdup_format_label_string(label);
-  label_widget = gtk_label_new(formatted_label);
+  label_widget = gtk_label_new(label);
   gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
-  g_free(formatted_label);
-  
+
   gtk_box_pack_start(GTK_BOX(hbox), label_widget, FALSE, FALSE, 0);
 
   hhbox = gtk_hbox_new(FALSE, 4);
@@ -323,15 +322,11 @@ fl_opt_priv_unsigned_new(unsigned * value,
   GtkWidget* ebox;
   GtkTooltips * tooltips;
 
-  gchar * formatted_label;
-
   hbox = gtk_hbox_new(TRUE, 4);
-  
-  formatted_label = strdup_format_label_string(label);
-  label_widget = gtk_label_new(formatted_label);
+
+  label_widget = gtk_label_new(label);
   /* gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT); */
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
-  g_free(formatted_label);
 
   gtk_box_pack_start(GTK_BOX(hbox), label_widget, FALSE, FALSE, 0);
 
@@ -378,16 +373,12 @@ fl_opt_priv_real_new     (at_real * value,
   GtkWidget* ebox;
   GtkTooltips * tooltips;
 
-  gchar * formatted_label;
-
   hbox = gtk_hbox_new(TRUE, 4);
-  
-  formatted_label = strdup_format_label_string(label);
-  label_widget = gtk_label_new(formatted_label);
+
+  label_widget = gtk_label_new(label);
   /* gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT); */
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
-  g_free(formatted_label);
-  
+
   gtk_box_pack_start(GTK_BOX(hbox), label_widget, TRUE, FALSE, 4);
 
   adj = gtk_adjustment_new((gfloat)*value, min, max, 
@@ -436,17 +427,13 @@ fl_opt_priv_bool_new     (at_bool * value,
   GtkWidget* check;
   GtkWidget* ebox;
   GtkTooltips * tooltips;
-  
-  gchar * formatted_label;
 
   hbox = gtk_hbox_new(TRUE, 4);
-  
-  formatted_label = strdup_format_label_string(label);
-  label_widget = gtk_label_new(formatted_label);
+
+  label_widget = gtk_label_new(label);
   gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
-  g_free(formatted_label);
-  
+
   gtk_box_pack_start(GTK_BOX(hbox), label_widget, TRUE, FALSE, 4);
 
   check = gtk_check_button_new();
@@ -684,17 +671,6 @@ fl_opt_priv_color_lock_unlock(GtkButton * button,
     gtk_window_set_modal(GTK_WINDOW(color_dialog), TRUE);
 }
 
-static void str_capitalize(gchar * str);
-
-static gchar *
-strdup_format_label_string(const gchar * base)
-{
-  gchar * copy 	    = g_strdup(base);
-  fl_str_replace_underscore(copy, ' ');
-  str_capitalize(copy);
-  return copy;
-}
-
 void
 fl_str_replace_underscore(gchar * str,
 			      gchar replaced_with)
@@ -708,6 +684,16 @@ fl_str_replace_underscore(gchar * str,
     }
 }
 
+#if 0
+static void str_capitalize(gchar * str);
+static gchar *
+strdup_format_label_string(const gchar * base)
+{
+  gchar * copy 	    = g_strdup(base);
+  fl_str_replace_underscore(copy, ' ');
+  str_capitalize(copy);
+  return copy;
+}
 static void
 str_capitalize(gchar * str)
 {
@@ -730,3 +716,4 @@ str_capitalize(gchar * str)
       tmp++;
     }
 }
+#endif /* 0 */

@@ -21,6 +21,7 @@
 #include "private.h"
 #include "frontline.h"
 #include <glib.h>
+#include <autotrace/autotrace.h>
 
 void
 fl_not_implemented(GtkButton * button, gpointer data)
@@ -34,6 +35,9 @@ frontline_init(void)
   static int initialized = 0;
   if (!initialized)
     {
+#ifdef AUTOTRACE_INIT
+      autotrace_init ();
+#endif /* Def: AUTOTRACE_INIT */
       setlocale (LC_ALL, "");
       bindtextdomain (PACKAGE, LOCALEDIR);
     }
