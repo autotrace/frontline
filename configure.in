@@ -75,4 +75,4 @@ frontline-config
 frontline.pc
 frontline/Makefile
 gundo/Makefile
-gimp/Makefile])
+gimp/Makefile],[chmod a+x frontline-config])

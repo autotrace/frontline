@@ -1,3 +1,13 @@
+2002-09-18  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline.m4: used $frontline_exec_prefix or $frontline_prefix only.
+	$frontline_config_exec_prefix and $frontline_config_prefix are 
+	unnecessary variables. Suggested by Gregory Hosler 
+	<gregory.hosler@eno.ericsson.se>.
+	(frontline_config_args): removed. unnecessary variable.
+	
+	* configure.in (AC_OUTPUT): chmod a+x frontline-config.
+
 2002-09-17  Masatake YAMATO  <jet@gyve.org>
 
 	* README: wrote about libgimp.

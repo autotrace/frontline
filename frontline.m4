@@ -9,9 +9,9 @@ AC_DEFUN(AM_PATH_FRONTLINE,
 dnl Get the cflags and libraries from the frontline-config script
 dnl
 AC_ARG_WITH(frontline-prefix,[  --with-frontline-prefix=PFX   Prefix where Frontline is installed (optional)],
-            frontline_config_prefix="$withval", frontline_config_prefix="")
+            frontline_prefix="$withval", frontline_prefix="")
 AC_ARG_WITH(frontline-exec-prefix,[  --with-frontline-exec-prefix=PFX Exec prefix where Frontline is installed (optional)],
-            frontline_config_exec_prefix="$withval", frontline_config_exec_prefix="")
+            frontline_exec_prefix="$withval", frontline_exec_prefix="")
 AC_ARG_ENABLE(frontlinetest, [  --disable-frontlinetest       Do not try to compile and run a test Frontline program],
 		    , enable_frontlinetest=yes)
 
@@ -42,7 +42,7 @@ AC_ARG_ENABLE(frontlinetest, [  --disable-frontlinetest       Do not try to comp
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
     frontline_minor_version=`$FRONTLINE_CONFIG $frontline_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    frontline_micro_version=`$FRONTLINE_CONFIG $frontline_config_args --version | \
+    frontline_micro_version=`$FRONTLINE_CONFIG $frontline_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
     if test "x$enable_frontlinetest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
