@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: frontline 0.6.0\n"
 "POT-Creation-Date: 2002-10-31 02:05+0900\n"
-"PO-Revision-Date: 2002-10-31 02:05+0900\n"
+"PO-Revision-Date: 2002-11-01 01:14+0900\n"
 "Last-Translator: Masatake YAMATO<jet@gyve.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -178,15 +178,15 @@ msgstr ""
 
 #: frontline/fl_opt_priv.c:143
 msgid "Corner Threshold"
-msgstr ""
+msgstr "角の閾値"
 
 #: frontline/fl_opt_priv.c:144
 msgid "Error Threshold"
-msgstr ""
+msgstr "エラーの閾値"
 
 #: frontline/fl_opt_priv.c:145
 msgid "Filter Iterations"
-msgstr ""
+msgstr "平滑化フィルター適用回数"
 
 #: frontline/fl_opt_priv.c:146
 msgid "Line Reversion Threshold"
@@ -194,7 +194,7 @@ msgstr ""
 
 #: frontline/fl_opt_priv.c:147
 msgid "Line Threshold"
-msgstr "直線の敷居"
+msgstr "直線の閾値"
 
 #: frontline/fl_opt_priv.c:148
 msgid "Remove Adjacent Corners"
@@ -214,7 +214,7 @@ msgstr "中心線のトレース"
 
 #: frontline/fl_opt_priv.c:152
 msgid "Preserve Width"
-msgstr "線の太さを保存する"
+msgstr "線の太さの保存"
 
 #: frontline/fl_opt_priv.c:153
 msgid "Width Weight Factor"
