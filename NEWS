@@ -1,3 +1,7 @@
+What's new in FrontLine 0.5.1?
+- Query dialog functions are exported. This will be used in 
+  sodipodi.
+
 What's new in FrontLine 0.5.0?
 - Aop script. Saved aop file is now done chmod a+x.
   This function is suggested by 

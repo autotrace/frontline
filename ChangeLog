@@ -1,3 +1,18 @@
+2002-09-09  Masatake YAMATO  <jet@gyve.org>
+
+	* configure.in: version 0.5.1.
+	(AM_PATH_AUTOTRACE): Required 0.30.5.
+
+	* frontline/Makefile.am (frontlineinclude_HEADERS) 
+	(libfrontline_a_SOURCES): added fl_ask.[ch].
+	
+	* frontline/frontline.h: Include fl_ask.h.
+
+	* frontline/fl_preview.c (frontline_preview_query_whether_drawing*): 
+	deleted. Use functions defined in fl_ask.c.
+
+	* frontline/fl_ask.[ch]: New files.
+
 2002-09-08  Masatake YAMATO  <jet@gyve.org>
 
 	* configure.in: version 0.5.0.

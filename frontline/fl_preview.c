@@ -45,9 +45,6 @@ static void frontline_preview_real_set_image (FrontlinePreview * fl_preview,
 					      gboolean set);
 static void frontline_preview_real_set_splines (FrontlinePreview * fl_preview,
 						gboolean set);
-static gboolean frontline_preview_query_whether_drawing(FrontlinePreview * fl_preview,
-							at_splines_type * splines);
-static void frontline_preview_query_cb(gint reply, gpointer data);
 
 /* 
  * Drag and Drop 
@@ -522,7 +519,7 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
   g_return_val_if_fail (splines,
 			FALSE);
   
-  if (!frontline_preview_query_whether_drawing(fl_preview, splines))
+  if (!fl_ask(GTK_WINDOW(fl_preview), splines))
     return FALSE;
   
   g_get_current_time(&t1);
@@ -717,52 +714,6 @@ frontline_preview_show_splines(FrontlinePreview * fl_preview,
   g_get_current_time(&t2);
   g_message ("[frontline_preview_show_splines] %ld", t2.tv_sec - t1.tv_sec);
 }
-
-static gboolean
-frontline_preview_query_whether_drawing(FrontlinePreview * fl_preview,
-					at_splines_type * splines)
-{
-  const gint answer_default = 2;
-  gint answer = answer_default;
-  gchar * message;
-  GtkWidget * dialog;
-  
-  if (at_spline_list_array_count_groups_of_splines(splines) < 1000)
-    return TRUE;
-
-  message = g_strdup_printf("Draw the result? In some case, it takes long time.\n"
-			    "- the total number of groups of splines: %d\n"
-			    "- the total number splines: %d\n"
-			    "- the total number points: %d", 
-			    at_spline_list_array_count_groups_of_splines(splines),
-			    at_spline_list_array_count_splines(splines),
-			    at_spline_list_array_count_points(splines));
-  dialog = gnome_ok_cancel_dialog_modal_parented (message,
-						  frontline_preview_query_cb,
-						  &answer,
-						  GTK_WINDOW(fl_preview));
-  while(answer_default == answer)
-    gtk_main_iteration ();
-  g_free(message);
-  
-  if (answer == 0)
-    return TRUE;
-  else if (answer == 1)
-    return FALSE;
-  else
-    {
-      g_assert_not_reached();
-      return TRUE;
-    }
-}
- 
-static void
-frontline_preview_query_cb(gint reply, gpointer data)
-{
-  *((gint *)data) = reply;
-}
-
-
 
 FrontlinePreviewSplinesStatus
 frontline_preview_get_splines_status(FrontlinePreview * fl_preview)

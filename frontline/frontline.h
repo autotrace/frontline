@@ -32,6 +32,7 @@
 #include <frontline/fl_fsel.h>
 #include <frontline/fl_preview.h>
 #include <frontline/fl_ext.h>
+#include <frontline/fl_ask.h>
 
 BEGIN_GNOME_DECLS  
 
