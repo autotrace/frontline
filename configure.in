@@ -40,7 +40,7 @@ AM_CONDITIONAL(HAVE_GIMP, test x$HAVE_GIMP = xyes)
 dnl 
 dnl popt
 dnl
-AC_CHECK_LIB(popt,,AC_MSG_WARN(*** Cannot find popt))
+AC_CHECK_LIB(popt,poptPrintHelp,,AC_MSG_WARN(*** Cannot find popt))
 
 dnl
 dnl Imlib
