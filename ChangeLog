@@ -1,4 +1,14 @@
+2002-11-11  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_opt_priv.c (member_construct): added
+	"not implemented yet" to tooltips.
+	(fl_opt_priv_color_new, fl_opt_priv_unsigned_new, fl_opt_priv_real_new):
+	Show tooltips only on the labels. 
+
 2002-11-10  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_opt_priv.c (fl_opt_priv_new): Range
+	of options are revised.
 
 	* configure.in: Required autotrace 0.31.1.
 

@@ -122,14 +122,14 @@ fl_opt_priv_new (FrontlineOption * fl_opt, GtkBox * box)
 {
   GtkWidget * vbox;
 
-#define member_construct(label, member_symbol, min, max, type)	\
-priv->member_symbol =						\
-  fl_opt_priv_##type##_new(&(priv->value->member_symbol),	\
-			 min,					\
-			 max,					\
-                         label,					\
-			 at_fitting_opts_doc(member_symbol),	\
-			 fl_opt);                               \
+#define member_construct(label, member_symbol, min, max, type, use_at_doc)		\
+priv->member_symbol =									\
+  fl_opt_priv_##type##_new(&(priv->value->member_symbol),				\
+			 min,								\
+			 max,								\
+                         label,								\
+			 use_at_doc? use_at_doc: at_fitting_opts_doc(member_symbol),	\
+			 fl_opt);							\
   gtk_container_add(GTK_CONTAINER(vbox), priv->member_symbol);
 
   FrontlineOptionPriv * priv 	 = g_new(FrontlineOptionPriv, 1);
@@ -137,22 +137,35 @@ priv->member_symbol =						\
   priv->propagate_lock           = 0;
   vbox = gtk_vbox_new(TRUE, 1);
   
-  member_construct(_("Background Color"), background_color, 0, 256, color);
-  member_construct(_("Color Count"), color_count, 0, 256, unsigned);
-  member_construct(_("Corner Always Threshold"), corner_always_threshold, 0, 180, real);
-  member_construct(_("Corner Surround"), corner_surround, 0, 16, unsigned);
-  member_construct(_("Corner Threshold"), corner_threshold, 30, 120, real);
-  member_construct(_("Error Threshold"), error_threshold, 0.0, 16.0, real);
-  member_construct(_("Filter Iterations"), filter_iterations, 1, 12, unsigned);
-  member_construct(_("Line Reversion Threshold"), line_reversion_threshold, .01, 1, real);
-  member_construct(_("Line Threshold"), line_threshold, 1, 10, real);
-  member_construct(_("Remove Adjacent Corners"), remove_adjacent_corners, false, true, bool);
-  member_construct(_("Tangent Surround"), tangent_surround, 3, 12, unsigned);
-  member_construct(_("Despeckle Level"), despeckle_level, 0, 20, unsigned);
-  member_construct(_("Despeckle Tightness"), despeckle_tightness, 0.0, 8.0, real);
-  member_construct(_("Centerline"), centerline, false, true, bool);
-  member_construct(_("Preserve Width"), preserve_width, false, true, bool);
-  member_construct(_("Width Weight Factor"), width_weight_factor, 0.1, 10.0, real);
+  member_construct(_("Background Color"), background_color, 0, 256, color, NULL);
+  member_construct(_("Color Count"), color_count, 0, 256, unsigned, NULL);
+  member_construct(_("Corner Always Threshold"), corner_always_threshold, 1.0, 179.0, real, NULL);
+  member_construct(_("Corner Surround"), corner_surround, 1, 16, unsigned, NULL);
+  member_construct(_("Corner Threshold"), corner_threshold, 1.0, 179.0, real, NULL);
+  member_construct(_("Error Threshold"), error_threshold, 0.1, 20.0, real, NULL);
+  member_construct(_("Filter Iterations"), filter_iterations, 0, 16, unsigned, NULL);
+  member_construct(_("Line Reversion Threshold"), line_reversion_threshold, .01, 1.0, real, NULL); /* ??? */
+  member_construct(_("Line Threshold"), line_threshold, .01, 20.0, real, NULL);
+  member_construct(_("Remove Adjacent Corners"), remove_adjacent_corners, false, true, bool, NULL);
+  member_construct(_("Tangent Surround"), tangent_surround, 1, 20, unsigned, NULL);
+  member_construct(_("Despeckle Level"), despeckle_level, 0, 20, unsigned, NULL);
+  member_construct(_("Despeckle Tightness"), despeckle_tightness, 0.0, 8.0, real, NULL);
+  member_construct(_("Centerline"), centerline, false, true, bool, NULL);
+  {
+    gchar * tips;
+    
+    tips = g_strconcat(at_fitting_opts_doc(preserve_width), 
+		       " ",
+		       _("(This option has not been supported in preview window yet.)"), NULL);
+    member_construct(_("Preserve Width"), preserve_width, false, true, bool, tips);
+    g_free(tips);
+    tips = g_strconcat(at_fitting_opts_doc(width_weight_factor), 
+		       " ",
+		       _("(This option has not been supported in preview window yet.)"), NULL);
+    member_construct(_("Width Weight Factor"), width_weight_factor, 0.1, 10.0, real, tips);
+    g_free(tips);
+  }
+  
 #undef member_construct
 
   gtk_widget_show(vbox);
@@ -220,7 +233,7 @@ fl_opt_priv_color_new (at_color_type ** value,
 		       FrontlineOption * fl_opt)
 {
   /* Widget layout: 
-     ebox:[hbox:[label_widget hhbox:[check color]]] */
+     hbox:[ebox:[label_widget] hhbox:[check color]] */
 
   GtkWidget* hbox;
   GtkWidget* hhbox;
@@ -236,8 +249,14 @@ fl_opt_priv_color_new (at_color_type ** value,
   label_widget = gtk_label_new(label);
   gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
+  ebox = gtk_event_box_new();
+  gtk_container_add(GTK_CONTAINER(ebox), label_widget);
+  gtk_box_pack_start(GTK_BOX(hbox), ebox, FALSE, FALSE, 0);
 
-  gtk_box_pack_start(GTK_BOX(hbox), label_widget, FALSE, FALSE, 0);
+  /* TODO: Where should I free the tooltips? */
+  tooltips = gtk_tooltips_new();
+  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
+  gtk_tooltips_enable (tooltips);
 
   hhbox = gtk_hbox_new(FALSE, 4);
 
@@ -248,7 +267,7 @@ fl_opt_priv_color_new (at_color_type ** value,
   /* Color picker */
   color = gnome_color_picker_new ();
   gnome_color_picker_set_use_alpha(GNOME_COLOR_PICKER(color), FALSE);
-  gnome_color_picker_set_title (GNOME_COLOR_PICKER(color), _("Background color"));
+  gnome_color_picker_set_title (GNOME_COLOR_PICKER(color), _("Background Color"));
   gtk_box_pack_start_defaults(GTK_BOX(hhbox), color);
   
   
@@ -295,19 +314,12 @@ fl_opt_priv_color_new (at_color_type ** value,
 		     NULL);
   
   gtk_box_pack_start_defaults(GTK_BOX(hbox), hhbox);
- 
-  ebox = gtk_event_box_new();
-  gtk_container_add(GTK_CONTAINER(ebox), hbox);
-  gtk_widget_show_all(ebox);
+  
+  gtk_widget_show_all(hbox);
 
-  /* TODO: Where should I free the tooltips? */
-  tooltips = gtk_tooltips_new();
-  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
-  gtk_tooltips_enable (tooltips);
-
-  gtk_object_set_data(GTK_OBJECT(ebox), VALUE_HOLDER_COLOR_KEY, color);
-  gtk_object_set_data(GTK_OBJECT(ebox), VALUE_HOLDER_CHECK_KEY, check);
-  return ebox; 
+  gtk_object_set_data(GTK_OBJECT(hbox), VALUE_HOLDER_COLOR_KEY, color);
+  gtk_object_set_data(GTK_OBJECT(hbox), VALUE_HOLDER_CHECK_KEY, check);
+  return hbox; 
 }
 
 static GtkWidget *
@@ -330,8 +342,14 @@ fl_opt_priv_unsigned_new(unsigned * value,
   label_widget = gtk_label_new(label);
   /* gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT); */
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
+  ebox = gtk_event_box_new();
+  gtk_container_add(GTK_CONTAINER(ebox), label_widget);
+  gtk_box_pack_start(GTK_BOX(hbox), ebox, FALSE, FALSE, 0);
 
-  gtk_box_pack_start(GTK_BOX(hbox), label_widget, FALSE, FALSE, 0);
+ /* TODO: Where should I free the tooltips? */
+  tooltips = gtk_tooltips_new();
+  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
+  gtk_tooltips_enable (tooltips);
 
   adj = gtk_adjustment_new((gfloat)*value, min, max, 1.0, 1.0, 0.0);
   scale = gtk_hscale_new (GTK_ADJUSTMENT(adj));
@@ -347,18 +365,11 @@ fl_opt_priv_unsigned_new(unsigned * value,
 		     GTK_SIGNAL_FUNC(fl_opt_priv_propagate),
 		     fl_opt);
   gtk_box_pack_start_defaults(GTK_BOX(hbox), scale);
+  
+  gtk_widget_show_all(hbox);
  
-  ebox = gtk_event_box_new();
-  gtk_container_add(GTK_CONTAINER(ebox), hbox);
-  gtk_widget_show_all(ebox);
-
-  /* TODO: Where should I free the tooltips? */
-  tooltips = gtk_tooltips_new();
-  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
-  gtk_tooltips_enable (tooltips);
-
-  gtk_object_set_data(GTK_OBJECT(ebox), VALUE_HOLDER_KEY, adj);
-  return ebox; 
+  gtk_object_set_data(GTK_OBJECT(hbox), VALUE_HOLDER_KEY, adj);
+  return hbox; 
 }
 
 static GtkWidget *
@@ -381,8 +392,14 @@ fl_opt_priv_real_new     (at_real * value,
   label_widget = gtk_label_new(label);
   /* gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT); */
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
+  ebox = gtk_event_box_new();
+  gtk_container_add(GTK_CONTAINER(ebox), label_widget);
+  gtk_box_pack_start(GTK_BOX(hbox), ebox, TRUE, FALSE, 4);
 
-  gtk_box_pack_start(GTK_BOX(hbox), label_widget, TRUE, FALSE, 4);
+  /* TODO: Where should I free the tooltips? */
+  tooltips = gtk_tooltips_new();
+  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
+  gtk_tooltips_enable (tooltips);
 
   adj = gtk_adjustment_new((gfloat)*value, min, max, 
 			   (max-min)/10.0, 
@@ -402,19 +419,12 @@ fl_opt_priv_real_new     (at_real * value,
 		     fl_opt);
   
   gtk_box_pack_start_defaults(GTK_BOX(hbox), scale);
-  
-  ebox = gtk_event_box_new();
-  gtk_container_add(GTK_CONTAINER(ebox), hbox);
-  gtk_widget_show_all(ebox);
+ 
+  gtk_widget_show_all(hbox);
 
-  /* TODO: Where should I free the tooltips? */
-  tooltips = gtk_tooltips_new();
-  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
-  gtk_tooltips_enable (tooltips);
+  gtk_object_set_data(GTK_OBJECT(hbox), VALUE_HOLDER_KEY, adj);
   
-  gtk_object_set_data(GTK_OBJECT(ebox), VALUE_HOLDER_KEY, adj);
-  
-  return ebox;
+  return hbox;
 }
 
 static GtkWidget *
@@ -436,8 +446,14 @@ fl_opt_priv_bool_new     (at_bool * value,
   label_widget = gtk_label_new(label);
   gtk_label_set_justify(GTK_LABEL(label_widget), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment(GTK_MISC(label_widget), 0.0, 0.5);
+  ebox = gtk_event_box_new();
+  gtk_container_add(GTK_CONTAINER(ebox), label_widget);
+  gtk_box_pack_start(GTK_BOX(hbox), ebox, TRUE, FALSE, 4);
 
-  gtk_box_pack_start(GTK_BOX(hbox), label_widget, TRUE, FALSE, 4);
+  /* TODO: Where should I free the tooltips? */
+  tooltips = gtk_tooltips_new();
+  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
+  gtk_tooltips_enable (tooltips);
 
   check = gtk_check_button_new();
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(check), *value);
@@ -452,19 +468,12 @@ fl_opt_priv_bool_new     (at_bool * value,
 		     fl_opt);
   
   gtk_box_pack_start_defaults(GTK_BOX(hbox), check);
-  
-  ebox = gtk_event_box_new();
-  gtk_container_add(GTK_CONTAINER(ebox), hbox);
-  gtk_widget_show_all(ebox);
+ 
+  gtk_widget_show_all(hbox);
 
-  /* TODO: Where should I free the tooltips? */
-  tooltips = gtk_tooltips_new();
-  gtk_tooltips_set_tip(tooltips, GTK_WIDGET(ebox), tips, tips);
-  gtk_tooltips_enable (tooltips);
+  gtk_object_set_data(GTK_OBJECT(hbox), VALUE_HOLDER_KEY, check);
 
-  gtk_object_set_data(GTK_OBJECT(ebox), VALUE_HOLDER_KEY, check);
-
-  return ebox;
+  return hbox;
 }
 
 static void
