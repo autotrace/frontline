@@ -61,7 +61,11 @@ static void save_splines             (GtkButton * button,
 static void msg_write                (at_string msg, 
 				      at_msg_type msg_type, 
 				      at_address client_data);
-static void splash                   (const gchar * file);
+static void splash                   (const gchar * package,
+				      const gchar * version,
+				      const gchar * author,
+				      const gchar * mailto,
+				      const gchar * file);
 
 static void frontline_popt_table_init(struct poptOption * fl_popt_table,
 				      struct poptOption * at_popt_table,
@@ -74,7 +78,7 @@ static struct poptOption frontline_popt_table [] = {
 #if INCLUDE_AT_POPT_TABLE
   { NULL, '\0', POPT_ARG_INCLUDE_TABLE, NULL, 0, "Autotrace options:", NULL },
 #endif
-  { "options-file", '\0', POPT_ARG_STRING|POPT_ARGFLAG_STRIP, NULL, 0, "Autotrace options file name", "filename"},
+  { "option-file", '\0', POPT_ARG_STRING|POPT_ARGFLAG_STRIP, NULL, 0, "Autotrace options file name", "filename"},
   POPT_TABLEEND
 };
 
@@ -85,6 +89,7 @@ main(int argc, char ** argv)
   GtkWidget * fsel;
   GtkWidget * sep;
   GtkWidget * preview;
+  const gchar ** filenames;
   gchar * filename = NULL;
   
   struct poptOption at_popt_table[at_fitting_opts_popt_table_length];
@@ -105,20 +110,36 @@ main(int argc, char ** argv)
 			     frontline_popt_table,
 			     0,
 			     &popt_ctx);
-  poptFreeContext (popt_ctx);
 #else
   popt_ctx = poptGetContext(PACKAGE, argc, argv, frontline_popt_table, 0);
   while (poptGetNextOpt(popt_ctx) != -1) ;
   argc = poptStrippedArgv(popt_ctx, argc, argv);
   poptFreeContext (popt_ctx);
-  gnome_init(PACKAGE, VERSION, argc, argv);
-  if (argc > 1)
-    filename = argv[1];
+  /* gnome_init(PACKAGE, VERSION, argc, argv); */
+  gnome_init_with_popt_table(PACKAGE,
+			     VERSION,
+			     argc, argv,
+			     NULL,
+			     0,
+			     &popt_ctx);
 #endif /* INCLUDE_AT_POPT_TABLE */
+  splash(PACKAGE, VERSION, "Masatake YAMATO", "jet@gyve.org", GNOME_ICONDIR "/fl-splash.png");
+  
+  filenames = poptGetArgs(popt_ctx);
+  if (filenames && filenames[0])
+    {
+      filename = g_strdup(filenames[0]);
+      if (filenames[1])
+	{
+	  gchar * msg = g_strdup_printf("Only one file(%s) could be loaded by %s",  
+					filename,
+					poptGetInvocationName(popt_ctx));
+	  gnome_ok_dialog(msg);
+	  g_free(msg);
+	}
+    }
+  poptFreeContext (popt_ctx);
 
-  
-  splash(GNOME_ICONDIR "/fl-splash.png");
-  
   /*
    * Set up dialog
    */
@@ -254,7 +275,7 @@ load_options_file(poptContext con,
   at_fitting_opts_type * loaded_opts;
   at_fitting_opts_type * target_opts = data;
   
-  if (!strcmp(key->longName, "options-file"))
+  if (!strcmp(key->longName, "option-file"))
     {
       options_file_name = arg;
       opt_fp = fopen(options_file_name, "r");
@@ -398,7 +419,11 @@ msg_write                (at_string msg,
 }
 
 static void
-splash                    (const gchar * file)
+splash                    (const gchar * package,
+			   const gchar * version,
+			   const gchar * author,
+			   const gchar * mailto,
+			   const gchar * file)
 {
   GtkWidget * window;
   GtkWidget * pixmap;
