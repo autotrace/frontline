@@ -20,6 +20,9 @@
 #ifndef FL_FSEL_H
 #define FL_FSEL_H 
 
+#include <gtk/gtkvbox.h>
+#include <libgnome/gnome-defs.h>
+
 BEGIN_GNOME_DECLS  
 
 #define FRONTLINE_TYPE_FILE_SELECTION            (frontline_file_selection_get_type ())

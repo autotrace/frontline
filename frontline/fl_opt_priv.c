@@ -19,7 +19,9 @@
 
 /* TODO: justification */
 
+#include "config.h"
 #include "private.h"
+
 #include <autotrace/autotrace.h>
 #include <libgnomeui/gnome-color-picker.h>
 #include <ctype.h>
@@ -244,7 +246,7 @@ fl_opt_priv_color_new (at_color_type ** value,
   /* Color picker */
   color = gnome_color_picker_new ();
   gnome_color_picker_set_use_alpha(GNOME_COLOR_PICKER(color), FALSE);
-  gnome_color_picker_set_title (GNOME_COLOR_PICKER(color), "Background color");
+  gnome_color_picker_set_title (GNOME_COLOR_PICKER(color), _("Background color"));
   gtk_box_pack_start_defaults(GTK_BOX(hhbox), color);
   
   

@@ -20,9 +20,19 @@
 #ifndef FL_PRIVATE_H
 #define FL_PRIVATE_H 
 
-#include <gtk/gtk.h>
-#include <gundo/gundo.h>
+#include "config.h"
+
+#define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
+#include <glib.h>
+#include <libgnome/gnome-defs.h>
+#include <libgnome/gnome-i18n.h>
+
 #include "frontline.h"
+#include <autotrace/autotrace.h>
+#include <gtk/gtkbutton.h>
+#include <gtk/gtkbox.h>
+#include <gundo/gundo.h>
+
 
 /*
  * Constatnt

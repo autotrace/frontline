@@ -21,6 +21,9 @@
 #ifndef FL_PROG_H
 #define FL_PROG_H 
 
+#include <gtk/gtkhbox.h>
+#include <libgnome/gnome-defs.h>
+
 BEGIN_GNOME_DECLS  
 
 #define FRONTLINE_TYPE_PROGRESS                (frontline_progress_get_type ())

@@ -16,12 +16,15 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */ 
 
+#include "config.h"
+#include <gnome.h>
+#include "frontline/frontline.h"
+
+#include <autotrace/autotrace.h>
+#include <errno.h>
+
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
-#include <frontline/frontline.h>
-#include <autotrace/autotrace.h>
-#include <libgnomeui/libgnomeui.h>
-#include <errno.h>
 
 #define PLUG_IN_NAME "plug_in_trace"
 #define PLUG_IN_VERSION "0.0.0"
@@ -92,6 +95,12 @@ query (void)
   const gchar *author = "Masatake YAMATO<jet@gyve.org>";
   const gchar *copyrights = "Masatake YAMATO";
   const gchar *copyright_date = "2002";
+  
+  setlocale (LC_ALL, "");
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  textdomain(PACKAGE);
+
+  frontline_init();  
 
   gimp_install_procedure (PLUG_IN_NAME,
 			  (gchar *) blurb,
@@ -99,7 +108,7 @@ query (void)
 			  (gchar *) author,
 			  (gchar *) copyrights,
 			  (gchar *) copyright_date,
-			  "<Image>/Filters/Trace/Trace...",
+			  _("<Image>/Filters/Trace/Trace..."),
 			  "RGB*, GRAY*",
 			  GIMP_PLUGIN,
 			  nargs, 0,
@@ -125,9 +134,13 @@ run (gchar   *name,
   static GimpParam values[1];
 
   at_fitting_opts_type * opts;
+  
+  setlocale (LC_ALL, "");
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  textdomain(PACKAGE);
 
-  /* INIT_I18N_UI(); */
-
+  frontline_init();
+  
   run_mode    = param[0].data.d_int32;
   image_ID    = param[1].data.d_image;
   drawable_ID = param[2].data.d_drawable;
@@ -188,7 +201,7 @@ frontline (GimpDrawable *drawable,
   GtkTooltips * tooltips;
   
   dialog = frontline_dialog_new_with_opts(opts);
-  gtk_window_set_title(GTK_WINDOW(dialog), "Trace");
+  gtk_window_set_title(GTK_WINDOW(dialog), _("Trace"));
   gtk_signal_connect(GTK_OBJECT(dialog),
 		     "delete_event",
 		     GTK_SIGNAL_FUNC(quit_callback),
@@ -208,8 +221,8 @@ frontline (GimpDrawable *drawable,
   tooltips = gtk_tooltips_new();
   gtk_tooltips_set_tip (tooltips, 
 			header_button, 
-			"Click here to reload the image",
-			"Click here to reload the image");
+			_("Click here to reload the image from the Gimp"),
+			"Click here to reload the image from the Gimp");
   
   header_sep = gtk_hseparator_new();
   gtk_box_pack_start_defaults(GTK_BOX(FRONTLINE_DIALOG(dialog)->header_area), 
@@ -219,7 +232,7 @@ frontline (GimpDrawable *drawable,
 
   preview = frontline_preview_new ();
   gtk_quit_add_destroy(1, GTK_OBJECT(preview));
-  gtk_window_set_title(GTK_WINDOW(preview), "Trace Preview");
+  gtk_window_set_title(GTK_WINDOW(preview), _("Trace Preview"));
   gtk_window_set_transient_for(GTK_WINDOW(preview),
 			       GTK_WINDOW(dialog));
 
@@ -322,9 +335,9 @@ header_new(const gchar * file_name, const gchar * drawable_name)
   GtkWidget * entry;
 
   if (file_name == NULL)
-    file_name = "Not given";
+    file_name = _("Not given");
   if (drawable_name == NULL)
-    drawable_name = "Not given";
+    drawable_name = _("Not given");
   
   vbox = gtk_vbox_new(TRUE, 4);
   gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
@@ -333,7 +346,7 @@ header_new(const gchar * file_name, const gchar * drawable_name)
   gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
   gtk_widget_show(hbox);
 
-  label = gtk_label_new("File name: ");
+  label = gtk_label_new(_("File name: "));
   entry = gtk_entry_new();
   gtk_entry_set_text(GTK_ENTRY(entry), file_name);
   gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
@@ -347,7 +360,7 @@ header_new(const gchar * file_name, const gchar * drawable_name)
   gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
   gtk_widget_show(hbox);
 
-  label = gtk_label_new("Drawable name: ");
+  label = gtk_label_new(_("Drawable name: "));
   entry = gtk_entry_new();
   gtk_entry_set_text(GTK_ENTRY(entry), drawable_name);
   gtk_entry_set_editable(GTK_ENTRY(entry), FALSE);
@@ -405,9 +418,9 @@ gimp_drawable_to_at_bitmap (GimpDrawable * drawable, at_fitting_opts_type * opts
 	|| (bytes == 4 && has_alpha == TRUE)
 	|| (bytes == 1 && has_alpha == FALSE)
 	|| (bytes == 2 && has_alpha == TRUE)))
-    g_error ("bpp: %d has_alpha: %d", bytes, has_alpha);
+    g_error (_("bpp: %d has_alpha: %d"), bytes, has_alpha);
   else if (GIMP_DRAWABLE_TO_AT_BITMAP_DEBUG)
-    g_message ("bpp: %d has_alpha: %d", bytes, has_alpha);
+    g_message (_("bpp: %d has_alpha: %d"), bytes, has_alpha);
 
   bitmap = at_bitmap_new (width, height, bytes - has_alpha);
   data = g_new(guchar, bytes * width);  
@@ -513,7 +526,7 @@ save_splines             (GtkButton * button, gpointer user_data)
   fp = fopen(filename, "w");
   if (!fp)
     {
-      gchar * msg = g_strconcat("Cannot open: ", 
+      gchar * msg = g_strconcat(_("Cannot open: "), 
 				filename, 
 				"\n",
 				g_strerror(errno));

@@ -17,12 +17,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */ 
 
+#include "config.h"
 #include "private.h"
-#include <sys/time.h>
-#include <unistd.h>
+#include "frontline.h"
+#include <glib.h>
 
 void
 fl_not_implemented(GtkButton * button, gpointer data)
 {
-  g_message ("%s: is not implemented.", (gchar *)data);
+  g_message (_("%s: is not implemented."), (gchar *)data);
+}
+
+void
+frontline_init(void)
+{
+  static int initialized = 0;
+  if (!initialized)
+    {
+      setlocale (LC_ALL, "");
+      bindtextdomain (PACKAGE, LOCALEDIR);
+    }
 }

@@ -19,8 +19,9 @@
 
 /* TODO: warning/error reports mechanism  */
 
-#include "frontline.h"
+#include "config.h"
 #include "private.h"
+#include "frontline.h"
 #include <gundo/gundo.h>
 #include <gundo/gundo_ui.h>
 
@@ -126,7 +127,7 @@ frontline_option_init (FrontlineOption * fl_opt)
   GtkWidget * label;
 
   vbox = gtk_vbox_new(TRUE, 0);
-  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new("Options"));
+  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new(_("Options")));
   
   gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
   gtk_box_set_spacing(GTK_BOX(vbox), 8);
@@ -189,7 +190,7 @@ frontline_option_init (FrontlineOption * fl_opt)
   /* Predefined */
 #if 0
   vbox = gtk_vbox_new(TRUE, 0);
-  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new("Predefined"));
+  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new(_("Predefined")));
 
   hbox 	      = gtk_hbox_new(TRUE, 0);
   gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
@@ -203,38 +204,43 @@ frontline_option_init (FrontlineOption * fl_opt)
 
   /* About */
   vbox = gtk_vbox_new(FALSE, 0);
-  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new("About"));
+  gtk_notebook_append_page(GTK_NOTEBOOK(fl_opt), vbox, gtk_label_new(_("About")));
 
   pixmap = gnome_pixmap_new_from_file (GNOME_ICONDIR "/fl-splash.png");
   gtk_container_add(GTK_CONTAINER(vbox), pixmap);  
 
-  label = gtk_label_new("Frontline Vesion: " VERSION);
-  gtk_container_add(GTK_CONTAINER(vbox), label);  
-  label = gtk_label_new("Frontline Author: Masatake YAMATO<jet@gyve.org>");
-  gtk_container_add(GTK_CONTAINER(vbox), label);  
-  
   {
     gchar * msg;
-    msg = g_strdup_printf("Autotrace Vesion: %s", at_version(false));
+    msg = g_strdup_printf(_("Frontline Vesion: %s"), VERSION);
     label = gtk_label_new(msg);
     g_free(msg);
-    gtk_container_add(GTK_CONTAINER(vbox), label);  
+    gtk_container_add(GTK_CONTAINER(vbox), label);
   }
-  label = gtk_label_new("Autotrace Author: Martin Weber<martweb@gmx.net>");
+  label = gtk_label_new(_("Frontline Author: Masatake YAMATO<jet@gyve.org>"));
   gtk_container_add(GTK_CONTAINER(vbox), label);  
 
   {
     gchar * msg;
-    msg = g_strdup_printf("Project web page: %s", at_home_site());
+    msg = g_strdup_printf(_("Autotrace Vesion: %s"), at_version(false));
     label = gtk_label_new(msg);
     g_free(msg);
     gtk_container_add(GTK_CONTAINER(vbox), label);  
   }
-  label = gtk_label_new("This program is free software; you can redistribute\n"
+  label = gtk_label_new(_("Autotrace Author: Martin Weber<martweb@gmx.net>"));
+  gtk_container_add(GTK_CONTAINER(vbox), label);  
+
+  {
+    gchar * msg;
+    msg = g_strdup_printf(_("Project web page: %s"), at_home_site());
+    label = gtk_label_new(msg);
+    g_free(msg);
+    gtk_container_add(GTK_CONTAINER(vbox), label);  
+  }
+  label = gtk_label_new(_("This program is free software; you can redistribute\n"
 			"it and/or modify it under the terms of the GNU\n"
 			"General Public License as published by the Free\n"
 			"Software Foundation; either version 2 of the License, \n"
-			"or (at your option) any later version.\n");
+			"or (at your option) any later version.\n"));
   gtk_container_add(GTK_CONTAINER(vbox), label);
   
   gtk_widget_show_all(vbox);
@@ -381,7 +387,7 @@ frontline_option_save (GtkButton * button, gpointer user_data)
   GtkWidget * ok_button = GTK_FILE_SELECTION(filesel)->ok_button; 
   GtkWidget * cancel_button = GTK_FILE_SELECTION(filesel)->cancel_button;
   
-  gtk_window_set_title(GTK_WINDOW(filesel), "Select option file");
+  gtk_window_set_title(GTK_WINDOW(filesel), _("Select option file"));
   gtk_signal_connect(GTK_OBJECT(ok_button),
 		     "clicked",
 		     GTK_SIGNAL_FUNC(frontline_option_save_ok),
@@ -419,7 +425,7 @@ frontline_option_save_ok (GtkButton * button, gpointer user_data)
   if (!fp)
     {
       GtkWidget * dialog;
-      dialog = gnome_ok_dialog("Cannot open file to write");
+      dialog = gnome_ok_dialog(_("Cannot open file to write"));
       /* TODO: destroy the dialog? */
       return;
     }
@@ -457,7 +463,7 @@ frontline_option_load (GtkButton * button, gpointer user_data)
   GtkWidget * ok_button = GTK_FILE_SELECTION(filesel)->ok_button; 
   GtkWidget * cancel_button = GTK_FILE_SELECTION(filesel)->cancel_button;
   
-  gtk_window_set_title(GTK_WINDOW(filesel), "Select option file");
+  gtk_window_set_title(GTK_WINDOW(filesel), _("Select option file"));
   gtk_signal_connect(GTK_OBJECT(ok_button),
 		     "clicked",
 		     GTK_SIGNAL_FUNC(frontline_option_load_ok),
@@ -494,7 +500,7 @@ frontline_option_load_ok (GtkButton * button, gpointer user_data)
   if (!fp)
     {
       GtkWidget * dialog;
-      dialog = gnome_ok_dialog("Cannot open file to load");
+      dialog = gnome_ok_dialog(_("Cannot open file to load"));
       /* TODO: destroy the dialog? */
       return;
     }
@@ -536,7 +542,7 @@ fl_opt_drag_data_received (GtkWidget * widget,
       }
     else
       {
-	gchar * msg = g_strdup_printf("Cannot load autotrace option file: %s",
+	gchar * msg = g_strdup_printf(_("Cannot load autotrace option file: %s"),
 				      uri);
 	gnome_error_dialog(msg);
 	g_free(msg);

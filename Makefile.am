@@ -1,4 +1,4 @@
-SUBDIRS = gundo frontline gimp
+SUBDIRS = intl gundo frontline gimp po m4
 EXTRA_DIST=frontline-config.af frontline.m4 \
 frontline.png frontline.desktop frontline.keys.in frontline.mime \
 frontline.spec.in fl-splash.png BUGS
@@ -38,3 +38,5 @@ dist-hook: frontline.spec
 
 rpm: dist frontline.spec
 	rpm -bb frontline.spec
+
+ACLOCAL_AMFLAGS = -I m4

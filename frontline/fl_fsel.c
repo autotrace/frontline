@@ -19,8 +19,9 @@
 
 /* TODO: Use gnome_icon_entry.h, error and warning handler */
 
-#include "frontline.h"
+#include "config.h"
 #include "private.h"
+#include "frontline.h"
 #include <gtk/gtksignal.h>
 #include <gnome.h>
 
@@ -110,6 +111,7 @@ frontline_file_selection_load(GtkEditable * entry,
   at_input_read_func reader;
   at_bitmap_type * bitmap;
   int errorp = 0;
+  gchar * msg;
   
   fl_fsel  = FRONTLINE_FILE_SELECTION(uesr_data);
   filename    = gtk_entry_get_text(GTK_ENTRY(entry));
@@ -117,27 +119,26 @@ frontline_file_selection_load(GtkEditable * entry,
   if (reader)
     {
       bitmap = at_bitmap_read(reader, filename, fl_fsel->opts, fl_load_msg_handler, &errorp);
-      if (errorp == 0 && bitmap)
+      if (errorp == 0)
 	{
 	  gtk_signal_emit(GTK_OBJECT(fl_fsel),
 			  fl_file_selection_signals[LOADED],
 			  filename,
 			  bitmap);
-	  at_bitmap_free(bitmap);
-	  bitmap = NULL;
 	}
       else
 	{
-	  gchar * msg = g_strdup_printf("Fail to load image: %s", 
-					filename);
+	  msg = g_strdup_printf(_("Fail to load image: %s"), filename);
 	  gnome_error_dialog(msg);
 	  g_free(msg);
 	}
+      if (bitmap)
+	at_bitmap_free(bitmap);
     }
   else
     {
-      gchar * msg = g_strdup_printf("Cannot find load handler for: %s", 
-				    filename);
+      msg = g_strdup_printf(_("Cannot find load handler for: %s"), 
+			    filename);
       gnome_error_dialog(msg);
       g_free(msg);
     }
@@ -171,10 +172,10 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
   gtk_container_set_border_width(GTK_CONTAINER(fl_fsel), 10);
   
   hbox 	= gtk_hbox_new(FALSE, 4);
-  label = gtk_label_new("Image");
+  label = gtk_label_new(_("Image"));
   gtk_box_pack_start_defaults(GTK_BOX(hbox), label);
 
-  fl_fsel->ifentry = gnome_file_entry_new("frontline::fsel::input", "Select");
+  fl_fsel->ifentry = gnome_file_entry_new("frontline::fsel::input", _("Select"));
   gtk_box_pack_start_defaults(GTK_BOX(hbox), fl_fsel->ifentry);
   gtk_widget_show_all(hbox);
   gtk_box_pack_start_defaults(GTK_BOX(fl_fsel), hbox);
@@ -190,10 +191,10 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
 			   fl_fsel);
 #if 0
   hbox 	= gtk_hbox_new(FALSE, 4);
-  label = gtk_label_new("Result Figure");
+  label = gtk_label_new(_("Result Figure"));
   gtk_box_pack_start_defaults(GTK_BOX(hbox), label);
 
-  fentry = gnome_file_entry_new(NULL, "Write Result Figure");
+  fentry = gnome_file_entry_new(NULL, _("Write Result Figure"));
   gtk_box_pack_start_defaults(GTK_BOX(hbox), fentry);
   gtk_widget_show_all(hbox);
   gtk_box_pack_start_defaults(GTK_BOX(fl_fsel), hbox);
@@ -201,8 +202,8 @@ frontline_file_selection_init (FrontlineFileSelection * fl_fsel)
   tooltips = gtk_tooltips_new();
   gtk_tooltips_set_tip (tooltips, 
 			GTK_WIDGET(fentry), 
-			"Drop an image file here to load it",
-			"Drop an image file here to load it");
+			_("Drop an image file here to load it"),
+			_("Drop an image file here to load it"));
 }
 
 GtkWidget*

@@ -17,6 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */ 
 
+#include "config.h"
+#include "private.h"
 #include "frontline.h"
 #include <libgnomeui/libgnomeui.h>
 
@@ -35,10 +37,10 @@ fl_ask(GtkWindow * parent, at_splines_type * splines)
     return TRUE;
 
   basefmt =
-    "Draw the result? In some case, it takes long time and large memory area.\n"
+    _("Draw the result? In some case, it takes long time and large memory area.\n"
     "- the total number of groups of splines: %d\n"
     "- the total number splines: %d\n"
-    "- the total number points: %d";
+    "- the total number points: %d");
   
   message = g_strdup_printf(basefmt, 
 			    at_spline_list_array_count_groups_of_splines(splines),

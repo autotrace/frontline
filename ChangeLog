@@ -1,3 +1,10 @@
+2002-10-29  Masatake YAMATO  <jet@gyve.org>
+
+	* */*: Gettextized.
+
+	* frontline/fl_fsel.c (frontline_file_selection_load): 
+	free bitmap in any case.
+
 2002-10-24  Masatake YAMATO  <jet@gyve.org>
 
 	* frontline/at_opts_io.c: Don't include

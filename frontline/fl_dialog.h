@@ -21,6 +21,9 @@
 #ifndef FL_DIALOG_H
 #define FL_DIALOG_H
 
+#include <gtk/gtkdialog.h>
+#include <libgnome/gnome-defs.h>
+
 BEGIN_GNOME_DECLS
 
 #define FRONTLINE_TYPE_DIALOG                (frontline_dialog_get_type ())

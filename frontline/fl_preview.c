@@ -20,8 +20,10 @@
 /* TODO: open and closed path, error message, SEGV, 
  request_to_save external interface, picking bg color */
 
-#include "frontline.h"
+#include "config.h"
 #include "private.h"
+#include "frontline.h"
+
 #include <libgnomeui/gnome-window-icon.h>
 #include <gnome.h>
 #include <gtk/gtk.h>
@@ -229,10 +231,10 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   tooltips = gtk_tooltips_new();
   gtk_tooltips_set_tip (tooltips, 
 			fl_preview->save_button, 
-			"Click here to save the tracing result. "
-			"Drag from here to export SVG file.",
-			"Click here to save the tracing result. "
-			"Drag from here to export SVG file.");
+			_("Click here to save the tracing result. "
+			"Drag out from here to export SVG file."),
+			_("Click here to save the tracing result. "
+			"Drag out from here to export SVG file."));
   gtk_tooltips_enable (tooltips);
   
   fl_preview->scrolled_window = gtk_scrolled_window_new(NULL, NULL);
@@ -284,8 +286,8 @@ frontline_preview_init (FrontlinePreview * fl_preview)
    * subhbox[[label: toggle]] 
    */
   subhbox                  = gtk_hbox_new(FALSE, 0);
-  label 		   = gtk_label_new ("Image: ");
-  fl_preview->image_toggle = gtk_toggle_button_new_with_label("Show");
+  label 		   = gtk_label_new (_("Image: "));
+  fl_preview->image_toggle = gtk_toggle_button_new_with_label(_("Show"));
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fl_preview->image_toggle), TRUE);
   gtk_box_pack_start(GTK_BOX(subhbox), label, 
 		     FALSE, FALSE, 2);
@@ -302,10 +304,10 @@ frontline_preview_init (FrontlinePreview * fl_preview)
    * subhbox[[label: opts menu]] 
    */
   subhbox                  = gtk_hbox_new(FALSE, 0);
-  label 		   = gtk_label_new ("Splines: ");
+  label 		   = gtk_label_new (_("Splines: "));
   fl_preview->splines_menu = gtk_option_menu_new ();
   menu 			   = gtk_menu_new();
-  menu_item = gtk_radio_menu_item_new_with_label(NULL, "Multiple Colors");
+  menu_item = gtk_radio_menu_item_new_with_label(NULL, _("Multiple Colors"));
   group = gtk_radio_menu_item_group (GTK_RADIO_MENU_ITEM (menu_item));
   gtk_menu_append(GTK_MENU(menu), menu_item);
   gtk_signal_connect(GTK_OBJECT(menu_item),
@@ -317,7 +319,7 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 		      GINT_TO_POINTER(FL_PREVIEW_SHOW_IN_MULTIPLE_COLORS));
   fl_preview->splines_muletiple_colors_menu_item = menu_item;
   
-  menu_item = gtk_radio_menu_item_new_with_label(group, "Static Color");
+  menu_item = gtk_radio_menu_item_new_with_label(group, _("Static Color"));
   group = gtk_radio_menu_item_group (GTK_RADIO_MENU_ITEM (menu_item));
   gtk_menu_append(GTK_MENU(menu), menu_item);
   gtk_signal_connect(GTK_OBJECT(menu_item),
@@ -329,7 +331,7 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 		      GINT_TO_POINTER(FL_PREVIEW_SHOW_IN_STATIC_COLOR));
   fl_preview->splines_static_color_menu_item = menu_item;
   
-  menu_item = gtk_radio_menu_item_new_with_label(group, "Hide");
+  menu_item = gtk_radio_menu_item_new_with_label(group, _("Hide"));
   gtk_menu_append(GTK_MENU(menu), menu_item);
   gtk_signal_connect(GTK_OBJECT(menu_item),
 		     "activate",
@@ -359,7 +361,7 @@ frontline_preview_init (FrontlinePreview * fl_preview)
    * subhbox[label: scale]
    */
   subhbox = gtk_hbox_new(FALSE, 0);
-  label = gtk_label_new ("Opacity: ");
+  label = gtk_label_new (_("Opacity: "));
   fl_preview->splines_opacity = gtk_adjustment_new(0.0, 0.0, 1.0, 0.01, 0.01, 0.001);
   fl_preview->splines_opacity_scale = gtk_hscale_new(GTK_ADJUSTMENT(fl_preview->splines_opacity));
   gtk_scale_set_draw_value(GTK_SCALE(fl_preview->splines_opacity_scale), FALSE);
@@ -379,7 +381,7 @@ frontline_preview_init (FrontlinePreview * fl_preview)
    * subhbox[label: width]
    */
   subhbox = gtk_hbox_new(FALSE, 0);
-  label = gtk_label_new ("Line width: ");
+  label = gtk_label_new (_("Line width: "));
   fl_preview->line_width = gtk_adjustment_new(FL_DEFAULT_SPLINES_WIDTH, 0.0, 10.0, 1.0, 1.0, 1.0);
   fl_preview->line_width_scale = gtk_hscale_new(GTK_ADJUSTMENT(fl_preview->line_width));
   gtk_scale_set_draw_value(GTK_SCALE(fl_preview->line_width_scale), FALSE);
@@ -399,11 +401,11 @@ frontline_preview_init (FrontlinePreview * fl_preview)
    * subhbox[label: color picker]
    */
   subhbox                  = gtk_hbox_new(FALSE, 0);
-  label 		   = gtk_label_new ("Color: ");
+  label 		   = gtk_label_new (_("Color: "));
   fl_preview->splines_static_color = gnome_color_picker_new ();
   gnome_color_picker_set_use_alpha(GNOME_COLOR_PICKER(fl_preview->splines_static_color), 
 				   FALSE);
-  gnome_color_picker_set_title (GNOME_COLOR_PICKER(fl_preview->splines_static_color), "Static Color");
+  gnome_color_picker_set_title (GNOME_COLOR_PICKER(fl_preview->splines_static_color), _("Static Color"));
   gtk_box_pack_start(GTK_BOX(subhbox), label, 
 		     FALSE, FALSE, 2);
   gtk_box_pack_start(GTK_BOX(subhbox), fl_preview->splines_static_color, 
@@ -619,13 +621,13 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
     if (tmp_fd < 0)
       {
 	/* TODO */
-	g_warning("Cannot create tmp file");
+	g_warning(_("Cannot create temporary file"));
       }
     tmp_fp = fdopen(tmp_fd,"w");
     if (NULL == tmp_fp)
       {
 	/* TODO */
-	g_warning("Cannot do fdopen for tmp file");
+	g_warning(_("Cannot do fdopen for temporary file"));
       }
     writer = at_output_get_handler_by_suffix("svg");
     at_splines_write(writer, tmp_fp, tmp_name, NULL, splines, NULL, NULL);
@@ -661,8 +663,8 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
 #endif /* 0 */
  {
    gchar * message;
-   gchar * basefmt = "Groups of splines: %d, Splines: %d, Points: %d";
-   message = g_strdup_printf(basefmt, 
+   gchar * basefmt = N_("Groups of splines: %d, Splines: %d, Points: %d");
+   message = g_strdup_printf(_(basefmt), 
 			     at_spline_list_array_count_groups_of_splines(splines),
 			     at_spline_list_array_count_splines(splines),
 			     at_spline_list_array_count_points(splines));

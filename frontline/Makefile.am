@@ -6,6 +6,7 @@ INCLUDES =					\
 
 AM_CPPFLAGS =						\
 	-DG_LOG_DOMAIN=\"frontline\"			\
+	-DLOCALEDIR=\""$(datadir)/locale"\"             \
         -DGNOME_ICONDIR=\""$(datadir)/pixmaps"\"
 
 AM_CFLAGS=-g -Wall 
@@ -49,6 +50,7 @@ frontline_SOURCES = frontline.c
 # because popt in gnome-1.4 doesn't support FLOAT args.
 frontline_LDADD= $(LIBART2_LIBS)				\
                  $(top_builddir)/frontline/libfrontline.a	\
+		 $(INTLLIBS)					\
                  $(top_builddir)/gundo/libgundo.a		\
                  -lpopt						\
                  $(GNOME_LIBDIR)				\
@@ -56,3 +58,4 @@ frontline_LDADD= $(LIBART2_LIBS)				\
                  $(AUTOTRACE_LIBS) 
 # /home/jet/src/popt-1.6.3/.libs/libpopt.a \
 #-lpopt \
+

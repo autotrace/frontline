@@ -17,11 +17,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */ 
 
+#include "config.h"
 #include "private.h"
 
 static void fl_opt_undo_undo(gpointer action_data);
 static void fl_opt_undo_redo(gpointer action_data);
 static void fl_opt_undo_free(gpointer action_data);
+
 GundoActionType fl_opt_undo_action = { 
   fl_opt_undo_undo, 
   fl_opt_undo_redo, 

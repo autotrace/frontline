@@ -17,6 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */ 
 
+#include "config.h"
+#include "private.h"
 #include "frontline.h"
 #include <string.h>
 
@@ -47,7 +49,7 @@ fl_format_option_menu_new_with_type (FlFormatMenuType type,
   
   menu = gtk_menu_new ();
   
-  menu_item = gtk_menu_item_new_with_label("By extension");
+  menu_item = gtk_menu_item_new_with_label(_("By extension"));
   gtk_object_set_data(GTK_OBJECT(menu_item),
 		      EXTENSION_KEY,
 		      NULL);
@@ -131,8 +133,8 @@ fl_save_file_selection_new (void)
   GtkWidget * extmenu;
   GtkWidget * frame;
   
-  file_selector = gtk_file_selection_new("Save splines to");
-  frame = gtk_frame_new ("Output file format");
+  file_selector = gtk_file_selection_new(_("Save splines to"));
+  frame = gtk_frame_new (_("Output file format"));
   extmenu = fl_format_option_menu_new_with_type(FL_FORMAT_MENU_OUTPUT,
 						GTK_SIGNAL_FUNC(fl_save_file_activate_cb),
 						file_selector);

@@ -33,9 +33,13 @@
 #endif /* Not def: POPT_TABLEEND */
 #endif /* NOT_INCLUDE_AT_POPT_TABLE */
 
+#include "config.h"
 #include <gnome.h>
 #include "frontline.h"
+
 #include <errno.h>
+#include <locale.h>
+#include <string.h>
 
 static void quit_callback            (GtkWidget * widget, gpointer no_use);
 static void set_bitmap               (FrontlineFileSelection * fsel,
@@ -61,11 +65,6 @@ static void save_splines             (GtkButton * button,
 static void msg_write                (at_string msg, 
 				      at_msg_type msg_type, 
 				      at_address client_data);
-static void splash                   (const gchar * package,
-				      const gchar * version,
-				      const gchar * author,
-				      const gchar * mailto,
-				      const gchar * file);
 
 static void frontline_popt_table_init(struct poptOption * fl_popt_table,
 				      struct poptOption * at_popt_table,
@@ -76,9 +75,9 @@ static void frontline_popt_table_init(struct poptOption * fl_popt_table,
 static struct poptOption frontline_popt_table [] = {
   { NULL, '\0', POPT_ARG_CALLBACK, (void *)load_options_file, '\0', NULL, NULL },
 #if INCLUDE_AT_POPT_TABLE
-  { NULL, '\0', POPT_ARG_INCLUDE_TABLE, NULL, 0, "Autotrace options:", NULL },
+  { NULL, '\0', POPT_ARG_INCLUDE_TABLE, NULL, 0, N_("Autotrace options:"), NULL },
 #endif
-  { "option-file", '\0', POPT_ARG_STRING|POPT_ARGFLAG_STRIP, NULL, 0, "Autotrace options file name", "filename"},
+  { "option-file", '\0', POPT_ARG_STRING|POPT_ARGFLAG_STRIP, NULL, 0, N_("Autotrace options file name"), N_("filename")},
   POPT_TABLEEND
 };
 
@@ -95,6 +94,12 @@ main(int argc, char ** argv)
   struct poptOption at_popt_table[at_fitting_opts_popt_table_length];
   at_fitting_opts_type * opts = NULL;
   poptContext popt_ctx = NULL;
+
+  frontline_init();
+
+  setlocale (LC_ALL, "");
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  textdomain(PACKAGE);
 
   /*
    * Parsing args
@@ -123,20 +128,14 @@ main(int argc, char ** argv)
 			     0,
 			     &popt_ctx);
 #endif /* INCLUDE_AT_POPT_TABLE */
-  // splash(PACKAGE, VERSION, "Masatake YAMATO", "jet@gyve.org", GNOME_ICONDIR "/fl-splash.png");
+  /* splash(PACKAGE, VERSION, "Masatake YAMATO", "jet@gyve.org", GNOME_ICONDIR "/fl-splash.png"); */
   
   filenames = poptGetArgs(popt_ctx);
   if (filenames && filenames[0])
     {
       filename = g_strdup(filenames[0]);
       if (filenames[1])
-	{
-	  gchar * msg = g_strdup_printf("Only one file(%s) could be loaded by %s",  
-					filename,
-					poptGetInvocationName(popt_ctx));
-	  gnome_ok_dialog(msg);
-	  g_free(msg);
-	}
+	  gnome_ok_dialog(_("Only one file could be loaded at once"));
     }
   poptFreeContext (popt_ctx);
 
@@ -183,7 +182,7 @@ main(int argc, char ** argv)
 
   preview = frontline_preview_new ();
   gtk_quit_add_destroy(1, GTK_OBJECT(preview));
-  gtk_window_set_title(GTK_WINDOW(preview), "fl preview");
+  gtk_window_set_title(GTK_WINDOW(preview), _("frontline preview"));
   gtk_signal_connect(GTK_OBJECT(fsel),
 		     "loaded",
 		     GTK_SIGNAL_FUNC(preview_image),
@@ -207,7 +206,7 @@ main(int argc, char ** argv)
     if (!frontline_file_selection_load_file(FRONTLINE_FILE_SELECTION(fsel), 
 					    filename))
       {
-	g_warning("Cannot load file: %s", filename);
+	g_warning(_("Cannot load file: %s"), filename);
       }
 
   gtk_main();
@@ -294,7 +293,7 @@ load_options_file(poptContext con,
 	}
       else
 	{
-	  gchar * msg = g_strdup_printf("%s: %s", 
+	  gchar * msg = g_strdup_printf(_("Cannot load %s: %s"), 
 					options_file_name, 
 					g_strerror(errno));
 	  gnome_error_dialog(msg);
@@ -393,7 +392,7 @@ save_splines             (GtkButton * button, gpointer user_data)
   fp = fopen(filename, "w");
   if (!fp)
     {
-      gchar * msg = g_strconcat("Cannot open: ", 
+      gchar * msg = g_strconcat(_("Cannot open file: "), 
 				filename, 
 				"\n",
 				g_strerror(errno));
@@ -418,6 +417,12 @@ msg_write                (at_string msg,
     gnome_warning_dialog_parented(msg, window);
 }
 
+#if 0
+static void splash                   (const gchar * package,
+				      const gchar * version,
+				      const gchar * author,
+				      const gchar * mailto,
+				      const gchar * file);
 static void
 splash                    (const gchar * package,
 			   const gchar * version,
@@ -453,3 +458,4 @@ splash                    (const gchar * package,
 
   return;
 }
+#endif /* 0 */

@@ -21,6 +21,10 @@
 #ifndef FL_OPT_H
 #define FL_OPT_H 
 
+#include <gtk/gtk.h>
+#include <glib.h>
+#include <libgnome/gnome-defs.h>
+
 BEGIN_GNOME_DECLS  
 
 #define FRONTLINE_TYPE_OPTION                (frontline_option_get_type ())

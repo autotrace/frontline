@@ -21,6 +21,9 @@
 #ifndef FL_PREVIEW_H
 #define FL_PREVIEW_H 
 
+#include <gdk_imlib.h>
+#include <libgnomeui/gnome-canvas.h>
+
 BEGIN_GNOME_DECLS  
 
 #define FRONTLINE_TYPE_PREVIEW                (frontline_preview_get_type ())

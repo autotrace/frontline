@@ -19,6 +19,10 @@
 #ifndef FL_MISC_H
 #define FL_MISC_H 
 
+#include <gtk/gtkwidget.h>
+#include <glib.h>
+#include <gtk/gtkfilesel.h>
+
 BEGIN_GNOME_DECLS  
 
 typedef enum 

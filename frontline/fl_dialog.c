@@ -19,6 +19,8 @@
 
 #define FL_COUNT_TIME 0
 
+#include "config.h"
+#include "private.h"
 #include "frontline.h"
 #include <gtk/gtksignal.h>
 #include <glib.h>
@@ -152,7 +154,7 @@ frontline_dialog_init (FrontlineDialog * fl_dialog)
   gtk_widget_show(fl_dialog->wait_actions);
 
   
-  fl_dialog->trace_button = gtk_button_new_with_label("Trace");
+  fl_dialog->trace_button = gtk_button_new_with_label(_("Trace"));
   gtk_box_pack_start(GTK_BOX(fl_dialog->wait_actions), fl_dialog->trace_button, TRUE, TRUE, 0);
   GTK_WIDGET_SET_FLAGS (fl_dialog->trace_button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default (fl_dialog->trace_button);
@@ -163,7 +165,7 @@ frontline_dialog_init (FrontlineDialog * fl_dialog)
 		     GTK_SIGNAL_FUNC(frontline_dialog_trace),
 		     fl_dialog);
   
-  fl_dialog->close_button = gtk_button_new_with_label("Close");
+  fl_dialog->close_button = gtk_button_new_with_label(_("Close"));
   GTK_WIDGET_SET_FLAGS (fl_dialog->close_button, GTK_CAN_DEFAULT);
   gtk_box_pack_start(GTK_BOX(fl_dialog->wait_actions), fl_dialog->close_button, TRUE, TRUE, 0);
   gtk_widget_show(fl_dialog->close_button);
@@ -178,7 +180,7 @@ frontline_dialog_init (FrontlineDialog * fl_dialog)
   if (g_file_exists (GNOME_ICONDIR "/frontline.png") )
     gnome_window_icon_set_from_file(GTK_WINDOW(fl_dialog), GNOME_ICONDIR "/frontline.png");
   else
-    g_warning ("Colud not find %s", GNOME_ICONDIR "/frontline.png");
+    g_warning (_("Could not find %s"), GNOME_ICONDIR "/frontline.png");
 }
 
 static void
@@ -393,13 +395,13 @@ frontline_dialog_error_action_new(at_string msg,
   
   hbox = gtk_hbox_new(FALSE, 4);
   
-  msg_long = g_strdup_printf("Error in trace: %s", msg);
+  msg_long = g_strdup_printf(_("Error in trace: %s"), msg);
   label = gtk_label_new(msg_long);
   g_free(msg_long);
   
   gtk_widget_show(label);
   gtk_box_pack_start_defaults(GTK_BOX(hbox), label);
-  button = gtk_button_new_with_label("Ok");
+  button = gtk_button_new_with_label(_("Ok"));
   gtk_widget_show(button);
   gtk_box_pack_start_defaults(GTK_BOX(hbox), button);
   

@@ -1,3 +1,5 @@
+- Gettextize(http://larse-gtk.hp.infoseek.co.jp/gettext.html)
+-- make output message simpler
 - * Warning and Error reprots <0.2.4> 3h
    -> cannot find handler
 - Commandline related (After new gnome is relased)

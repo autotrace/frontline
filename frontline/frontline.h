@@ -19,13 +19,7 @@
 
 #ifndef FRONTLINE_H
 #define FRONTLINE_H
-
-#include <gtk/gtk.h>
 #include <popt.h>
-#include <libgnomeui/gnome-canvas.h>
-#include <libgnome/gnome-i18n.h>
-#include <gdk_imlib.h>
-
 #include <autotrace/autotrace.h>
 
 #include <frontline/fl_opt.h>
@@ -36,7 +30,11 @@
 #include <frontline/fl_ext.h>
 #include <frontline/fl_ask.h>
 
+#include <libgnome/gnome-defs.h>
+
 BEGIN_GNOME_DECLS  
+
+void frontline_init (void);
 
 /*
  * Bonus functions for autotrace

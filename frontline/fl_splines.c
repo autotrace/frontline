@@ -17,10 +17,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */ 
 
-#include "frontline.h"
+#include "config.h"
 #include "private.h"
+#include "frontline.h"
+
 #include "curve.h"
 #include "canvas-bpath.h"
+
 #include <autotrace/output.h>
 
 static const ArtWindRule fl_splines_wind_rule 	   = ART_WIND_RULE_NONZERO;

@@ -19,11 +19,12 @@
 
 /* TODO: Error report/check */
 
+#include "config.h"
+#include "private.h"
 #include "frontline.h"
 #include <popt.h>
 #include <glib.h>
 #include <string.h>
-#include "private.h"
 #include <stdlib.h>
 
 static void at_fitting_opts_color_write    (at_color_type * color, const char * symbol, FILE * fp);

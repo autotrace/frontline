@@ -19,8 +19,9 @@
 
 /* TODO: Warning display */
 
-#include "frontline.h"
+#include "config.h"
 #include "private.h"
+#include "frontline.h"
 #include <gtk/gtksignal.h>
 
 static void frontline_progress_class_init  (FrontlineProgressClass * klass);

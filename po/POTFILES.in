@@ -1,0 +1,17 @@
+frontline/at_ext.c
+frontline/at_opts_io.c
+frontline/canvas-bpath.c
+frontline/curve.c
+frontline/fl_ask.c
+frontline/fl_dialog.c
+frontline/fl_ext.c
+frontline/fl_fsel.c
+frontline/fl_opt.c
+frontline/fl_opt_priv.c
+frontline/fl_opt_undo.c
+frontline/fl_preview.c
+frontline/fl_prog.c
+frontline/fl_splines.c
+frontline/fl_utils.c
+frontline/frontline.c
+gimp/trace.c

@@ -1,4 +1,4 @@
-Known bugs:-*-text-*-
+Known bugs in frontline:-*-text-*-
 
  - displaying an image and its trace result are failed 
    if the image has itransparent area.
