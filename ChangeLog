@@ -1,0 +1,31 @@
+2002-04-12  Masatake YAMATO  <jet@gyve.org>
+
+	* So many changes...
+
+2002-04-04  Masatake YAMATO  <jet@gyve.org>
+
+	* So many changes...
+
+2002-03-20  Masatake YAMATO  <jet@gyve.org>
+
+	* src/fl_fsel.c (frontline_file_selection_init): Set 
+	history id.
+
+	* frontline.png: Updated.
+
+	* Makefile.am (EXTRA_DIST): Removed sodipodi.patch.
+
+2002-03-19  Masatake YAMATO  <jet@gyve.org>
+
+	* src/fl_dialog.c (frontline_dialog_init): Set 
+	window icon.
+
+	* Makefile.am (EXTRA_DIST): Added frontline.png.
+	(appicondir, appicon_DATA): Likewise.
+
+	* src/Makefile.am (INCLUDES): Added GNOME_ICONDIR.
+
+2002-03-18  Masatake YAMATO  <jet@gyve.org>
+
+	* 0.2.2. Released.
+

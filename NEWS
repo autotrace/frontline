@@ -1,0 +1,13 @@
+What's new in FrontLine 0.3.0?
+- Preview
+- Save splines
+
+What's new in FrontLine 0.2.4?
+- Options saveing/loading
+- Options DnD(aop file)
+
+What's new in FrontLine 0.2.3?
+- Options can be undo/redo.
+- Lock the color-background option check button 
+  when a color selection dialog associated with 
+  tbe button is opened.

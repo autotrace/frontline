@@ -1,0 +1,24 @@
+dnl TODO: popt
+
+AC_INIT(frontline/frontline.h)
+PACKAGER=frontline
+VERSION="0.3.1"
+AM_INIT_AUTOMAKE($PACKAGER, $VERSION)
+AM_MAINTAINER_MODE
+
+dnl Pick up the Gnome macros.
+GNOME_INIT
+
+AM_PATH_AUTOTRACE(0.30.1,, AC_MSG_ERROR([Cannot find autotrace library]))
+
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_RANLIB
+AC_PROG_MAKE_SET
+
+AC_OUTPUT([
+Makefile
+frontline-config
+frontline.pc
+frontline/Makefile
+gundo/Makefile])

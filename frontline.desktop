@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Frontline
+Comment=GUI frontend for autotrace
+Exec=frontline
+Terminal=0
+Type=Application
+Icon=frontline.png

@@ -1,0 +1,19 @@
+##
+## Initialize names
+##
+AF_INIT(frontline)
+
+##
+## Available options
+##
+AF_ARG_DIR(prefix,@prefix@)
+AF_ARG_DIR(exec_prefix,@exec_prefix@)
+AF_ARG_VERSION(@VERSION@)
+
+##
+## Libraries
+##
+#dummy because this should always be selected
+AF_LIBRARY(frontline)
+AF_DEF_CFLAGS([-I@includedir@ @GNOME_INCLUDEDIR@ @AUTOTRACE_CFLAGS@])
+AF_DEF_LIBS([-L@libdir@ -lfrontline -lgundo @GNOME_LIBDIR@ @GNOMEUI_LIBS@ @AUTOTRACE_LIBS@])

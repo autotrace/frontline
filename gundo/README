@@ -1,0 +1,51 @@
+Gtk Undo: Multilevel undo/redo for Gtk
+Copyright (C) 1999  Nat Pryce
+
+
+Introduction
+------------
+
+Gundo provides a Gtk object that manages multilevel undo/redo for an 
+application.  The object stores a sequence of actions and provides methods 
+for undoing or redoing those actions. It fires signals to inform the
+application when it is or is not possible to undo or redo any actions. 
+Utility functions are provided that react to those signals to keep user 
+interface components in sync with the undo sequence.
+
+This is version 0.2. The latest version can be found at:
+    http://www-dse.doc.ic.ac.uk/~np2/software/undo.html
+
+
+Disclaimer and License
+----------------------
+
+The Gtk Undo library is available under the Gnu Lesser General Public License,
+which is in the file named "COPYING".
+The following disclaimer applies to use of the software: 
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+Installation
+------------
+
+Read the file named "INSTALL".
+
+
+Contact
+-------
+
+The author can be contacted by email at np2+gtkundo@dse.doc.ic.ac.uk.
+

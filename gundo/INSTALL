@@ -1,0 +1,34 @@
+How to install Gtk Undo
+-----------------------
+
+IMPORTANT:
+   If you have installed a previous version of this library, uninstall
+   it, to avoid name-clash with another library named "libundo" and to
+   avoid version numbering problems caused by a bug in version 0.1.
+
+
+1) Read the file named COPYING.  You must agree to the terms of the license
+   before making and installing the library.
+
+2) Cd into the src directory
+
+3) Modify the Makefile to reflect your local configuration.
+
+4) Type 'make'.  This will build the library.
+
+5) Optionally, type 'make test' to make and run the tests.  You should get
+   the output "./tundo: OK".
+
+6) Optionally make the demo program:
+   6.1) Cd into the ../demo directory.
+   6.2) Type 'make' to build the demo program.  This will create a program
+        called 'sketch'.
+   6.3) Run the demo program by typing './sketch'.  Information about how
+        to use the program is in the file named "DEMO".
+   6.4) Cd back to the ../src directory.
+   
+7) Optionally, install the library type 'make install'.  This will put the
+   static and shared library in the same location as the Gtk libraries. 
+   Modify the install and uninstall targets of the Makefile to install
+   the library elsewhere.
+

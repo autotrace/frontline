@@ -1,0 +1,12 @@
+Gtk Undo Library.  Log of changes
+---------------------------------
+
+Version 0.3 30/11/99
+ - Added API documentation generated from the source code by Doc++
+
+Version 0.2 15/11/99
+ - Changed library name to "gundo" to avoid name clash with existing library
+ - Changed library version number to 0.2.0 (bug fix)
+
+Version 0.1 12/11/99:
+ - First public release.

@@ -1,0 +1,4 @@
+application/x-frontline:
+	open=frontline --options-file=%f
+	view=frontline --options-file=%f
+	icon-filename=@icondir@/frontline.png

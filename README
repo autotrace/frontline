@@ -1,0 +1,93 @@
+	FrontLine: autotrace gui FRONTend like streamLINE(TM).
+
+
+What is frontline?
+------------------
+Frontline provides a gtk+/gnome based GUI frontend for 
+autotrace (http://autotrace.sourceforge.net) in 3 ways.
+
+1. Stand alone program. A command `frontline' runs as a stand alone
+   program. It will work well with Gnome desktop and nautilus.
+   
+2. Reusable library. A library `libfrontline.a' could be used as a
+   building block of your application that needs the autotrace function.
+   APIs are listed in frontline.h.  The stand alone program frontline
+   itself uses libfrontline.a.
+
+3. Sodipodi, a drawing editor add-on module. add-on module uses the 
+   libfrontline.a. See below.
+
+Requirements
+------------
+- Autotrace version 0.30.1(http://autotrace.sourceforge.net)
+- Gnome 1.4 enviroment
+- libart_lgpl-2.3.8 or higher(ftp://ftp.gnome.org/pub/gnome/pre-gnome2/sources/libart_lgpl/)
+
+  libart_lgpl in Gnome 1.4 has a bug that hungs up frontline.
+
+Install
+-------
+
+See INSTALL.
+
+Sodipodi add-on module
+----------------------
+- How to build:
+        0. Install autofig. Get autofig from
+	   http://autotrace.sourceforge.net/tools/
+	
+	1. Install cvs version of autotrace. Get autotrace from
+           https://sourceforge.net/cvs/?group_id=11789 
+
+	2. Get cvs version of sodipod. Get sodipodi from 
+	   http://sodipodi.sourceforge.net/index.php?section=download
+
+	3. Install frontline.
+	   $ ./configure
+	   $ gmake
+	   $ gmake install
+
+        4. Build sodipodi. 
+	   If you installed frontline.m4 other than
+	   /usr/share/aclocal, you have to set ACLOCAL_FLAGS
+           enviroment variable before running autogen.sh.
+	   e.g. 
+           export ACLOCAL_FLAGS="-I /usr/local/share/aclocal"
+
+- How to use:
+        0. run newly built sodipodi
+
+	1. Create a new document window from the menu
+
+	2. Import an image into the document (something jpeg or png)
+
+	3. Show a context menu with pressing right mouse button on the 
+           imported image; and select Image->Trace item. You'll find
+           Trace dialog.
+	
+	4. Change the parameters on the dialog if you need.
+
+	5. Press the Trace button on the dialog.
+
+	6. You'll get the trace result as a new document of sodipodi.
+
+Mailing list and Web site
+-------------------------
+We discussed on autotrace mailing list.
+See http://groups.yahoo.com/group/autotrace/.
+
+The latest version will be available from:
+http://autotrace.sourceforge.net/frontline/
+
+Known Bugs and TODO
+-------------------
+- Bugs:
+-- Horizontal line noise are appeared on preview window.
+-- Errors occured in autotrace is not messaged to the user.
+-- Command line arguments cause errors.
+
+- TODO: See TODO file.
+
+Contact
+-------
+Masatake YAMATO<jet@gyve.org>
