@@ -1,6 +1,7 @@
 What's new in FrontLine 0.5.4?
 - gettextiz'ed
 - fixed a memory leaking
+- added despeckle-level as an option
 
 What's new in FrontLine 0.5.3?
 - fix more typos in frontline.m4.
