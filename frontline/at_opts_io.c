@@ -133,6 +133,7 @@ at_fitting_opts_new_from_file(FILE * fp)
   parse_result = poptParseArgvString(buf, &argc, &argv);
   if (parse_result < 0)
     {
+      /* TODO gnome_error_dialog_parented(poptStrerror(parse_result)); */
       g_warning ("%s", poptStrerror(parse_result));
       return NULL;
     }
@@ -168,7 +169,10 @@ at_fitting_opts_new_from_argv(int argc, const char ** argv)
     /* Do nothing */;
   if (rc != -1)
     {
-      g_warning("%s: %s", poptBadOption(optCon, 0), poptStrerror(rc));
+      gchar * msg = g_strdup_printf("%s: %s", poptBadOption(optCon, 0), poptStrerror(rc));
+      /* TODO gnome_error_dialog(msg); */
+      g_warning(msg);
+      g_free(msg);
       at_fitting_opts_free(opts);
       opts = NULL;
     }

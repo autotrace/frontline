@@ -28,6 +28,10 @@
 #include <libgnomeui/gnome-dialog-util.h>
 #include <libgnome/gnome-mime.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
+
 static void frontline_option_class_init  (FrontlineOptionClass * klass);
 static void frontline_option_init        (FrontlineOption      * option);
 static void frontline_option_finalize    (GtkObject * object);
@@ -340,7 +344,9 @@ frontline_option_save_ok (GtkButton * button, gpointer user_data)
   GtkWidget * filesel 	= fl_opt->filesel;
   gchar * file_name;
   FILE * fp;
-
+  int    fd;
+  mode_t mode;
+  int    chmod_result;
   gtk_window_set_modal (GTK_WINDOW(filesel), FALSE);
   gtk_widget_hide(GTK_WIDGET(filesel));
   file_name = gtk_file_selection_get_filename (GTK_FILE_SELECTION(filesel));
@@ -355,8 +361,22 @@ frontline_option_save_ok (GtkButton * button, gpointer user_data)
       /* TODO: destroy the dialog? */
       return;
     }
-  at_fitting_opts_save(fl_opt->opts, fp);
+
+  at_fitting_opts_save(fl_opt->opts, fp);  
+  fd = fileno(fp);
+  g_assert(fd != -1);
+  mode = S_IXUSR| S_IWUSR| S_IRUSR | S_IXOTH| S_IROTH | S_IXGRP| S_IRGRP;
+  chmod_result = fchmod(fd, mode);
   fclose(fp);
+  if (chmod_result < -1)
+    {
+      GtkWidget * dialog;
+      gchar * msg;
+      msg = g_strdup_printf("%s: %s", file_name, g_strerror(errno));
+      dialog = gnome_ok_dialog(msg);
+      g_free(msg);
+      return;
+    }
 }
 
 
@@ -453,9 +473,12 @@ fl_opt_drag_data_received (GtkWidget * widget,
 	
       }
     else
-      g_warning("Cannot load autotrace option file: %s",
-		  uri);
-
+      {
+	gchar * msg = g_strdup_printf("Cannot load autotrace option file: %s",
+				      uri);
+	gnome_error_dialog(msg);
+	g_free(msg);
+      }
     break;
   }
 }

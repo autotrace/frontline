@@ -31,6 +31,7 @@
 #include <frontline/fl_prog.h>
 #include <frontline/fl_fsel.h>
 #include <frontline/fl_preview.h>
+#include <frontline/fl_ext.h>
 
 BEGIN_GNOME_DECLS  
 
@@ -50,6 +51,11 @@ int at_fitting_opts_parse(int argc, char ** argv, at_fitting_opts_type * opts);
    at_fitting_opts_popt_init(table, opts); */
 #define at_fitting_opts_popt_table_length 16
 void at_fitting_opts_popt_table_init(struct poptOption * table, at_fitting_opts_type * opts);
+
+int at_spline_list_array_length         (at_spline_list_array_type * splines); /* flat counts */
+#define at_spline_list_array_count_groups_of_splines at_spline_list_array_length
+int at_spline_list_array_count_splines  (at_spline_list_array_type * splines); /* deep counts */
+int at_spline_list_array_count_points (at_spline_list_array_type * splines); /* deeper counts */
 
 END_GNOME_DECLS
 

@@ -46,6 +46,8 @@ struct _FrontlineFileSelectionClass
   
 GtkType    frontline_file_selection_get_type (void);
 GtkWidget* frontline_file_selection_new      (void);
+gboolean   frontline_file_selection_load_file (FrontlineFileSelection * fsel,
+					       const gchar * filename);
 
 END_GNOME_DECLS
 

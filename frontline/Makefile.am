@@ -21,6 +21,7 @@ frontlineinclude_HEADERS =			\
 	fl_dialog.h				\
 	fl_prog.h				\
 	fl_preview.h				\
+	fl_ext.h				\
 	fl_fsel.h
 
 libfrontline_a_SOURCES=				\
@@ -32,8 +33,10 @@ libfrontline_a_SOURCES=				\
 	fl_fsel.c				\
 	fl_opt_undo.c				\
 	at_opts_io.c				\
+	at_ext.c				\
 	fl_preview.c				\
 	fl_splines.c				\
+	fl_ext.c				\
 	curve.c					\
 	canvas-bpath.c
 

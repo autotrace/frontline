@@ -28,7 +28,11 @@
 
 #if !INCLUDE_AT_POPT_TABLE
 #include <popt.h>
-#endif /* DO_NOT_INCLUDE_AT_POPT_TABLE */
+#ifndef POPT_TABLEEND
+#define POPT_TABLEEND { NULL, '\0', 0, 0, 0, NULL, NULL }
+#endif /* Not def: POPT_TABLEEND */
+#endif /* NOT_INCLUDE_AT_POPT_TABLE */
+
 #include <gnome.h>
 #include "frontline.h"
 #include <errno.h>
@@ -75,7 +79,8 @@ main(int argc, char ** argv)
   GtkWidget * fsel;
   GtkWidget * sep;
   GtkWidget * preview;
-
+  gchar * filename = NULL;
+  
   struct poptOption at_popt_table[at_fitting_opts_popt_table_length];
   at_fitting_opts_type * opts = NULL;
   poptContext popt_ctx = NULL;
@@ -101,6 +106,8 @@ main(int argc, char ** argv)
   argc = poptStrippedArgv(popt_ctx, argc, argv);
   poptFreeContext (popt_ctx);
   gnome_init(PACKAGE, VERSION, argc, argv);
+  if (argc > 1)
+    filename = argv[1];
 #endif /* INCLUDE_AT_POPT_TABLE */
 
 
@@ -159,6 +166,13 @@ main(int argc, char ** argv)
 		      dialog);
   gtk_window_set_transient_for(GTK_WINDOW(preview),
 			       GTK_WINDOW(dialog));
+
+  if (filename)
+    if (!frontline_file_selection_load_file(FRONTLINE_FILE_SELECTION(fsel), 
+					    filename))
+      {
+	g_warning("Cannot load file: %s", filename);
+      }
 
   gtk_main();
 
@@ -225,8 +239,13 @@ load_options_file(poptContext con,
 	  at_fitting_opts_free (loaded_opts);
 	}
       else
-	/* TODO: Use GUI */
-	g_warning("%s: %s", options_file_name, g_strerror(errno));
+	{
+	  gchar * msg = g_strdup_printf("%s: %s", 
+					options_file_name, 
+					g_strerror(errno));
+	  gnome_error_dialog(msg);
+	  g_free(msg);
+	}
     }
 }
 
@@ -251,10 +270,11 @@ preview_splines          (FrontlineDialog * fl_dialog,
   g_return_if_fail (FRONTLINE_IS_DIALOG(fl_dialog));
   g_return_if_fail (user_data);
   g_return_if_fail (FRONTLINE_IS_PREVIEW(user_data));
-  frontline_preview_set_splines(FRONTLINE_PREVIEW(user_data),
-				fl_dialog->splines);
-  frontline_preview_show_splines(FRONTLINE_PREVIEW(user_data),
-				 FL_PREVIEW_SHOW_AUTO);
+
+  if (frontline_preview_set_splines(FRONTLINE_PREVIEW(user_data),
+				    fl_dialog->splines))
+    frontline_preview_show_splines(FRONTLINE_PREVIEW(user_data),
+				   FL_PREVIEW_SHOW_AUTO);
   gtk_widget_show(GTK_WIDGET(user_data));
 }
 
@@ -264,8 +284,7 @@ open_filesel             (FrontlinePreview * fl_preview,
 {
   GtkWidget *file_selector;
   GtkWidget * ok_button;
-
-  file_selector = gtk_file_selection_new("Save splines to");
+  file_selector = fl_save_file_selection_new();
   ok_button	= GTK_FILE_SELECTION(file_selector)->ok_button;
 
   gtk_object_set_data(GTK_OBJECT(ok_button),
@@ -297,24 +316,37 @@ static void
 save_splines             (GtkButton * button, gpointer user_data)
 {
   at_splines_type * splines;
-  gchar * filename;
+  gchar * filename, * ext;
   at_output_write_func writer;
   FILE * fp;
   
   splines  = gtk_object_get_data(GTK_OBJECT(button), "splines");
   filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION(user_data));
-
+  ext 	   = fl_save_file_selection_get_extension(GTK_FILE_SELECTION(user_data));
+  
   g_return_if_fail (splines);
   g_return_if_fail (filename);
 
-  writer = at_output_get_handler(filename);
+  if (ext)
+    writer = at_output_get_handler_by_suffix(ext);
+  else
+    writer = at_output_get_handler(filename);
   g_return_if_fail (writer);
   
   fp = fopen(filename, "w");
-  g_return_if_fail (fp);
+  if (!fp)
+    {
+      gchar * msg = g_strconcat("Cannot open: ", 
+				filename, 
+				"\n",
+				g_strerror(errno));
+      gnome_error_dialog_parented  (msg, GTK_WINDOW(user_data));
+      g_free(msg);
+      return ;
+    }
 
   at_splines_write(splines, fp, filename, AT_DEFAULT_DPI, writer,
-		   msg_write, NULL);
+		   msg_write, user_data);
   fclose(fp);
 }
 
@@ -323,8 +355,9 @@ msg_write                (at_string msg,
 			  at_msg_type msg_type, 
 			  at_address client_data)
 {
+  GtkWindow * window = GTK_WINDOW(client_data);
   if (msg_type == AT_MSG_FATAL)
-    g_error ("%s", msg);
+    gnome_error_dialog_parented  (msg, window);
   else
-    g_warning ("%s", msg);
+    gnome_warning_dialog_parented(msg, window);
 }

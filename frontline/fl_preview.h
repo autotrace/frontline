@@ -56,6 +56,7 @@ struct _FrontlinePreview
   GtkWidget * zoom_factor_scale;
 
   GtkWidget * save_button;
+  gchar     * tmp_svg_uri;
 };
 
 struct _FrontlinePreviewClass

@@ -1,3 +1,67 @@
+2002-09-07  Masatake YAMATO  <jet@gyve.org>
+
+	* gimp/trace.c (frontline): Added reload-drawable-button.
+	Use gnome_error_dialog. Use at_output_get_handler_by_suffix if 
+	fl_save_file_selection_get_extension returns an extension.
+	
+	* frontline/frontline.h (at_spline_list_array_*): New functions.
+
+	* frontline/frontline.c (POPT_TABLEEND): defined here.
+	Old popt doesn't define POPT_TABLEEND. The bug is reported
+	by Uli Wortmann <uli.wortmann@utoronto.ca>.
+	(load_options_file): Use gnome_error_dialog.
+	(preview_splines): called frontline_preview_show_splines
+	if frontline_preview_set_splines returns TRUE.
+	(save_splines): Use gnome_error_dialog.
+	Use at_output_get_handler_by_suffix if 
+	fl_save_file_selection_get_extension returns an extension.
+
+	(load_options_file): Load an image file that name
+	is given through the command line.
+
+	* frontline/fl_preview.h (struct _FrontlinePreview): 
+	added new field tmp_svg_uri.
+
+	* frontline/fl_preview.c: added query-dialog.
+	Added DnD source.
+
+	* frontline/fl_opt.c (frontline_option_save_ok): Use
+	gnome ok dialog.
+	(fl_opt_drag_data_received): Likewise.
+
+	* frontline/fl_fsel.h (frontline_file_selection_load_file): 
+	New function.
+
+	* frontline/fl_fsel.c (frontline_file_selection_load): Use
+	gnome error dialog.
+	(frontline_file_selection_load_file): New function.
+
+	* frontline/fl_ext.[ch]: New files.
+
+	* frontline/at_opts_io.c (at_fitting_opts_new_from_file) 
+	(at_fitting_opts_new_from_argv): added stubs for warning
+	dialogs.
+
+	* frontline/at_ext.c: New file.
+
+2002-09-05  Masatake YAMATO  <jet@gyve.org>
+
+	* frontline/fl_opt.c (frontline_option_save_ok): Do chmod a+x on 
+	aop file. This function is suggested by Gerhard Gaussling 
+	<ggrubbish@web.de>.
+
+	* frontline/Makefile.am (frontlineinclude_HEADERS):
+	Added fl_ext.h.
+	(libfrontline_a_SOURCES): Added fl_ext.c and at_ext.c.
+	These are new files.
+	
+	* configure.in: Use output of autoscan.
+
+2002-08-28  Masatake YAMATO  <jet@gyve.org>
+
+	* configure.in (popt): Use AC_MSG_ERROR
+	instead of AC_MSG_WARN.
+
 2002-08-24  Masatake YAMATO  <jet@gyve.org>
 
 	* configure.in: Specified a function to check popt.

@@ -22,11 +22,16 @@ autotrace (http://autotrace.sourceforge.net) in 4 ways.
 
 Requirements
 ------------
-- Autotrace version 0.30.2(http://autotrace.sourceforge.net)
+- Autotrace 0.30.2(http://autotrace.sourceforge.net) or higher
 - Gnome 1.4 enviroment
+  Gnome 1.4 might include popt and Imlib.
 - libart_lgpl-2.3.8 or higher(ftp://ftp.gnome.org/pub/gnome/pre-gnome2/sources/libart_lgpl/)
 
   libart_lgpl in Gnome 1.4 has a bug that hungs up frontline.
+
+- Gimp 1.2(optional) to use gimp plug-in. Even if you have gimp, 
+  check whether gimptool command is also installed. Some of linux
+  distributions include gimp only.
 
 Install
 -------

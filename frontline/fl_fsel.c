@@ -126,11 +126,19 @@ frontline_file_selection_load(GtkEditable * entry,
 	  at_bitmap_free(bitmap);
 	}
       else
-	g_warning("Fail to load image: %s", filename);
+	{
+	  gchar * msg = g_strdup_printf("Fail to load image: %s", 
+					filename);
+	  gnome_error_dialog(msg);
+	  g_free(msg);
+	}
     }
   else
     {
-      g_warning("Cannot find handler for: %s", filename);
+      gchar * msg = g_strdup_printf("Cannot find load handler for: %s", 
+				    filename);
+      gnome_error_dialog(msg);
+      g_free(msg);
     }
 }
 
@@ -194,6 +202,17 @@ frontline_file_selection_new ()
   GtkWidget *fl_fsel;
   fl_fsel = gtk_type_new (FRONTLINE_TYPE_FILE_SELECTION);
   return fl_fsel;
+}
+
+gboolean
+frontline_file_selection_load_file (FrontlineFileSelection * fsel,
+				    const gchar * filename)
+{
+  GtkWidget * fentry;
+  fentry = gnome_file_entry_gtk_entry(GNOME_FILE_ENTRY(fsel->ifentry));
+  gtk_entry_set_text(GTK_ENTRY(fentry), filename);
+  frontline_file_selection_load(GTK_EDITABLE(fentry), fsel);
+  return TRUE;
 }
 
 static void

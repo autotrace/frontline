@@ -1,13 +1,12 @@
 - * Warning and Error reprots <0.2.4> 3h
    -> cannot find handler
-- DnD Proxy<0.2.5>???
 - Commandline related (After new gnome is relased)
-- Suffix options in file dialog
-
 - Options:
 	predefined aop parameters set
 
 - Preview area:
+	tooltips
+	progress bar for rendering
 	pick a background color	
 	build preview from datum on RAM(gray scale)
 
@@ -17,16 +16,14 @@
 	
 - Nautilus:
 	Mime type for nautilus<0.2.5>	
-	DnD porting as svg file, 
+	DnD Proxy<0.2.5>???
 	Icon and DnD accepting and rejecting <0.2.4> (undone)
 
 - Sodipodi:
-	Remote lauch
-
+	SVG Icon
 - Gimp:
-	Memory leak
-	Parameter and scriptable
-	Launching Sodipodi
+	check memory leak
+	parameter and scriptable
 
 Done:
 - Image DnD
@@ -38,3 +35,10 @@ Done:
 - Canvas<0.3.n> (done)
 - GIMP:Preview default status: (Static color with black and hiding image)<done>
 - preview zooming
+- Limit number of splines
+- reload<0.5.0> in GIMP plugin 
+- drop to sodipodi as svg file<0.5.0>
+- DnD porting as svg file
+- Suffix options in file dialog
+
+Error Threshold を 0にすると落ちた．

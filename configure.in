@@ -6,10 +6,20 @@ AM_MAINTAINER_MODE
 
 AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_RANLIB
 AC_PROG_MAKE_SET
 AM_SANITY_CHECK
 AC_PROG_INSTALL
+AC_PROG_AWK
+AC_PROG_RANLIB
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([errno.h stdlib.h string.h sys/time.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_MODE_T
+
 dnl AC_ARG_PROGRAM
 
 dnl
@@ -40,7 +50,7 @@ AM_CONDITIONAL(HAVE_GIMP, test x$HAVE_GIMP = xyes)
 dnl 
 dnl popt
 dnl
-AC_CHECK_LIB(popt,poptPrintHelp,,AC_MSG_WARN(*** Cannot find popt))
+AC_CHECK_LIB(popt,poptPrintHelp,,AC_MSG_ERROR(*** Cannot find popt))
 
 dnl
 dnl Imlib

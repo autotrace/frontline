@@ -26,6 +26,7 @@
 #include <gnome.h>
 #include <gtk/gtk.h>
 #include <gdk_imlib.h>
+#include <unistd.h>
 
 enum {
   REQUEST_TO_SAVE,
@@ -44,7 +45,35 @@ static void frontline_preview_real_set_image (FrontlinePreview * fl_preview,
 					      gboolean set);
 static void frontline_preview_real_set_splines (FrontlinePreview * fl_preview,
 						gboolean set);
+static gboolean frontline_preview_query_whether_drawing(FrontlinePreview * fl_preview,
+							at_splines_type * splines);
+static void frontline_preview_query_cb(gint reply, gpointer data);
 
+/* 
+ * Drag and Drop 
+ */
+#define TMPDIR "/tmp/"
+typedef enum {
+  URI_LIST
+} fl_preview_drop_target_info;
+static GtkTargetEntry fl_preview_drop_target_entries [] = {
+  {"text/uri-list", 0, URI_LIST},
+};
+#define ENTRIES_SIZE(n) sizeof(n)/sizeof(n[0]) 
+static guint nfl_preview_drop_target_entries = ENTRIES_SIZE(fl_preview_drop_target_entries);
+static void save_button_drag_begin_cb(GtkWidget * widget,
+				      GdkDragContext * drag_context,
+				      gpointer user_data);
+static void  save_button_drag_data_get_cb (GtkWidget * widget,
+					   GdkDragContext * drag_context,
+					   GtkSelectionData * data,
+					   guint info,
+					   guint time,
+					   gpointer user_data);
+static void save_button_drag_end_cb (GtkWidget * widget,
+				     GdkDragContext * drag_context,
+				     gpointer user_data);
+					 
 /*
  * Save button
  */
@@ -167,8 +196,9 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   GtkWidget * menu, * menu_item;
   GSList * group;
 
-  fl_preview->image = NULL;
-  fl_preview->splines = NULL;
+  fl_preview->image 	   = NULL;
+  fl_preview->splines 	   = NULL;
+  fl_preview->tmp_svg_uri = NULL;
   gnome_window_icon_set_from_file(GTK_WINDOW(fl_preview), 
 				  GNOME_ICONDIR "/frontline.png");  
   
@@ -201,7 +231,10 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 				 GTK_POLICY_AUTOMATIC);
   gtk_widget_push_visual(gdk_imlib_get_visual());
   gtk_widget_push_colormap(gdk_imlib_get_colormap());
+  
+  /* TODO: aa is too slow. Remove aa in gnome2. */
   fl_preview->canvas = gnome_canvas_new_aa();
+  
   gtk_widget_pop_colormap();
   gtk_widget_pop_visual();
   gtk_container_add(GTK_CONTAINER(fl_preview->scrolled_window), 
@@ -211,12 +244,24 @@ frontline_preview_init (FrontlinePreview * fl_preview)
 		     "clicked",
 		     GTK_SIGNAL_FUNC(save_button_clicked_cb),
 		     fl_preview);
+  gtk_signal_connect(GTK_OBJECT(fl_preview->save_button),
+		     "drag_begin",
+		     GTK_SIGNAL_FUNC(save_button_drag_begin_cb),
+		     fl_preview);
+  gtk_signal_connect(GTK_OBJECT(fl_preview->save_button),
+		     "drag_data_get",
+		     GTK_SIGNAL_FUNC(save_button_drag_data_get_cb),
+		     fl_preview);
+  gtk_signal_connect(GTK_OBJECT(fl_preview->save_button),
+		     "drag_end",
+		     GTK_SIGNAL_FUNC(save_button_drag_end_cb),
+		     fl_preview);
   gtk_signal_connect(GTK_OBJECT(fl_preview->zoom_factor),
 		     "value_changed",
 		     GTK_SIGNAL_FUNC(zoom_factor_value_changed_cb),
 		     fl_preview);
   gtk_widget_set_sensitive (fl_preview->save_button, FALSE);
-  
+
   /* ----------------------------------------------------------------
    * vbox[hbox[subhbox[[label: toggle]] subhbox[[label: opts menu]]]]
    * ---------------------------------------------------------------- */
@@ -349,6 +394,22 @@ frontline_preview_new      (void)
 static void
 frontline_preview_finalize    (GtkObject * object)
 {
+  gchar * uri = FRONTLINE_PREVIEW (object)->tmp_svg_uri;
+  gchar * old_name;
+  gchar * tmp;
+
+  if (uri)
+    {
+      old_name = g_strdup(uri + strlen("file://"));
+      tmp = strstr(old_name, ".svg");
+      g_assert(tmp);
+      tmp[0]   = '\0';
+      unlink(old_name);
+      g_free(old_name);
+      g_free(FRONTLINE_PREVIEW(object)->tmp_svg_uri);
+      FRONTLINE_PREVIEW(object)->tmp_svg_uri = NULL;
+    }
+  
   GTK_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
@@ -446,12 +507,17 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
 			      at_splines_type * splines)
 {
   GnomeCanvasGroup * group;
+  GTimeVal t1, t2;
 
   g_return_val_if_fail (fl_preview && FRONTLINE_PREVIEW(fl_preview), 
 			FALSE);
   g_return_val_if_fail (splines,
 			FALSE);
-
+  
+  if (!frontline_preview_query_whether_drawing(fl_preview, splines))
+    return FALSE;
+  
+  g_get_current_time(&t1);
   if (fl_preview->splines)
     {
       gtk_object_destroy(GTK_OBJECT(fl_preview->splines));
@@ -468,7 +534,69 @@ frontline_preview_set_splines(FrontlinePreview * fl_preview,
   gtk_signal_emit(GTK_OBJECT (fl_preview),
 		  fl_preview_signals[SET_SPLINES],
 		  TRUE);
-  
+  g_get_current_time(&t2);
+  g_message ("[frontline_preview_set_splines] %ld", t2.tv_sec - t1.tv_sec);
+
+  /*
+   * DND
+   */
+  gtk_drag_source_set(GTK_WIDGET(fl_preview->save_button), 
+		      GDK_BUTTON1_MASK,
+		      fl_preview_drop_target_entries,
+		      nfl_preview_drop_target_entries,
+		      GDK_ACTION_COPY);
+  /* Save splines into a tmpdepfile in SVG format */
+  {
+    char  tmp_name[] = TMPDIR "fl-svg-" "XXXXXX";
+    int tmp_fd;
+    FILE * tmp_fp;
+    at_output_write_func writer;
+    
+    tmp_fd= mkstemp(tmp_name);
+    g_message(tmp_name);
+
+    if (tmp_fd < 0)
+      {
+	/* TODO */
+	g_warning("Cannot create tmp file");
+      }
+    tmp_fp = fdopen(tmp_fd,"w");
+    if (NULL == tmp_fp)
+      {
+	/* TODO */
+	g_warning("Cannot do fdopen for tmp file");
+      }
+    writer = at_output_get_handler_by_suffix("svg");
+    at_splines_write(splines, tmp_fp, tmp_name, AT_DEFAULT_DPI, writer,
+		     NULL, NULL);
+    fclose(tmp_fp);
+    
+    if (fl_preview->tmp_svg_uri)
+      g_free(fl_preview->tmp_svg_uri);
+    fl_preview->tmp_svg_uri = g_strdup_printf("file://%s.svg", tmp_name);
+  }
+  /* TODO: Icon set up: 
+     Copy and pasted from dia/app/interface.c */
+#if 0
+ {
+   GdkPixmap * icon = NULL;
+   GdkBitmap * mask;
+   GdkPixbuf * pixbuf;
+
+   pixbuf = gdk_pixbuf_new_from_file(SVG_PIXMAP);
+   g_assert(pixbuf);
+
+   gdk_pixbuf_render_pixmap_and_mask(pixbuf, &icon, &mask, 1.0);
+   gdk_pixbuf_unref(pixbuf);
+   g_assert(icon);
+   gtk_drag_source_set_icon(GTK_WIDGET(fl_preview->save_button),
+			    gdk_colormap_get_system(),
+			    icon, mask);
+   gdk_pixmap_unref(icon);
+   gdk_bitmap_unref(mask);
+ }
+#endif /* 0 */  
+
   return TRUE;
 }
 
@@ -552,9 +680,12 @@ frontline_preview_show_splines(FrontlinePreview * fl_preview,
 			       FrontlinePreviewSplinesStatus status)
 {
   GtkMenuItem * menu_item;
-
+  GTimeVal t1, t2;
+  
   g_return_if_fail (fl_preview && FRONTLINE_IS_PREVIEW(fl_preview));
 
+  g_get_current_time(&t1);
+  
   if (status == FL_PREVIEW_SHOW_AUTO)
     status = frontline_preview_get_splines_status(fl_preview);
   
@@ -575,7 +706,55 @@ frontline_preview_show_splines(FrontlinePreview * fl_preview,
     default:
       g_assert_not_reached();
     }
+  g_get_current_time(&t2);
+  g_message ("[frontline_preview_show_splines] %ld", t2.tv_sec - t1.tv_sec);
 }
+
+static gboolean
+frontline_preview_query_whether_drawing(FrontlinePreview * fl_preview,
+					at_splines_type * splines)
+{
+  const gint answer_default = 2;
+  gint answer = answer_default;
+  gchar * message;
+  GtkWidget * dialog;
+  
+  if (at_spline_list_array_count_groups_of_splines(splines) < 1000)
+    return TRUE;
+
+  message = g_strdup_printf("Draw the result? In some case, it takes long time.\n"
+			    "- the total number of groups of splines: %d\n"
+			    "- the total number splines: %d\n"
+			    "- the total number points: %d", 
+			    at_spline_list_array_count_groups_of_splines(splines),
+			    at_spline_list_array_count_splines(splines),
+			    at_spline_list_array_count_points(splines));
+  dialog = gnome_ok_cancel_dialog_modal_parented (message,
+						  frontline_preview_query_cb,
+						  &answer,
+						  GTK_WINDOW(fl_preview));
+  while(answer_default == answer)
+    gtk_main_iteration ();
+  g_free(message);
+  
+  if (answer == 0)
+    return TRUE;
+  else if (answer == 1)
+    return FALSE;
+  else
+    {
+      g_assert_not_reached();
+      return TRUE;
+    }
+}
+ 
+static void
+frontline_preview_query_cb(gint reply, gpointer data)
+{
+  *((gint *)data) = reply;
+}
+
+
 
 FrontlinePreviewSplinesStatus
 frontline_preview_get_splines_status(FrontlinePreview * fl_preview)
@@ -787,4 +966,54 @@ zoom_factor_value_changed_cb(GtkAdjustment * zoom_factor, gpointer user_data)
   GnomeCanvas * canvas = GNOME_CANVAS(FRONTLINE_PREVIEW(user_data)->canvas);
   gnome_canvas_set_pixels_per_unit(canvas, zoom_factor->value);
   gnome_canvas_update_now(canvas);
+}
+
+
+static void
+save_button_drag_begin_cb(GtkWidget * widget,
+			  GdkDragContext * drag_context,
+			  gpointer user_data)
+{
+  gchar * uri = FRONTLINE_PREVIEW(user_data)->tmp_svg_uri;
+  gchar * old_name;
+  gchar * new_name;
+  gchar * tmp;
+  old_name = g_strdup(uri + strlen("file://"));
+  tmp 	   = strstr(old_name, ".svg");
+  g_assert(tmp);
+  tmp[0]   = '\0';
+  new_name = uri + strlen("file://");
+  link(old_name, new_name);
+  g_free(old_name);
+}
+
+static void  
+save_button_drag_data_get_cb (GtkWidget * widget,
+			      GdkDragContext * drag_context,
+			      GtkSelectionData * data,
+			      guint info,
+			      guint time,
+			      gpointer user_data)
+{
+  gchar * uri = FRONTLINE_PREVIEW(user_data)->tmp_svg_uri;
+  switch(info) {
+  case URI_LIST:
+    gtk_selection_data_set(data,
+			   gdk_atom_intern(fl_preview_drop_target_entries[0].target,
+					   TRUE),
+			   8,
+			   uri,
+			   strlen(uri));
+    break;
+  }
+}
+static void
+save_button_drag_end_cb (GtkWidget * widget,
+			 GdkDragContext * drag_context,
+			 gpointer user_data)
+{
+  gchar * uri = FRONTLINE_PREVIEW(user_data)->tmp_svg_uri;
+  gchar * new_name;
+  new_name = g_strdup(uri + strlen("file://"));
+  unlink (new_name);
 }

@@ -21,6 +21,7 @@
 #include <frontline/frontline.h>
 #include <autotrace/autotrace.h>
 #include <libgnomeui/libgnomeui.h>
+#include <errno.h>
 
 #define PLUG_IN_NAME "plug_in_trace"
 #define PLUG_IN_VERSION "0.0.0"
@@ -45,6 +46,11 @@ GimpPlugInInfo PLUG_IN_INFO =
 
 MAIN ()
 
+typedef struct _ReloadData {
+  GtkWidget * widget;
+  GimpDrawable * drawable;
+} ReloadData;
+
 static at_fitting_opts_type opts_pivals;
 static at_color_type        background_color_pivals;
 
@@ -64,7 +70,10 @@ static void             save_splines                (GtkButton * button,
 static void             msg_write                    (at_string msg, 
 						      at_msg_type msg_type, 
 						      at_address client_data);
-
+static void             reload_bitmap                (GtkButton * button,
+						      gpointer user_data);
+static void             reset_bitmap                 (FrontlineDialog * dialog,
+						      gpointer user_data);
 
 static void
 query (void)
@@ -170,9 +179,12 @@ frontline (GimpDrawable *drawable,
   GtkWidget * dialog;
   GtkWidget * preview;
   GtkWidget * header_area;
+  GtkWidget * header_button;
   GtkWidget * header_sep;  
   at_bitmap_type * bitmap;
-
+  ReloadData reload_data;
+  GtkTooltips * tooltips;
+  
   dialog = frontline_dialog_new_with_opts(opts);
   gtk_window_set_title(GTK_WINDOW(dialog), "Trace");
   gtk_signal_connect(GTK_OBJECT(dialog),
@@ -184,17 +196,25 @@ frontline (GimpDrawable *drawable,
 		     GTK_SIGNAL_FUNC(quit_callback),
 		     NULL);
 
-  header_area = header_new(file_name, gimp_drawable_name(drawable->id));
+  header_area 	= header_new(file_name, gimp_drawable_name(drawable->id));
+  header_button = gtk_button_new();
+  gtk_container_add(GTK_CONTAINER(header_button), header_area);
   gtk_box_pack_start_defaults(GTK_BOX(FRONTLINE_DIALOG(dialog)->header_area),
-			      header_area);
+			      header_button);
+  gtk_widget_show(header_button);
   gtk_widget_show(header_area);
+  tooltips = gtk_tooltips_new();
+  gtk_tooltips_set_tip (tooltips, 
+			header_button, 
+			"Click here to reload the image",
+			"Click here to reload the image");
   
   header_sep = gtk_hseparator_new();
   gtk_box_pack_start_defaults(GTK_BOX(FRONTLINE_DIALOG(dialog)->header_area), 
 			      header_sep);
   gtk_widget_show(header_sep);
   gtk_widget_show(dialog);
-  
+
   preview = frontline_preview_new ();
   gtk_window_set_title(GTK_WINDOW(preview), "Trace Preview");
   gtk_window_set_transient_for(GTK_WINDOW(preview),
@@ -212,6 +232,7 @@ frontline (GimpDrawable *drawable,
 		      "request_to_save",
 		      GTK_SIGNAL_FUNC(open_filesel),
 		      dialog);
+  
   bitmap = gimp_drawable_to_at_bitmap(drawable);
   frontline_dialog_set_bitmap(FRONTLINE_DIALOG(dialog), bitmap);
   /* FIXME: gray scale image is not supported */
@@ -221,7 +242,34 @@ frontline (GimpDrawable *drawable,
 			       FALSE);
   frontline_preview_show_splines(FRONTLINE_PREVIEW(preview),
 				 FL_PREVIEW_SHOW_IN_STATIC_COLOR);
+
+  /* Reload */
+  reload_data.widget   = dialog;
+  reload_data.drawable = drawable;
+  gtk_signal_connect(GTK_OBJECT(header_button),
+		     "clicked", 
+		     reload_bitmap, &reload_data);
+  gtk_signal_connect(GTK_OBJECT(dialog), 
+		     "set_bitmap", 
+		     reset_bitmap, preview);
   gtk_main();
+}
+
+static void
+reload_bitmap (GtkButton * button, gpointer user_data)
+{
+  ReloadData * reload_data = user_data;
+  at_bitmap_type * bitmap;
+  bitmap = gimp_drawable_to_at_bitmap(reload_data->drawable);
+  frontline_dialog_set_bitmap(FRONTLINE_DIALOG(reload_data->widget), bitmap);
+}
+
+static void
+reset_bitmap (FrontlineDialog * dialog, gpointer user_data)
+{
+  GtkWidget * preview = GTK_WIDGET(user_data);
+  frontline_preview_set_image_by_bitmap (FRONTLINE_PREVIEW(preview), 
+					 dialog->bitmap);
 }
 
 static void
@@ -311,10 +359,10 @@ preview_splines          (FrontlineDialog * fl_dialog,
   g_return_if_fail (FRONTLINE_IS_DIALOG(fl_dialog));
   g_return_if_fail (user_data);
   g_return_if_fail (FRONTLINE_IS_PREVIEW(user_data));
-  frontline_preview_set_splines(FRONTLINE_PREVIEW(user_data),
-				fl_dialog->splines);
-  frontline_preview_show_splines(FRONTLINE_PREVIEW(user_data),
-				 FL_PREVIEW_SHOW_AUTO);
+  if (frontline_preview_set_splines(FRONTLINE_PREVIEW(user_data),
+				    fl_dialog->splines))
+    frontline_preview_show_splines(FRONTLINE_PREVIEW(user_data),
+				   FL_PREVIEW_SHOW_AUTO);
   gtk_widget_show(GTK_WIDGET(user_data));
 }
 
@@ -367,7 +415,7 @@ open_filesel             (FrontlinePreview * fl_preview,
   GtkWidget *file_selector;
   GtkWidget * ok_button;
 
-  file_selector = gtk_file_selection_new("Save splines to");
+  file_selector = fl_save_file_selection_new();
   ok_button	= GTK_FILE_SELECTION(file_selector)->ok_button;
 
   gtk_object_set_data(GTK_OBJECT(ok_button),
@@ -399,24 +447,37 @@ static void
 save_splines             (GtkButton * button, gpointer user_data)
 {
   at_splines_type * splines;
-  gchar * filename;
+  gchar * filename, * ext;
   at_output_write_func writer;
   FILE * fp;
   
   splines  = gtk_object_get_data(GTK_OBJECT(button), "splines");
   filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION(user_data));
-
+  ext 	   = fl_save_file_selection_get_extension(GTK_FILE_SELECTION(user_data));
+  
   g_return_if_fail (splines);
   g_return_if_fail (filename);
 
-  writer = at_output_get_handler(filename);
+  if (ext)
+    writer = at_output_get_handler_by_suffix(ext);
+  else
+    writer = at_output_get_handler(filename);
   g_return_if_fail (writer);
   
   fp = fopen(filename, "w");
-  g_return_if_fail (fp);
+  if (!fp)
+    {
+      gchar * msg = g_strconcat("Cannot open: ", 
+				filename, 
+				"\n",
+				g_strerror(errno));
+      gnome_error_dialog_parented  (msg, GTK_WINDOW(user_data));
+      g_free(msg);
+      return ;
+    }
 
   at_splines_write(splines, fp, filename, AT_DEFAULT_DPI, writer,
-		   msg_write, NULL);
+		   msg_write, user_data);
   fclose(fp);
 }
 
@@ -425,8 +486,9 @@ msg_write                (at_string msg,
 			  at_msg_type msg_type, 
 			  at_address client_data)
 {
+  
   if (msg_type == AT_MSG_FATAL)
-    g_error ("%s", msg);
+    gnome_error_dialog_parented (msg, GTK_WINDOW(client_data));
   else
-    g_warning ("%s", msg);
+    gnome_warning_dialog_parented (msg, GTK_WINDOW(client_data));
 }
