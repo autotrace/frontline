@@ -124,6 +124,7 @@ frontline_file_selection_load(GtkEditable * entry,
 			  filename,
 			  bitmap);
 	  at_bitmap_free(bitmap);
+	  bitmap = NULL;
 	}
       else
 	{

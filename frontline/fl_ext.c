@@ -64,6 +64,7 @@ fl_format_option_menu_new_with_type (FlFormatMenuType type,
   menu_item = gtk_menu_item_new();
   gtk_menu_append(GTK_MENU(menu), menu_item);
 
+  tooltips = gtk_tooltips_new();
   for (i = 0; list[2*i] != NULL; i++)
     {
       menu_item = gtk_menu_item_new_with_label(list[2 * i]);
@@ -71,7 +72,6 @@ fl_format_option_menu_new_with_type (FlFormatMenuType type,
 			       EXTENSION_KEY,
 			       g_strdup(list[2 * i]),
 			       g_free);
-      tooltips = gtk_tooltips_new();
       gtk_tooltips_set_tip(tooltips, menu_item, list[2 * i + 1], list[2 * i + 1]);
       gtk_object_set_data_full(GTK_OBJECT(menu_item),
 			       DESCRIPTION_KEY,

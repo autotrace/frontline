@@ -1,5 +1,14 @@
 2002-10-06  Masatake YAMATO  <jet@gyve.org>
 
+	* frontline/fl_ext.c (fl_format_option_menu_new_with_type): 
+	reuse tooltips object.
+
+	* frontline/fl_fsel.c (frontline_file_selection_load): 
+	set null to bitmap after using.
+
+	* frontline/fl_preview.c (frontline_preview_init): removed
+	newline from tips text.
+
 	* frontline/frontline.c (main): Use poptGetArgs.
 	(splash): added more args.
 	(frontline_popt_table): options-file -> option-file.

@@ -229,10 +229,11 @@ frontline_preview_init (FrontlinePreview * fl_preview)
   tooltips = gtk_tooltips_new();
   gtk_tooltips_set_tip (tooltips, 
 			fl_preview->save_button, 
-			"Click here to save the tracing result."
-			"\nDrag from here to export SVG file.",
-			"Click here to save the tracing result."
-			"\nDrag from here to export SVG file.");
+			"Click here to save the tracing result. "
+			"Drag from here to export SVG file.",
+			"Click here to save the tracing result. "
+			"Drag from here to export SVG file.");
+  gtk_tooltips_enable (tooltips);
   
   fl_preview->scrolled_window = gtk_scrolled_window_new(NULL, NULL);
   gtk_container_add(GTK_CONTAINER(fl_preview->save_button),
