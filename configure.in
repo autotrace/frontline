@@ -28,7 +28,7 @@ AC_SUBST(LIBART2_LIBS)
 dnl
 dnl Autotrace
 dnl
-AM_PATH_AUTOTRACE(0.30.1,, AC_MSG_ERROR([Cannot find autotrace library]))
+AM_PATH_AUTOTRACE(0.30.2,, AC_MSG_ERROR([Cannot find autotrace library]))
 
 dnl
 dnl GIMP
