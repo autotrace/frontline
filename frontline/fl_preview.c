@@ -576,15 +576,18 @@ static void
 splines_activated_cb(GtkMenuItem *menu_item, gpointer user_data)
 {
   gpointer tmp;
+  FrontlinePreview * fl_preview;
   FrontlinePreviewSplinesStatus status;
   
   g_return_if_fail (menu_item && GTK_IS_MENU_ITEM(menu_item));
   g_return_if_fail (user_data && FRONTLINE_IS_PREVIEW(user_data));
   
+  fl_preview = FRONTLINE_PREVIEW(user_data);
   tmp 	 = gtk_object_get_data(GTK_OBJECT(menu_item), "menu_item_id");
   status = GPOINTER_TO_INT(tmp);
-  
-  splines_show(FRONTLINE_PREVIEW(user_data), status);
+  gtk_option_menu_set_history (GTK_OPTION_MENU(fl_preview->splines_menu), 
+			       status);
+  splines_show(fl_preview, status);
 }
 
 static void
@@ -592,6 +595,9 @@ splines_show(FrontlinePreview * fl_preview, FrontlinePreviewSplinesStatus status
 {
   guint8 opacity = opacity_get(fl_preview);
   guint32 color = color_get(fl_preview);
+  
+  if (!fl_preview->splines)
+    return; 
   
   switch (status)
     {

@@ -1,6 +1,7 @@
 - * Warning and Error reprots <0.2.4> 3h
 - DnD Proxy<0.2.5>???
 - Commandline related (After new gnome is relased)
+- Suffix options in file dialog
 
 - Options:
 	predefined aop parameters set
@@ -25,8 +26,7 @@
 - Gimp:
 	Memory leak
 	Parameter and scriptable
-	File and/or Sodipodi
-	* Preview default status: (Static color with black and hiding image)
+	Launching Sodipodi
 
 Done:
 - Image DnD
@@ -36,3 +36,4 @@ Done:
 - Save format<0.2.4>
 - Autotrace version check <0.2.4>
 - Canvas<0.3.n> (done)
+- GIMP:Preview default status: (Static color with black and hiding image)<done>

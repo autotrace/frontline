@@ -64,8 +64,8 @@ struct _FrontlinePreviewClass
 };
 
 enum _FrontlinePreviewSplinesStatus {
-  FL_PREVIEW_SHOW_AUTO,
-  FL_PREVIEW_SHOW_IN_MULTIPLE_COLORS,
+  FL_PREVIEW_SHOW_AUTO 		     = -1,
+  FL_PREVIEW_SHOW_IN_MULTIPLE_COLORS ,
   FL_PREVIEW_SHOW_IN_STATIC_COLOR,
   FL_PREVIEW_HIDE,
 };

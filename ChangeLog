@@ -1,5 +1,17 @@
 2002-05-29  Masatake YAMATO  <jet@gyve.org>
 
+	* gimp/trace.c (frontline): Don't show the preview
+	widget at this point.
+	(frontline): Show splines in a static color and
+	don't show the image at the first time.
+
+	* frontline/fl_preview.c (splines_show): Return 
+	if fl_preview->splines is not assigned.
+	(splines_activated_cb): Invoke 
+	gtk_option_menu_set_history.
+	
+2002-05-29  Masatake YAMATO  <jet@gyve.org>
+
 	* configure.in: Release 0.4.0.
 
 	* frontline.pc.in (Libs): Added -lpopt.

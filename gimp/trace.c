@@ -199,7 +199,6 @@ frontline (GimpDrawable *drawable,
   gtk_window_set_title(GTK_WINDOW(preview), "Trace Preview");
   gtk_window_set_transient_for(GTK_WINDOW(preview),
 			       GTK_WINDOW(dialog));
-  gtk_widget_show(preview);
 
   gtk_signal_connect(GTK_OBJECT(dialog),
 		     "trace_done",
@@ -218,8 +217,10 @@ frontline (GimpDrawable *drawable,
   /* FIXME: gray scale image is not supported */
   frontline_preview_set_image_by_bitmap (FRONTLINE_PREVIEW(preview), 
 					 bitmap);
-  frontline_preview_show_image(FRONTLINE_PREVIEW(preview),
-			       TRUE);
+  frontline_preview_show_image(FRONTLINE_PREVIEW(preview), 
+			       FALSE);
+  frontline_preview_show_splines(FRONTLINE_PREVIEW(preview),
+				 FL_PREVIEW_SHOW_IN_STATIC_COLOR);
   gtk_main();
 }
 
